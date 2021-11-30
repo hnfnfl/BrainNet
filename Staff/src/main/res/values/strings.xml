@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BrainNet Staff</string>
+    <string name="login_title">Masuk ke akun kamu</string>
+    <string name="email">Email</string>
+    <string name="password">Kata sandi</string>
+    <string name="login">Masuk</string>
+    <string name="email_cant_empty">Email tidak boleh kosong</string>
+    <string name="email_format_error">Format email salah</string>
+    <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
+    <string name="try_again">Silahkan coba lagi</string>
+    <string name="greetings">%1$s, \n%2$s</string>
+    <string name="btn_notification">tombol notifikasi</string>
+    <string name="scan_qr">Scan untuk melakukan absensi</string>
+</resources>
