@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:fontFamily="sans-serif-black"
-        android:text="Selamat Pagi, Admin"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
@@ -71,14 +71,17 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/icon_qrcode"
                         android:src="@drawable/ic_scan_qr"
                         app:tint="@color/md_blue_900" />
+
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
                     android:text="@string/scan_qr"
                     android:textColor="@color/md_blue_900"
                     android:textSize="16sp" />

@@ -1,12 +1,24 @@
 package com.jaylangkung.brainnet_staff
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
+import com.jaylangkung.brainnet_staff.retrofit.AuthService
+import com.jaylangkung.brainnet_staff.retrofit.DataService
+import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
+import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.scanner.ScannerActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
+import es.dmoral.toasty.Toasty
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +33,19 @@ class MainActivity : AppCompatActivity() {
         myPreferences = MySharedPreferences(this@MainActivity)
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
+        val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
+        val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val deviceToken = task.result
+            insertToken(idadmin, deviceToken.toString())
+        })
+        refreshAuthToken(idadmin)
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         mainBinding.tvGreetings.text = when (currentHour) {
@@ -32,6 +57,43 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.llScanner.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
+            finish()
         }
+
     }
+
+    private fun insertToken(idpenjual: String, device_token: String) {
+        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
+        service.addToken(idpenjual, device_token).enqueue(object : Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        Log.d("sukses ", "sukses menambahkan device token")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun refreshAuthToken(idpenjual: String) {
+        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
+        service.refreshAuthToken(idpenjual).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+            }
+        })
+    }
+
 }

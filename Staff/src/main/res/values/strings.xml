@@ -11,4 +11,7 @@
     <string name="greetings">%1$s, \n%2$s</string>
     <string name="btn_notification">tombol notifikasi</string>
     <string name="scan_qr">Scan untuk melakukan absensi</string>
+
+    <string name="token_auth">Bearer %1$s</string>
+    <string name="icon_qrcode">icon qr code</string>
 </resources>
