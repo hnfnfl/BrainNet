@@ -1,6 +1,7 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -28,4 +29,9 @@ interface DataService {
         @Field("idadmin") idadmin: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @POST("main/getGangguan")
+    fun getGangguan(
+        @Header("Authorization") tokenAuth: String
+    ): Call<GangguanResponse>
 }

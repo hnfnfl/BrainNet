@@ -3,14 +3,20 @@ package com.jaylangkung.brainnet_staff
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
+import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
+import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.scanner.ScannerActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
@@ -25,12 +31,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
     private lateinit var myPreferences: MySharedPreferences
+    private lateinit var gangguanAdapter: GangguanAdapter
+    private var listGangguanAdapter: ArrayList<GangguanEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
+        gangguanAdapter = GangguanAdapter()
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
@@ -60,6 +69,19 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+        mainBinding.llRestart.setOnClickListener {
+
+        }
+
+        mainBinding.llTiang.setOnClickListener {
+
+        }
+
+        mainBinding.llGoodThings.setOnClickListener {
+
+        }
+
+        getGangguan(tokenAuth)
     }
 
     private fun insertToken(idpenjual: String, device_token: String) {
@@ -96,4 +118,31 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun getGangguan(tokenAuth: String) {
+        val service = RetrofitClient().apiRequest().create(DataService::class.java)
+        service.getGangguan(tokenAuth).enqueue(object : Callback<GangguanResponse> {
+            override fun onResponse(call: Call<GangguanResponse>, response: Response<GangguanResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        mainBinding.loadingAnim.visibility = View.GONE
+                        val listData = response.body()!!.data
+                        listGangguanAdapter = listData
+                        gangguanAdapter.setListGangguanItem(listGangguanAdapter)
+                        gangguanAdapter.notifyDataSetChanged()
+
+                        with(mainBinding.rvTopFive) {
+                            layoutManager = LinearLayoutManager(this@MainActivity)
+                            itemAnimator = DefaultItemAnimator()
+                            setHasFixedSize(true)
+                            adapter = gangguanAdapter
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
+                Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+            }
+        })
+    }
 }

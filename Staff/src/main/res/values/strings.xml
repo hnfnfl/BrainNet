@@ -1,4 +1,6 @@
 <resources>
+    <string name="token_auth">Bearer %1$s</string>
+
     <string name="app_name">BrainNet Staff</string>
     <string name="login_title">Masuk ke akun kamu</string>
     <string name="email">Email</string>
@@ -11,7 +13,17 @@
     <string name="greetings">%1$s, \n%2$s</string>
     <string name="btn_notification">tombol notifikasi</string>
     <string name="scan_qr">Scan untuk melakukan absensi</string>
-
-    <string name="token_auth">Bearer %1$s</string>
     <string name="icon_qrcode">icon qr code</string>
+    <string name="separator_dot">separator</string>
+    <string name="gangguan_name">Nama pelanggan : %1$s</string>
+    <string name="gangguan_address">Alamat : %1$s</string>
+    <string name="gangguan_to">Kepada : %1$s</string>
+    <string name="gangguan_detail">Isi : %1$s</string>
+    <string name="restart_router">Restart Router User</string>
+    <string name="edit_data_tiang">Edit Data Tiang</string>
+    <string name="home_data_gangguan">Data Gangguan</string>
+    <string name="icon_restart">icon restart</string>
+    <string name="icon_tiang">icon tiang</string>
+    <string name="icon_good_things">icon hal baik</string>
+    <string name="tambahkan_hal_baik_hari_ini">Tambahkan Hal Baik Hari Ini</string>
 </resources>
