@@ -26,4 +26,5 @@
     <string name="icon_tiang">icon tiang</string>
     <string name="icon_good_things">icon hal baik</string>
     <string name="tambahkan_hal_baik_hari_ini">Tambahkan Hal Baik Hari Ini</string>
+    <string name="btn_back">tombol kembali</string>
 </resources>

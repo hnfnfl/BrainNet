@@ -37,14 +37,14 @@ class LoginActivity : AppCompatActivity() {
         loginBinding.btnLogin.setOnClickListener {
             val email = loginBinding.tvValueEmailLogin.text.toString()
             val pass = loginBinding.tvValuePasswordLogin.text.toString()
-            if (isDataFilled()) {
+            if (validate()) {
                 loginProcess(email, pass)
                 loginBinding.btnLogin.startAnimation()
             }
         }
     }
 
-    private fun isDataFilled(): Boolean {
+    private fun validate(): Boolean {
         fun String.isValidEmail() = isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
         if (loginBinding.tvValueEmailLogin.text.toString() == "") {
             loginBinding.tvValueEmailLogin.error = getString(R.string.email_cant_empty)
