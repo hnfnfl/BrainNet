@@ -107,7 +107,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_top_five"
+                    android:id="@+id/rv_gangguan"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +125,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_empty"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/rv_gangguan"
+                    app:layout_constraintEnd_toEndOf="@+id/rv_gangguan"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rv_gangguan" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -160,9 +171,9 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:contentDescription="@string/icon_restart"
                             android:src="@drawable/ic_restart"
-                            app:tint="@color/md_deep_orange_900"
-                            android:contentDescription="@string/icon_restart" />
+                            app:tint="@color/md_deep_orange_900" />
 
                     </LinearLayout>
 
@@ -200,9 +211,9 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:contentDescription="@string/icon_tiang"
                             android:src="@drawable/ic_pole"
-                            app:tint="@color/md_green_900"
-                            android:contentDescription="@string/icon_tiang" />
+                            app:tint="@color/md_green_900" />
 
                     </LinearLayout>
 

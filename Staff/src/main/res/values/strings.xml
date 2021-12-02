@@ -27,4 +27,10 @@
     <string name="icon_good_things">icon hal baik</string>
     <string name="tambahkan_hal_baik_hari_ini">Tambahkan Hal Baik Hari Ini</string>
     <string name="btn_back">tombol kembali</string>
+    <string name="gangguan_title">Penyelesaian Gangguan</string>
+    <string name="user_name">Nama pelanggan : %1$s</string>
+    <string name="user_address">Alamat Pasang : %1$s</string>
+    <string name="user_package">Paket : %1$s</string>
+    <string name="no">Tidak</string>
+    <string name="yes">Ya</string>
 </resources>

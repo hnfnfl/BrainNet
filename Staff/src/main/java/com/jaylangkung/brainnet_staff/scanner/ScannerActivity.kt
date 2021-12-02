@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -28,7 +27,6 @@ class ScannerActivity : AppCompatActivity() {
     private lateinit var scannerBinding: ActivityScannerBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var codeScanner: CodeScanner
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +60,7 @@ class ScannerActivity : AppCompatActivity() {
             }
         }
         codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
-            runOnUiThread {
-                onBackPressed()
-            }
+            runOnUiThread {}
         }
 
         scannerBinding.scannerView.setOnClickListener {

@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
-        <activity android:name=".gangguan.GangguanDetailActivity"></activity>
+        <activity android:name=".restart.RestartActivity"></activity>
+        <activity android:name=".gangguan.GangguanDetailActivity" />
         <activity android:name=".scanner.ScannerActivity" />
         <activity
             android:name=".auth.LoginActivity"

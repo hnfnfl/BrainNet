@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
+import com.jaylangkung.brainnet_staff.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
@@ -70,7 +71,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBinding.llRestart.setOnClickListener {
-
+            startActivity(Intent(this@MainActivity, RestartActivity::class.java))
+            finish()
         }
 
         mainBinding.llTiang.setOnClickListener {
@@ -130,18 +132,21 @@ class MainActivity : AppCompatActivity() {
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)
                         gangguanAdapter.notifyDataSetChanged()
 
-                        with(mainBinding.rvTopFive) {
+                        with(mainBinding.rvGangguan) {
                             layoutManager = LinearLayoutManager(this@MainActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
                             adapter = gangguanAdapter
                         }
+                    } else if (response.body()!!.status == "empty") {
+                        mainBinding.empty.visibility = View.VISIBLE
+                        mainBinding.loadingAnim.visibility = View.GONE
                     }
                 }
             }
 
             override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
-                Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                Toasty.error(this@MainActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
             }
         })
     }

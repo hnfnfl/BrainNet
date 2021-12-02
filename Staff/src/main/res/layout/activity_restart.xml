@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gangguan.GangguanDetailActivity">
+    tools:context=".restart.RestartActivity">
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -31,52 +31,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/gangguan_title"
+            android:text="Restart Router Pelanggan"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <SearchView
+        android:id="@+id/sv_product"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        app:endIconMode="clear_text"
+        android:background="@drawable/bg_searchview"
+        android:iconifiedByDefault="false"
+        android:padding="8dp"
+        android:queryHint="Cari Pelanggan"
+        app:layout_constraintBottom_toTopOf="@+id/ll_list_item"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_header">
+        app:layout_constraintTop_toBottomOf="@+id/ll_header" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tv_value_solution"
+    <LinearLayout
+        android:id="@+id/ll_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_user_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:hint="Penyelesaian"
-            android:inputType="text" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_user" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
-    <com.chand.progressbutton.ProgressButton
-        android:id="@+id/btn_submit"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="20dp"
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/loading_anim"
+        style="@style/SpinKitView.Large.ThreeBounce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/secondaryLightColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:p_arrowVisible="false"
-        app:p_backgroundTint="@color/primaryColor"
-        app:p_bgColor="@color/colorSecondary"
-        app:p_cornerRadius="5dp"
-        app:p_layoutDirection="ltr"
-        app:p_progressBGColor="@color/primaryColor"
-        app:p_progressColor="@color/primaryLightColor"
-        app:p_rippleColor="@color/primaryLightColor"
-        app:p_style="circleBar"
-        app:p_text="Submit"
-        app:p_textColor="@color/white"
-        app:p_textSize="18sp" />
+        app:layout_constraintTop_toTopOf="@id/ll_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
