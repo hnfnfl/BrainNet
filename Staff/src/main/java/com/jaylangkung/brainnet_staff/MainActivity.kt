@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
@@ -20,6 +23,7 @@ import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.scanner.ScannerActivity
+import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
@@ -27,6 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,7 +60,9 @@ class MainActivity : AppCompatActivity() {
             val deviceToken = task.result
             insertToken(idadmin, deviceToken.toString())
         })
+
         refreshAuthToken(idadmin)
+        getGangguan(tokenAuth)
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         mainBinding.tvGreetings.text = when (currentHour) {
@@ -76,14 +83,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBinding.llTiang.setOnClickListener {
-
+            startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
+            finish()
         }
 
         mainBinding.llGoodThings.setOnClickListener {
 
         }
 
-        getGangguan(tokenAuth)
+        mainBinding.llBody.setOnRefreshListener {
+            mainBinding.loadingAnim.visibility = View.VISIBLE
+            getGangguan(tokenAuth)
+            refreshAuthToken(idadmin)
+        }
     }
 
     private fun insertToken(idpenjual: String, device_token: String) {
@@ -127,6 +139,7 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         mainBinding.loadingAnim.visibility = View.GONE
+                        mainBinding.llBody.isRefreshing = false
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)

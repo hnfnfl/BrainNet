@@ -8,6 +8,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
-        <activity android:name=".restart.RestartActivity"></activity>
+        <activity android:name=".tiang.EditTiangActivity" />
+        <activity android:name=".tiang.ScannerTiangActivity" />
+        <activity android:name=".restart.RestartActivity" />
         <activity android:name=".gangguan.GangguanDetailActivity" />
         <activity android:name=".scanner.ScannerActivity" />
         <activity
@@ -38,6 +42,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
     </application>
 
 </manifest>

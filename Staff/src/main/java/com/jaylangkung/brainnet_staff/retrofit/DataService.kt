@@ -2,6 +2,7 @@ package com.jaylangkung.brainnet_staff.retrofit
 
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.TiangResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -59,4 +60,11 @@ interface DataService {
         @Field("paket") paket: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/getTiang")
+    fun getTiang(
+        @Field("serial_number") serial_number: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<TiangResponse>
 }

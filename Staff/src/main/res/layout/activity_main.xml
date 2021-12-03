@@ -16,7 +16,7 @@
         android:text=""
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@+id/ll_body"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,134 +27,37 @@
         android:layout_marginEnd="18dp"
         android:contentDescription="@string/btn_notification"
         android:src="@drawable/ic_notification"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@+id/ll_body"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/ll_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
-        android:background="@drawable/home_bg"
-        android:padding="18dp"
-        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@drawable/home_bg"
+            android:padding="18dp"
+            android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/ll_scanner"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/menu_box"
-                android:backgroundTint="@color/md_blue_100"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/menu_box"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="6dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/icon_qrcode"
-                        android:src="@drawable/ic_scan_qr"
-                        app:tint="@color/md_blue_900" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center"
-                    android:text="@string/scan_qr"
-                    android:textColor="@color/md_blue_900"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/text_gangguan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:drawablePadding="8dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/home_data_gangguan"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/ic_caution"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_gangguan"
+                <LinearLayout
+                    android:id="@+id/ll_scanner"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_gangguan"
-                    tools:listitem="@layout/item_gangguan" />
-
-                <com.github.ybq.android.spinkit.SpinKitView
-                    android:id="@+id/loading_anim"
-                    style="@style/SpinKitView.Large.ThreeBounce"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:SpinKit_Color="@color/secondaryLightColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/empty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_empty"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/rv_gangguan"
-                    app:layout_constraintEnd_toEndOf="@+id/rv_gangguan"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/rv_gangguan" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <LinearLayout
-                    android:id="@+id/ll_restart"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:background="@drawable/menu_box"
-                    android:backgroundTint="@color/md_deep_orange_100"
+                    android:backgroundTint="@color/md_blue_100"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -171,9 +74,9 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/icon_restart"
-                            android:src="@drawable/ic_restart"
-                            app:tint="@color/md_deep_orange_900" />
+                            android:contentDescription="@string/icon_qrcode"
+                            android:src="@drawable/ic_scan_qr"
+                            app:tint="@color/md_blue_900" />
 
                     </LinearLayout>
 
@@ -182,96 +85,201 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center"
-                        android:text="@string/restart_router"
-                        android:textColor="@color/md_deep_orange_900"
+                        android:text="@string/scan_qr"
+                        android:textColor="@color/md_blue_900"
                         android:textSize="16sp" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_tiang"
-                    android:layout_width="0dp"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/menu_box"
-                    android:backgroundTint="@color/md_green_100"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/menu_box"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="6dp">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/icon_tiang"
-                            android:src="@drawable/ic_pole"
-                            app:tint="@color/md_green_900" />
-
-                    </LinearLayout>
+                    android:layout_marginTop="20dp">
 
                     <TextView
+                        android:id="@+id/text_gangguan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:drawablePadding="8dp"
                         android:fontFamily="sans-serif-medium"
-                        android:gravity="center"
-                        android:text="@string/edit_data_tiang"
-                        android:textColor="@color/md_green_900"
-                        android:textSize="16sp" />
+                        android:text="@string/home_data_gangguan"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:drawableStartCompat="@drawable/ic_caution"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_gangguan"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_gangguan"
+                        tools:listitem="@layout/item_gangguan" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_good_things"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/menu_box"
-                android:backgroundTint="@color/md_cyan_100"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/menu_box"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="6dp">
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/loading_anim"
+                        style="@style/SpinKitView.Large.ThreeBounce"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:SpinKit_Color="@color/secondaryLightColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:id="@+id/empty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/icon_good_things"
-                        android:src="@drawable/ic_good"
-                        app:tint="@color/md_cyan_900" />
+                        android:contentDescription="@string/icon_warning"
+                        android:src="@drawable/ic_empty"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/rv_gangguan"
+                        app:layout_constraintEnd_toEndOf="@+id/rv_gangguan"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/rv_gangguan" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/ll_restart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/menu_box"
+                        android:backgroundTint="@color/md_deep_orange_100"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/menu_box"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/icon_restart"
+                                android:src="@drawable/ic_restart"
+                                app:tint="@color/md_deep_orange_900" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/restart_router"
+                            android:textColor="@color/md_deep_orange_900"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_tiang"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/menu_box"
+                        android:backgroundTint="@color/md_green_100"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/menu_box"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/icon_tiang"
+                                android:src="@drawable/ic_pole"
+                                app:tint="@color/md_green_900" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/edit_data_tiang"
+                            android:textColor="@color/md_green_900"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
+                <LinearLayout
+                    android:id="@+id/ll_good_things"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/menu_box"
+                    android:backgroundTint="@color/md_cyan_100"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
-                    android:text="@string/tambahkan_hal_baik_hari_ini"
-                    android:textColor="@color/md_cyan_900"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/menu_box"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="6dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/icon_good_things"
+                            android:src="@drawable/ic_good"
+                            app:tint="@color/md_cyan_900" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="@string/tambahkan_hal_baik_hari_ini"
+                        android:textColor="@color/md_cyan_900"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

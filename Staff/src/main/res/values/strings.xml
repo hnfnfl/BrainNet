@@ -33,4 +33,8 @@
     <string name="user_package">Paket : %1$s</string>
     <string name="no">Tidak</string>
     <string name="yes">Ya</string>
+    <string name="icon_warning">icon warning</string>
+    <string name="edit_tiang_title">Edit Data Tiang</string>
+    <string name="latitude">Latitude : %1$s</string>
+    <string name="longitude">Longitude : %1$s</string>
 </resources>
