@@ -5,7 +5,7 @@
     <string name="login_title">Masuk ke akun kamu</string>
     <string name="email">Email</string>
     <string name="password">Kata sandi</string>
-    <string name="login">Masuk</string>
+    <string name="btn_login">Masuk</string>
     <string name="email_cant_empty">Email tidak boleh kosong</string>
     <string name="email_format_error">Format email salah</string>
     <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
@@ -25,7 +25,7 @@
     <string name="icon_restart">icon restart</string>
     <string name="icon_tiang">icon tiang</string>
     <string name="icon_good_things">icon hal baik</string>
-    <string name="tambahkan_hal_baik_hari_ini">Tambahkan Hal Baik Hari Ini</string>
+    <string name="tambahkan_hal_baik_hari_ini">Tambahkan Hal Baik</string>
     <string name="btn_back">tombol kembali</string>
     <string name="gangguan_title">Penyelesaian Gangguan</string>
     <string name="user_name">Nama pelanggan : %1$s</string>
@@ -35,6 +35,18 @@
     <string name="yes">Ya</string>
     <string name="icon_warning">icon warning</string>
     <string name="edit_tiang_title">Edit Data Tiang</string>
-    <string name="latitude">Latitude : %1$s</string>
-    <string name="longitude">Longitude : %1$s</string>
+    <string name="detail_tiang_latitude">Latitude : %1$s</string>
+    <string name="detail_tiang_longitude">Longitude : %1$s</string>
+    <string name="btn_save">Simpan</string>
+    <string name="detail_tiang_keterangan">Keterangan</string>
+    <string name="hal_baik_desc">Hal baik hari ini : %1$s</string>
+    <string name="settings">Settings</string>
+    <string name="hal_baik">Hal baik hari ini</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="logout">Logout</string>
+    <string name="confirm_logout">Apakah Anda yakin ingin logout?</string>
+    <string name="change_photo">Ganti Foto</string>
+    <string name="name">Nama</string>
+    <string name="address">Alamat</string>
+    <string name="phone">No HP</string>
 </resources>

@@ -8,7 +8,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -19,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
+        <activity android:name=".settings.EditProfileActivity"></activity>
+        <activity android:name=".settings.SettingActivity" />
+        <activity android:name=".hal_baik.HalBaikActivity" />
         <activity android:name=".tiang.EditTiangActivity" />
         <activity android:name=".tiang.ScannerTiangActivity" />
         <activity android:name=".restart.RestartActivity" />

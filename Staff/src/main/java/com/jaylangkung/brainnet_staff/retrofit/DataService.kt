@@ -1,9 +1,6 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.TiangResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.UserResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -67,4 +64,29 @@ interface DataService {
         @Field("serial_number") serial_number: String,
         @Header("Authorization") tokenAuth: String
     ): Call<TiangResponse>
+
+    @FormUrlEncoded
+    @POST("main/editTiang")
+    fun editTiang(
+        @Field("idtiang") idtiang: String,
+        @Field("lat") lat: String,
+        @Field("lng") lng: String,
+        @Field("keterangan") keterangan: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/getHalBaik")
+    fun getHalBaik(
+        @Field("idadmin") idadmin: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<HalBaikResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertHalBaik")
+    fun insertHalBaik(
+        @Field("idadmin") idadmin: String,
+        @Field("hal_baik") hal_baik: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

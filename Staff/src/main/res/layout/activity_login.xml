@@ -66,7 +66,7 @@
         app:p_progressColor="@color/primaryLightColor"
         app:p_rippleColor="@color/primaryLightColor"
         app:p_style="circleBar"
-        app:p_text="@string/login"
+        app:p_text="@string/btn_login"
         app:p_textColor="@color/white"
         app:p_textSize="18sp" />
 

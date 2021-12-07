@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
@@ -15,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
+import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
 import com.jaylangkung.brainnet_staff.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
@@ -23,6 +21,7 @@ import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.scanner.ScannerActivity
+import com.jaylangkung.brainnet_staff.settings.SettingActivity
 import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -88,7 +87,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBinding.llGoodThings.setOnClickListener {
+            startActivity(Intent(this@MainActivity, HalBaikActivity::class.java))
+            finish()
+        }
 
+        mainBinding.llSettings.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+            finish()
         }
 
         mainBinding.llBody.setOnRefreshListener {

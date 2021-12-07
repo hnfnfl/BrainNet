@@ -162,7 +162,7 @@
                         android:background="@drawable/menu_box"
                         android:backgroundTint="@color/md_deep_orange_100"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -202,7 +202,7 @@
                         android:background="@drawable/menu_box"
                         android:backgroundTint="@color/md_green_100"
                         android:foreground="?android:attr/selectableItemBackground"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -237,42 +237,93 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_good_things"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/menu_box"
-                    android:backgroundTint="@color/md_cyan_100"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+                        android:id="@+id/ll_good_things"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
                         android:background="@drawable/menu_box"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="6dp">
+                        android:backgroundTint="@color/md_cyan_100"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <ImageView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/icon_good_things"
-                            android:src="@drawable/ic_good"
-                            app:tint="@color/md_cyan_900" />
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/menu_box"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/icon_good_things"
+                                android:src="@drawable/ic_good"
+                                app:tint="@color/md_cyan_900" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/tambahkan_hal_baik_hari_ini"
+                            android:textColor="@color/md_cyan_900"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center"
-                        android:text="@string/tambahkan_hal_baik_hari_ini"
-                        android:textColor="@color/md_cyan_900"
-                        android:textSize="16sp" />
+                    <LinearLayout
+                        android:id="@+id/ll_settings"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/menu_box"
+                        android:backgroundTint="@color/md_blue_grey_100"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/menu_box"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/icon_tiang"
+                                android:src="@drawable/ic_setting"
+                                app:tint="@color/md_blue_grey_900" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/settings"
+                            android:textColor="@color/md_blue_grey_900"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

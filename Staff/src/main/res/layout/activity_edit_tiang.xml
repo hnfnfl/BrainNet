@@ -60,11 +60,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv_value_solution"
+                    android:id="@+id/tv_value_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:hint="Keterangan"
+                    android:hint="@string/detail_tiang_keterangan"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/latitude"
+                android:text="@string/detail_tiang_latitude"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,13 +87,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/longitude"
+                android:text="@string/detail_tiang_longitude"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_lat" />
 
             <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="10dp"
@@ -107,6 +108,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </FrameLayout>
+
+            <com.chand.progressbutton.ProgressButton
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+                app:p_arrowVisible="false"
+                app:p_backgroundTint="@color/primaryColor"
+                app:p_bgColor="@color/colorSecondary"
+                app:p_cornerRadius="5dp"
+                app:p_layoutDirection="ltr"
+                app:p_progressBGColor="@color/primaryColor"
+                app:p_progressColor="@color/primaryLightColor"
+                app:p_rippleColor="@color/primaryLightColor"
+                app:p_style="circleBar"
+                app:p_text="@string/btn_save"
+                app:p_textColor="@color/white"
+                app:p_textSize="18sp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
