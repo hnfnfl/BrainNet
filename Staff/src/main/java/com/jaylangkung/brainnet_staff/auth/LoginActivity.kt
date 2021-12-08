@@ -46,20 +46,24 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validate(): Boolean {
         fun String.isValidEmail() = isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-        if (loginBinding.tvValueEmailLogin.text.toString() == "") {
-            loginBinding.tvValueEmailLogin.error = getString(R.string.email_cant_empty)
-            loginBinding.tvValueEmailLogin.requestFocus()
-            return false
-        } else if (!loginBinding.tvValueEmailLogin.text.toString().isValidEmail()) {
-            loginBinding.tvValueEmailLogin.error = getString(R.string.email_format_error)
-            loginBinding.tvValueEmailLogin.requestFocus()
-            return false
-        } else if (loginBinding.tvValuePasswordLogin.text.toString() == "") {
-            loginBinding.tvValuePasswordLogin.error = getString(R.string.password_cant_empty)
-            loginBinding.tvValuePasswordLogin.requestFocus()
-            return false
+        when {
+            loginBinding.tvValueEmailLogin.text.toString() == "" -> {
+                loginBinding.tvValueEmailLogin.error = getString(R.string.email_cant_empty)
+                loginBinding.tvValueEmailLogin.requestFocus()
+                return false
+            }
+            !loginBinding.tvValueEmailLogin.text.toString().isValidEmail() -> {
+                loginBinding.tvValueEmailLogin.error = getString(R.string.email_format_error)
+                loginBinding.tvValueEmailLogin.requestFocus()
+                return false
+            }
+            loginBinding.tvValuePasswordLogin.text.toString() == "" -> {
+                loginBinding.tvValuePasswordLogin.error = getString(R.string.password_cant_empty)
+                loginBinding.tvValuePasswordLogin.requestFocus()
+                return false
+            }
+            else -> return true
         }
-        return true
     }
 
     private fun loginProcess(email: String, password: String) {

@@ -3,6 +3,7 @@ package com.jaylangkung.brainnet_staff.settings
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.auth.LoginActivity
 import com.jaylangkung.brainnet_staff.databinding.ActivitySettingBinding
@@ -23,6 +24,11 @@ class SettingActivity : AppCompatActivity() {
 
         settingBinding.btnBack.setOnClickListener {
             onBackPressed()
+        }
+
+        settingBinding.btnEditProfile.setOnClickListener {
+            startActivity(Intent(this@SettingActivity, EditProfileActivity::class.java))
+            finish()
         }
 
         settingBinding.btnLogout.setOnClickListener {
@@ -57,5 +63,10 @@ class SettingActivity : AppCompatActivity() {
             
             mDialog.show()
         }
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this@SettingActivity, MainActivity::class.java))
+        finish()
     }
 }
