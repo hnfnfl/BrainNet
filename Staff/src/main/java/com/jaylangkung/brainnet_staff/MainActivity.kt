@@ -7,8 +7,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
@@ -49,6 +53,14 @@ class MainActivity : AppCompatActivity() {
         val nama = myPreferences.getValue(Constants.USER_NAMA)
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+        val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
+
+        Glide.with(this@MainActivity)
+            .load(foto)
+            .apply(RequestOptions().override(120))
+            .placeholder(R.drawable.ic_profile)
+            .error(R.drawable.ic_profile)
+            .into(mainBinding.imgPhoto)
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -59,6 +71,8 @@ class MainActivity : AppCompatActivity() {
             val deviceToken = task.result
             insertToken(idadmin, deviceToken.toString())
         })
+
+        Firebase.messaging.subscribeToTopic("notifikasi")
 
         refreshAuthToken(idadmin)
         getGangguan(tokenAuth)

@@ -2,14 +2,17 @@ package com.jaylangkung.brainnet_staff.utils
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import kotlin.random.Random
 
@@ -17,20 +20,17 @@ class NotificationHelper(private val context: Context) {
 
     fun displayNotification(title: String, message: String) {
 
-//        val pendingIntent = NavDeepLinkBuilder(context)
-//            .setComponentName(MainActivity::class.java)
-//            .setGraph(R.navigation.mobile_navigation)
-//            .setDestination(R.id.navigation_notifications)
-//            .createPendingIntent()
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent= PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.ringtone2)
-        val channelId = "default"
+        val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.ringtone1)
+        val channelId = "Default Channel"
         val mBuilder = NotificationCompat.Builder(context, channelId)
             .setColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
             .setContentTitle(title)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
-//            .setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setLights(Color.BLUE, 200, 200)
@@ -53,7 +53,7 @@ class NotificationHelper(private val context: Context) {
             channel.enableVibration(true)
             channel.vibrationPattern = longArrayOf(100, 200, 300, 400, 100, 100, 100)
             channel.enableLights(true)
-            channel.lightColor = Color.BLUE
+            channel.lightColor = Color.RED
             channel.setSound(sound, audioAttributes)
             notificationManager.createNotificationChannel(channel)
         }

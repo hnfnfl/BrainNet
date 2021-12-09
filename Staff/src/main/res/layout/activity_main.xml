@@ -7,29 +7,41 @@
     android:background="@color/primaryColor"
     tools:context=".MainActivity">
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/img_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_body"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="10dp"
+        tools:src="@drawable/ic_profile" />
+
     <TextView
         android:id="@+id/tv_greetings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="6dp"
         android:fontFamily="sans-serif-black"
-        android:text=""
+        android:text="asdfasdfds"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/ll_body"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_photo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginEnd="18dp"
-        android:contentDescription="@string/btn_notification"
-        android:src="@drawable/ic_notification"
-        app:layout_constraintBottom_toTopOf="@+id/ll_body"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    <ImageView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="end"-->
+    <!--        android:layout_marginEnd="18dp"-->
+    <!--        android:contentDescription="@string/btn_notification"-->
+    <!--        android:src="@drawable/ic_notification"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/ll_body"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/ll_body"

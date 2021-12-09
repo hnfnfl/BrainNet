@@ -11,7 +11,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         val title = remoteMessage.data["title"]
-        val body = remoteMessage.data["body"]
+        val body = remoteMessage.data["message"]
 
         NotificationHelper(applicationContext).displayNotification(title!!, body!!)
     }

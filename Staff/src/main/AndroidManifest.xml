@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
-        <activity android:name=".settings.EditProfileActivity"></activity>
+        <activity android:name=".settings.EditProfileActivity" />
         <activity android:name=".settings.SettingActivity" />
         <activity android:name=".hal_baik.HalBaikActivity" />
         <activity android:name=".tiang.EditTiangActivity" />
