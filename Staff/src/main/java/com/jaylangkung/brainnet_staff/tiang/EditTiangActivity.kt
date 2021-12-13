@@ -57,25 +57,7 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idtiang = intent.getStringExtra(idtiang).toString()
 
-        if (ContextCompat.checkSelfPermission(
-                this@EditTiangActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this@EditTiangActivity, Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                Toast.makeText(this, "Membutuhkan Izin Lokasi", Toast.LENGTH_SHORT).show()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    1
-                )
-            }
-        } else {
-            Toast.makeText(this, "Izin Lokasi diberikan", Toast.LENGTH_SHORT).show()
-        }
+
 
         client = LocationServices.getFusedLocationProviderClient(this@EditTiangActivity)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment

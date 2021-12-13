@@ -1,10 +1,15 @@
 package com.jaylangkung.brainnet_staff
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -49,6 +54,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(mainBinding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
         gangguanAdapter = GangguanAdapter()
+
+        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED
+            &&
+            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA), 100)
+        }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
@@ -114,6 +128,18 @@ class MainActivity : AppCompatActivity() {
             mainBinding.loadingAnim.visibility = View.VISIBLE
             getGangguan(tokenAuth)
             refreshAuthToken(idadmin)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this@MainActivity, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+                onBackPressed()
+            }
         }
     }
 

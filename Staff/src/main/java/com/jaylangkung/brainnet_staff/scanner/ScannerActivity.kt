@@ -38,13 +38,7 @@ class ScannerActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        if (ContextCompat.checkSelfPermission(this@ScannerActivity, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@ScannerActivity, arrayOf(Manifest.permission.CAMERA), 100
-            )
-        }
+
         codeScanner = CodeScanner(this@ScannerActivity, scannerBinding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
@@ -67,18 +61,6 @@ class ScannerActivity : AppCompatActivity() {
 
         scannerBinding.scannerView.setOnClickListener {
             codeScanner.startPreview()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 100) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this@ScannerActivity, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this@ScannerActivity, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
-                onBackPressed()
-            }
         }
     }
 
