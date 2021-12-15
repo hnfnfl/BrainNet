@@ -182,9 +182,10 @@ class MainActivity : AppCompatActivity() {
         service.getGangguan(tokenAuth).enqueue(object : Callback<GangguanResponse> {
             override fun onResponse(call: Call<GangguanResponse>, response: Response<GangguanResponse>) {
                 if (response.isSuccessful) {
+                    mainBinding.llBody.isRefreshing = false
                     if (response.body()!!.status == "success") {
                         mainBinding.loadingAnim.visibility = View.GONE
-                        mainBinding.llBody.isRefreshing = false
+                        mainBinding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)
@@ -199,7 +200,12 @@ class MainActivity : AppCompatActivity() {
                     } else if (response.body()!!.status == "empty") {
                         mainBinding.empty.visibility = View.VISIBLE
                         mainBinding.loadingAnim.visibility = View.GONE
+                        listGangguanAdapter.clear()
+                        gangguanAdapter.setListGangguanItem(listGangguanAdapter)
+                        gangguanAdapter.notifyDataSetChanged()
                     }
+                } else {
+                    Toasty.error(this@MainActivity, response.message(), Toasty.LENGTH_LONG).show()
                 }
             }
 

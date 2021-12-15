@@ -55,9 +55,7 @@ class ScannerActivity : AppCompatActivity() {
                 getAbsensi(it.text, idadmin, tokenAuth)
             }
         }
-        codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
-            runOnUiThread {}
-        }
+        codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
         scannerBinding.scannerView.setOnClickListener {
             codeScanner.startPreview()
@@ -98,7 +96,12 @@ class ScannerActivity : AppCompatActivity() {
                             Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
                             onBackPressed()
                         }
+                        else -> {
+                            Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
+                        }
                     }
+                } else {
+                    Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
                 }
             }
 

@@ -29,7 +29,7 @@
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loading_anim"
-        style="@style/SpinKitView.Large.FadingCircle"
+        style="@style/SpinKitView.Large.ThreeBounce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
