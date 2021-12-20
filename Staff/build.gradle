@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.jaylangkung.brainnet_staff"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -98,4 +98,5 @@ dependencies {
 
     //qrcode reader
     implementation 'com.budiyev.android:code-scanner:2.1.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0@aar'
 }

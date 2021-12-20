@@ -1,14 +1,14 @@
 package com.jaylangkung.brainnet_staff.scanner
 
-import android.Manifest
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -38,16 +38,16 @@ class ScannerActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-
         codeScanner = CodeScanner(this@ScannerActivity, scannerBinding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        // ex. listOf(BarcodeFormat.QR_CODE)
-        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
+        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
         codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
+        codeScanner.startPreview()
+
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
@@ -56,10 +56,6 @@ class ScannerActivity : AppCompatActivity() {
             }
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
-
-        scannerBinding.scannerView.setOnClickListener {
-            codeScanner.startPreview()
-        }
     }
 
     override fun onResume() {
@@ -77,12 +73,22 @@ class ScannerActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun vibrate() {
+        val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(200)
+        }
+    }
+
     private fun getAbsensi(token: String, idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getAbsensi(token, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 scannerBinding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
+                    vibrate()
                     when (response.body()!!.status) {
                         "success" -> {
                             Toasty.success(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()

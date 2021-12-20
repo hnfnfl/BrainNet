@@ -3,6 +3,7 @@ package com.jaylangkung.brainnet_staff
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -126,8 +127,8 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.llBody.setOnRefreshListener {
             mainBinding.loadingAnim.visibility = View.VISIBLE
-            getGangguan(tokenAuth)
             refreshAuthToken(idadmin)
+            getGangguan(tokenAuth)
         }
     }
 
