@@ -18,10 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
+import com.jaylangkung.brainnet_staff.auth.LoginWebAppActivity
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
 import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
+import com.jaylangkung.brainnet_staff.presensi.ScannerActivity
 import com.jaylangkung.brainnet_staff.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
@@ -29,7 +31,6 @@ import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
-import com.jaylangkung.brainnet_staff.scanner.ScannerActivity
 import com.jaylangkung.brainnet_staff.settings.SettingActivity
 import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
@@ -39,7 +40,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -103,18 +103,23 @@ class MainActivity : AppCompatActivity() {
             else -> getString(R.string.greetings, "Selamat Malam", nama)
         }
 
-        mainBinding.fabAbsensi.setOnClickListener {
+        mainBinding.fabPresensi.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
-            finish()
-        }
-
-        mainBinding.llRestart.setOnClickListener {
-            startActivity(Intent(this@MainActivity, RestartActivity::class.java))
             finish()
         }
 
         mainBinding.fabTiang.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
+            finish()
+        }
+
+        mainBinding.fabWebApp.setOnClickListener {
+            startActivity(Intent(this@MainActivity, LoginWebAppActivity::class.java))
+            finish()
+        }
+
+        mainBinding.llRestart.setOnClickListener {
+            startActivity(Intent(this@MainActivity, RestartActivity::class.java))
             finish()
         }
 

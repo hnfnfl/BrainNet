@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.tiang
+package com.jaylangkung.brainnet_staff.presensi
 
 import android.content.Context
 import android.content.Intent
@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
-import com.jaylangkung.brainnet_staff.databinding.ActivityScannerTiangBinding
+import com.jaylangkung.brainnet_staff.databinding.ActivityScannerBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.TiangResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
@@ -23,25 +23,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ScannerTiangActivity : AppCompatActivity() {
+class ScannerActivity : AppCompatActivity() {
 
-    private lateinit var scannerTiangBinding: ActivityScannerTiangBinding
+    private lateinit var scannerBinding: ActivityScannerBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var codeScanner: CodeScanner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scannerTiangBinding = ActivityScannerTiangBinding.inflate(layoutInflater)
-        setContentView(scannerTiangBinding.root)
-        myPreferences = MySharedPreferences(this@ScannerTiangActivity)
+        scannerBinding = ActivityScannerBinding.inflate(layoutInflater)
+        setContentView(scannerBinding.root)
+        myPreferences = MySharedPreferences(this@ScannerActivity)
 
+        val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@ScannerTiangActivity, scannerTiangBinding.scannerView)
+        codeScanner = CodeScanner(this@ScannerActivity, scannerBinding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        // ex. listOf(BarcodeFormat.QR_CODE)
         codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
         codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
@@ -51,13 +51,13 @@ class ScannerTiangActivity : AppCompatActivity() {
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
-                scannerTiangBinding.loadingAnim.visibility = View.VISIBLE
-                getTiang(it.text, tokenAuth)
+                scannerBinding.loadingAnim.visibility = View.VISIBLE
+                getAbsensi(it.text, idadmin, tokenAuth)
             }
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        scannerTiangBinding.btnBack.setOnClickListener {
+        scannerBinding.btnBack.setOnClickListener {
             onBackPressed()
         }
     }
@@ -73,7 +73,7 @@ class ScannerTiangActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this@ScannerTiangActivity, MainActivity::class.java))
+        startActivity(Intent(this@ScannerActivity, MainActivity::class.java))
         finish()
     }
 
@@ -86,31 +86,38 @@ class ScannerTiangActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTiang(idadmin: String, tokenAuth: String) {
+    private fun getAbsensi(token: String, idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getTiang(idadmin, tokenAuth).enqueue(object : Callback<TiangResponse> {
-            override fun onResponse(call: Call<TiangResponse>, response: Response<TiangResponse>) {
-                scannerTiangBinding.loadingAnim.visibility = View.GONE
+        service.getAbsensi(token, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                scannerBinding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
                     vibrate()
-                    if (response.body()!!.status == "success") {
-                        val intent = Intent(this@ScannerTiangActivity, EditTiangActivity::class.java)
-                            .apply {
-                                putExtra(EditTiangActivity.idtiang, response.body()!!.data[0].idtiang)
-                                putExtra(EditTiangActivity.serialNumber, response.body()!!.data[0].serial_number)
-                            }
-                        startActivity(intent)
-                        finish()
-                    } else if (response.body()!!.status == "empty") {
-                        Toasty.warning(this@ScannerTiangActivity, "Nomor Seri tiang tidak ditemukan", Toast.LENGTH_LONG).show()
-                        onBackPressed()
+                    when (response.body()!!.status) {
+                        "success" -> {
+                            Toasty.success(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
+                            onBackPressed()
+                        }
+                        "already" -> {
+                            Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
+                            onBackPressed()
+                        }
+                        "not_match" -> {
+                            Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
+                            onBackPressed()
+                        }
+                        else -> {
+                            Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
+                        }
                     }
+                } else {
+                    Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
                 }
             }
 
-            override fun onFailure(call: Call<TiangResponse>, t: Throwable) {
-                scannerTiangBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@ScannerTiangActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                scannerBinding.loadingAnim.visibility = View.GONE
+                Toasty.error(this@ScannerActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
             }
         })
     }

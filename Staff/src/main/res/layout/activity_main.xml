@@ -308,7 +308,7 @@
             android:src="@drawable/ic_internet"
             app:fab_colorNormal="@color/primaryColor"
             app:fab_colorPressed="@color/primaryDarkColor"
-            app:fab_label="Login Web App"
+            app:fab_label="@string/login_webapp"
             app:fab_size="normal" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -318,18 +318,18 @@
             android:src="@drawable/ic_pole"
             app:fab_colorNormal="@color/primaryColor"
             app:fab_colorPressed="@color/primaryDarkColor"
-            app:fab_label="Edit Data Tiang"
+            app:fab_label="@string/edit_data_tiang"
             app:fab_size="normal" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_absensi"
+            android:id="@+id/fab_presensi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_calendar"
             android:tint="@color/white"
             app:fab_colorNormal="@color/primaryColor"
             app:fab_colorPressed="@color/primaryDarkColor"
-            app:fab_label="Absensi"
+            app:fab_label="@string/presensi"
             app:fab_size="normal" />
 
     </com.github.clans.fab.FloatingActionMenu>

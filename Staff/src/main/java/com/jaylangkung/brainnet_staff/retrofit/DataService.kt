@@ -86,4 +86,12 @@ interface DataService {
         @Field("telp") telp: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertWebApp")
+    fun insertWebApp(
+        @Field("idadmin") idadmin: String,
+        @Field("device_id") device_id: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

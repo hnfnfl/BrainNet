@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
+        <activity android:name=".auth.LoginWebAppActivity"></activity>
         <activity android:name=".settings.EditProfileActivity" />
         <activity android:name=".settings.SettingActivity" />
         <activity android:name=".hal_baik.HalBaikActivity" />
@@ -27,7 +28,7 @@
         <activity android:name=".tiang.ScannerTiangActivity" />
         <activity android:name=".restart.RestartActivity" />
         <activity android:name=".gangguan.GangguanDetailActivity" />
-        <activity android:name=".scanner.ScannerActivity" />
+        <activity android:name=".presensi.ScannerActivity" />
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true">

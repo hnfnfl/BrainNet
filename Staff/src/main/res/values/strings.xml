@@ -12,7 +12,6 @@
     <string name="try_again">Silahkan coba lagi</string>
     <string name="greetings">%1$s, \n%2$s</string>
     <string name="btn_notification">tombol notifikasi</string>
-    <string name="scan_qr">Scan untuk melakukan absensi</string>
     <string name="icon_qrcode">icon qr code</string>
     <string name="separator_dot">separator</string>
     <string name="gangguan_name">Nama pelanggan : %1$s</string>
@@ -51,4 +50,6 @@
     <string name="phone">No HP</string>
     <string name="solution">Penyelesaian</string>
     <string name="add_good_things">Tambahkan Hal Baik</string>
+    <string name="presensi">Presensi</string>
+    <string name="login_webapp">Login Web App</string>
 </resources>
