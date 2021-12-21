@@ -64,50 +64,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/ll_scanner"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@drawable/menu_box"
-                    android:backgroundTint="@color/primaryColor"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/menu_box"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="6dp">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/icon_qrcode"
-                            android:src="@drawable/ic_scan_qr"
-                            app:tint="@color/secondaryColor" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center"
-                        android:text="@string/scan_qr"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/text_gangguan"
@@ -168,7 +127,7 @@
                     <LinearLayout
                         android:id="@+id/ll_restart"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginEnd="20dp"
                         android:layout_weight="1"
                         android:background="@drawable/menu_box"
@@ -191,7 +150,7 @@
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/icon_restart"
                                 android:src="@drawable/ic_restart"
-                                app:tint="@color/secondaryColor" />
+                                app:tint="@color/primaryDarkColor" />
 
                         </LinearLayout>
 
@@ -207,60 +166,9 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/ll_tiang"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/menu_box"
-                        android:backgroundTint="@color/primaryColor"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/menu_box"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="6dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/icon_tiang"
-                                android:src="@drawable/ic_pole"
-                                app:tint="@color/secondaryColor" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="@string/edit_data_tiang"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <LinearLayout
                         android:id="@+id/ll_good_things"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
-                        android:layout_marginEnd="20dp"
                         android:layout_weight="1"
                         android:background="@drawable/menu_box"
                         android:backgroundTint="@color/primaryColor"
@@ -282,7 +190,7 @@
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/icon_good_things"
                                 android:src="@drawable/ic_good"
-                                app:tint="@color/secondaryColor" />
+                                app:tint="@color/primaryDarkColor" />
 
                         </LinearLayout>
 
@@ -297,10 +205,21 @@
 
                     </LinearLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
                     <LinearLayout
                         android:id="@+id/ll_settings"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/menu_box"
                         android:backgroundTint="@color/primaryColor"
@@ -322,7 +241,7 @@
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/icon_tiang"
                                 android:src="@drawable/ic_setting"
-                                app:tint="@color/secondaryColor" />
+                                app:tint="@color/primaryDarkColor" />
 
                         </LinearLayout>
 
@@ -344,5 +263,75 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu_animationDelayPerItem="50"
+        app:menu_backgroundColor="#80757575"
+        app:menu_buttonSpacing="0dp"
+        app:menu_colorNormal="@color/secondaryLightColor"
+        app:menu_colorPressed="@color/secondaryColor"
+        app:menu_colorRipple="@color/secondaryLightColor"
+        app:menu_fab_size="normal"
+        app:menu_icon="@drawable/ic_scan_qr"
+        app:menu_labels_colorNormal="@color/primaryDarkColor"
+        app:menu_labels_cornerRadius="8dp"
+        app:menu_labels_ellipsize="none"
+        app:menu_labels_hideAnimation="@anim/fab_scale_down"
+        app:menu_labels_margin="0dp"
+        app:menu_labels_maxLines="-1"
+        app:menu_labels_padding="8dp"
+        app:menu_labels_position="left"
+        app:menu_labels_showAnimation="@anim/fab_scale_up"
+        app:menu_labels_showShadow="true"
+        app:menu_labels_singleLine="false"
+        app:menu_labels_textColor="#FFFFFF"
+        app:menu_labels_textSize="14sp"
+        app:menu_openDirection="up"
+        app:menu_shadowColor="#66000000"
+        app:menu_shadowRadius="4dp"
+        app:menu_shadowXOffset="1dp"
+        app:menu_shadowYOffset="3dp"
+        app:menu_showShadow="true">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_web_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_internet"
+            app:fab_colorNormal="@color/primaryColor"
+            app:fab_colorPressed="@color/primaryDarkColor"
+            app:fab_label="Login Web App"
+            app:fab_size="normal" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_tiang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pole"
+            app:fab_colorNormal="@color/primaryColor"
+            app:fab_colorPressed="@color/primaryDarkColor"
+            app:fab_label="Edit Data Tiang"
+            app:fab_size="normal" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_absensi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calendar"
+            android:tint="@color/white"
+            app:fab_colorNormal="@color/primaryColor"
+            app:fab_colorPressed="@color/primaryDarkColor"
+            app:fab_label="Absensi"
+            app:fab_size="normal" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

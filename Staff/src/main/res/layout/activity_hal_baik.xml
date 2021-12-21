@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Tambahkan Hal Baik"
+            android:text="@string/add_good_things"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -76,7 +76,7 @@
         android:layout_marginBottom="20dp"
         android:paddingHorizontal="36dp"
         android:paddingVertical="8dp"
-        android:text="Tambah Hal Baik"
+        android:text="@string/add_good_things"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:backgroundTint="@color/primaryColor"

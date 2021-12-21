@@ -3,7 +3,6 @@ package com.jaylangkung.brainnet_staff
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -62,7 +61,11 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA), 100)
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA),
+                100
+            )
         }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
@@ -100,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             else -> getString(R.string.greetings, "Selamat Malam", nama)
         }
 
-        mainBinding.llScanner.setOnClickListener {
+        mainBinding.fabAbsensi.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
             finish()
         }
@@ -110,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        mainBinding.llTiang.setOnClickListener {
+        mainBinding.fabTiang.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
             finish()
         }

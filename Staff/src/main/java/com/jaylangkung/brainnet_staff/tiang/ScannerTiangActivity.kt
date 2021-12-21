@@ -1,14 +1,14 @@
 package com.jaylangkung.brainnet_staff.tiang
 
-import android.Manifest
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -37,22 +37,17 @@ class ScannerTiangActivity : AppCompatActivity() {
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        if (ContextCompat.checkSelfPermission(this@ScannerTiangActivity, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@ScannerTiangActivity, arrayOf(Manifest.permission.CAMERA), 100
-            )
-        }
         codeScanner = CodeScanner(this@ScannerTiangActivity, scannerTiangBinding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
         // ex. listOf(BarcodeFormat.QR_CODE)
-        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
+        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
         codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
+        codeScanner.startPreview()
+
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
@@ -60,25 +55,7 @@ class ScannerTiangActivity : AppCompatActivity() {
                 getTiang(it.text, tokenAuth)
             }
         }
-        codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
-            runOnUiThread {}
-        }
-
-        scannerTiangBinding.scannerView.setOnClickListener {
-            codeScanner.startPreview()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 100) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this@ScannerTiangActivity, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this@ScannerTiangActivity, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
-                onBackPressed()
-            }
-        }
+        codeScanner.errorCallback = ErrorCallback.SUPPRESS
     }
 
     override fun onResume() {
@@ -96,12 +73,22 @@ class ScannerTiangActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun vibrate() {
+        val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(200)
+        }
+    }
+
     private fun getTiang(idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getTiang(idadmin, tokenAuth).enqueue(object : Callback<TiangResponse> {
             override fun onResponse(call: Call<TiangResponse>, response: Response<TiangResponse>) {
                 scannerTiangBinding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
+                    vibrate()
                     if (response.body()!!.status == "success") {
                         val intent = Intent(this@ScannerTiangActivity, EditTiangActivity::class.java)
                             .apply {

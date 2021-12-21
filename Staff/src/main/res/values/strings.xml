@@ -49,4 +49,6 @@
     <string name="name">Nama</string>
     <string name="address">Alamat</string>
     <string name="phone">No HP</string>
+    <string name="solution">Penyelesaian</string>
+    <string name="add_good_things">Tambahkan Hal Baik</string>
 </resources>

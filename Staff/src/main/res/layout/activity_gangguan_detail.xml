@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:hint="Penyelesaian"
+            android:hint="@string/solution"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>

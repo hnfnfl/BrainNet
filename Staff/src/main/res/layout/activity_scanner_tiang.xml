@@ -25,11 +25,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:maskColor="#77000000" />
+        app:maskColor="#80007CC1" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loading_anim"
-        style="@style/SpinKitView.Large.FadingCircle"
+        style="@style/SpinKitView.Large.ThreeBounce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
