@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
@@ -53,7 +52,12 @@ class LoginWebAppActivity : AppCompatActivity() {
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
                 loginWebAppBinding.loadingAnim.visibility = View.VISIBLE
-                insertWebApp(idadmin, it.text, tokenAuth)
+                if (it.text.contains("webapp", ignoreCase = true)) {
+                    insertWebApp(idadmin, it.text, tokenAuth)
+                } else {
+                    Toasty.warning(this@LoginWebAppActivity, "QR Code tidak cocok", Toasty.LENGTH_LONG).show()
+                    onBackPressed()
+                }
             }
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
