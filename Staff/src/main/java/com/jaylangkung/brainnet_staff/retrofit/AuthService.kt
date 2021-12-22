@@ -14,6 +14,7 @@ interface AuthService {
     fun login(
         @Field("email") email: String,
         @Field("password") password: String,
+        @Field("device_id") device_id: String,
     ): Call<LoginResponse>
 
     @FormUrlEncoded
@@ -27,7 +28,9 @@ interface AuthService {
     @FormUrlEncoded
     @POST("auth/refreshToken")
     fun refreshAuthToken(
-        @Field("idadmin") idadmin: String
+        @Field("email") email: String,
+        @Field("idadmin") idadmin: String,
+        @Field("device_id") device_id: String
     ): Call<LoginResponse>
 
     //get Foto User
@@ -36,4 +39,11 @@ interface AuthService {
     fun getUserFoto(
         @Field("idpenjual") idpenjual: String
     ): Call<LoginResponse>
+
+    //logout
+    @FormUrlEncoded
+    @POST("auth/logout")
+    fun logout(
+        @Field("idadmin") idadmin: String,
+    ): Call<DefaultResponse>
 }

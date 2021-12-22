@@ -1,7 +1,10 @@
 package com.jaylangkung.brainnet_staff.auth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.Secure
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -16,11 +19,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginBinding: ActivityLoginBinding
     private lateinit var myPreferences: MySharedPreferences
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
@@ -34,11 +39,12 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        val deviceID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
         loginBinding.btnLogin.setOnClickListener {
             val email = loginBinding.tvValueEmailLogin.text.toString()
             val pass = loginBinding.tvValuePasswordLogin.text.toString()
             if (validate()) {
-                loginProcess(email, pass)
+                loginProcess(email, pass, "hp.$deviceID")
                 loginBinding.btnLogin.startAnimation()
             }
         }
@@ -66,9 +72,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginProcess(email: String, password: String) {
+    private fun loginProcess(email: String, password: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.login(email, password).enqueue(object : Callback<LoginResponse> {
+        service.login(email, password, deviceID).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     when (response.body()!!.status) {

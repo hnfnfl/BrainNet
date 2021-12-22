@@ -1,9 +1,11 @@
 package com.jaylangkung.brainnet_staff
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gangguanAdapter: GangguanAdapter
     private var listGangguanAdapter: ArrayList<GangguanEntity> = arrayListOf()
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -69,9 +72,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
+        val email = myPreferences.getValue(Constants.USER_EMAIL).toString()
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
+        val deviceID = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
 
         Glide.with(this@MainActivity)
             .load(foto)
@@ -92,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         Firebase.messaging.subscribeToTopic("notifikasi")
 
-        refreshAuthToken(idadmin)
+        refreshAuthToken(email, idadmin, "hp.$deviceID")
         getGangguan(tokenAuth)
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -135,7 +140,7 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.llBody.setOnRefreshListener {
             mainBinding.loadingAnim.visibility = View.VISIBLE
-            refreshAuthToken(idadmin)
+            refreshAuthToken(email, idadmin, "hp.$deviceID")
             getGangguan(tokenAuth)
         }
     }
@@ -152,9 +157,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertToken(idpenjual: String, device_token: String) {
+    private fun insertToken(idadmin: String, device_token: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.addToken(idpenjual, device_token).enqueue(object : Callback<DefaultResponse> {
+        service.addToken(idadmin, device_token).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
@@ -169,9 +174,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun refreshAuthToken(idpenjual: String) {
+    private fun refreshAuthToken(email: String, idadmin: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.refreshAuthToken(idpenjual).enqueue(object : Callback<LoginResponse> {
+        service.refreshAuthToken(email, idadmin, deviceID).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

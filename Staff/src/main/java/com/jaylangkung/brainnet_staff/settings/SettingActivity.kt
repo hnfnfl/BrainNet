@@ -2,14 +2,22 @@ package com.jaylangkung.brainnet_staff.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.auth.LoginActivity
 import com.jaylangkung.brainnet_staff.databinding.ActivitySettingBinding
+import com.jaylangkung.brainnet_staff.retrofit.AuthService
+import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
+import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import dev.shreyaspatil.MaterialDialog.MaterialDialog
+import es.dmoral.toasty.Toasty
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SettingActivity : AppCompatActivity() {
 
@@ -21,6 +29,8 @@ class SettingActivity : AppCompatActivity() {
         settingBinding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(settingBinding.root)
         myPreferences = MySharedPreferences(this@SettingActivity)
+
+        val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
 
         settingBinding.btnBack.setOnClickListener {
             onBackPressed()
@@ -54,7 +64,7 @@ class SettingActivity : AppCompatActivity() {
                     myPreferences.setValue(Constants.FOTO_PATH, "")
                     myPreferences.setValue(Constants.DEVICE_TOKEN, "")
                     myPreferences.setValue(Constants.TokenAuth, "")
-
+                    logout(idadmin)
                     startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
                     finish()
                     dialogInterface.dismiss()
@@ -68,5 +78,22 @@ class SettingActivity : AppCompatActivity() {
     override fun onBackPressed() {
         startActivity(Intent(this@SettingActivity, MainActivity::class.java))
         finish()
+    }
+
+    private fun logout(idadmin: String) {
+        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
+        service.logout(idadmin).enqueue(object : Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        Log.d("sukses ", "berhasil logout")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                Toasty.error(this@SettingActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+            }
+        })
     }
 }
