@@ -67,22 +67,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/ll_list_item" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_add_good_things"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="20dp"
-        android:paddingHorizontal="36dp"
-        android:paddingVertical="8dp"
-        android:text="@string/add_good_things"
-        android:textAllCaps="false"
-        android:textSize="18sp"
-        app:backgroundTint="@color/primaryColor"
-        app:cornerRadius="5dp"
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_add_good_things"
+        android:layout_width="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        app:fab_colorNormal="@color/primaryColor"
+        app:fab_colorPressed="@color/primaryDarkColor"
+        app:fab_colorRipple="@color/primaryColor"
+        app:fab_label="@string/login_webapp"
+        app:fab_size="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

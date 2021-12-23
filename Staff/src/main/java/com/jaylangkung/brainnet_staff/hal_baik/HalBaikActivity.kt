@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ActivityHalBaikBinding
+import com.jaylangkung.brainnet_staff.databinding.BottomSheetHalBaikBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
@@ -26,6 +27,7 @@ import retrofit2.Response
 class HalBaikActivity : AppCompatActivity() {
 
     private lateinit var halBaikBinding: ActivityHalBaikBinding
+    private lateinit var addHalBaikBinding: BottomSheetHalBaikBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var halBaikAdapter: HalBaikAdapter
     private var listHalBaik: ArrayList<HalBaikEntity> = arrayListOf()
@@ -46,17 +48,17 @@ class HalBaikActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        halBaikBinding.btnAddGoodThings.setOnClickListener {
-            val view = layoutInflater.inflate(R.layout.bottom_sheet_hal_baik, null)
+        halBaikBinding.fabAddGoodThings.setOnClickListener {
+            addHalBaikBinding = BottomSheetHalBaikBinding.inflate(layoutInflater)
 
             val dialog = BottomSheetDialog(this@HalBaikActivity)
-            val btnSave = view.findViewById<ProgressButton>(R.id.btn_save_hal_baik)
+            val btnSave = addHalBaikBinding.btnSaveHalBaik
 
             btnSave.setOnClickListener {
                 halBaikBinding.loadingAnim.visibility = View.VISIBLE
-                val tvHalBaik = view.findViewById<TextView>(R.id.input_hal_baik).text.toString()
+                val halBaik = addHalBaikBinding.inputHalBaik.text.toString()
                 val service = RetrofitClient().apiRequest().create(DataService::class.java)
-                service.insertHalBaik(idadmin, tvHalBaik, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+                service.insertHalBaik(idadmin, halBaik, tokenAuth).enqueue(object : Callback<DefaultResponse> {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {
                             if (response.body()!!.status == "success") {
@@ -74,7 +76,7 @@ class HalBaikActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             dialog.setCancelable(true)
-            dialog.setContentView(view)
+            dialog.setContentView(addHalBaikBinding.root)
             dialog.show()
         }
     }
