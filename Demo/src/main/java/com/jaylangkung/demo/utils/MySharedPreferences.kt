@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.utils
+package com.jaylangkung.demo.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -9,13 +9,12 @@ class MySharedPreferences(mContext: Context) {
         const val USER_PREF = "USER_PREF"
     }
 
-    private val mSharedPreferences = mContext.getSharedPreferences(USER_PREF, Context.MODE_PRIVATE)
+    private val mSharedPreferences = mContext.getSharedPreferences(USER_PREF, 0)
 
     fun setValue(key: String, value: String) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()
-        editor.commit()
     }
 
     fun setValueInteger(key: String, value: Int) {
@@ -28,7 +27,7 @@ class MySharedPreferences(mContext: Context) {
         return mSharedPreferences.getString(key, "")
     }
 
-    fun getValueInteger(key: String): Int {
+    fun getValueInteger(key: String): Int? {
         return mSharedPreferences.getInt(key, 0)
     }
 }

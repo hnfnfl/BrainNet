@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         val email = myPreferences.getValue(Constants.USER_EMAIL).toString()
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+        Log.e("main activity", tokenAuth)
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
         val deviceID = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
 

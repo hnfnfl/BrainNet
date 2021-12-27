@@ -1,3 +1,4 @@
 rootProject.name = "BrainNet"
 include ':Staff'
 include ':User'
+include ':Demo'
