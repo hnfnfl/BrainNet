@@ -216,10 +216,50 @@
                     android:weightSum="2">
 
                     <LinearLayout
+                        android:id="@+id/ll_todo_list"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/menu_box"
+                        android:backgroundTint="@color/primaryColor"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/menu_box"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/icon_tiang"
+                                android:src="@drawable/ic_clipboard"
+                                app:tint="@color/primaryDarkColor" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="ToDo List"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/ll_settings"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/menu_box"
                         android:backgroundTint="@color/primaryColor"

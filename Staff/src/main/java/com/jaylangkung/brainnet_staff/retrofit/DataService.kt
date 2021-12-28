@@ -94,4 +94,25 @@ interface DataService {
         @Field("device_id") device_id: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @POST("main/getTodo")
+    fun getTodo(
+        @Header("Authorization") tokenAuth: String
+    ): Call<TodoResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertTodo")
+    fun insertTodo(
+        @Field("idadmin") idadmin: String,
+        @Field("todo") todo: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/editTodo")
+    fun editTodo(
+        @Field("idtodo_list") idtodo_list: String,
+        @Field("idadmin") idadmin: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

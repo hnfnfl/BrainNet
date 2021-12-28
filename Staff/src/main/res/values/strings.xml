@@ -52,4 +52,5 @@
     <string name="add_good_things">Tambahkan Hal Baik</string>
     <string name="presensi">Presensi</string>
     <string name="login_webapp">Login Web App</string>
+    <string name="todo_list">ToDo List</string>
 </resources>

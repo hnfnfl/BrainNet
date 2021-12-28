@@ -1,11 +1,9 @@
 package com.jaylangkung.brainnet_staff
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -32,9 +30,9 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.settings.SettingActivity
 import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
+import com.jaylangkung.brainnet_staff.todo_list.TodoActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
@@ -126,6 +124,11 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.llGoodThings.setOnClickListener {
             startActivity(Intent(this@MainActivity, HalBaikActivity::class.java))
+            finish()
+        }
+
+        mainBinding.llTodoList.setOnClickListener {
+            startActivity(Intent(this@MainActivity, TodoActivity::class.java))
             finish()
         }
 
