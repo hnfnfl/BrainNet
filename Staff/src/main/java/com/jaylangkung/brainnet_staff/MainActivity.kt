@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gangguanAdapter: GangguanAdapter
     private var listGangguanAdapter: ArrayList<GangguanEntity> = arrayListOf()
 
-    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -72,12 +71,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
-        val email = myPreferences.getValue(Constants.USER_EMAIL).toString()
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
-        Log.e("main activity", tokenAuth)
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
-        val deviceID = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
 
         Glide.with(this@MainActivity)
             .load(foto)
@@ -98,7 +94,6 @@ class MainActivity : AppCompatActivity() {
 
         Firebase.messaging.subscribeToTopic("notifikasi")
 
-        refreshAuthToken(email, idadmin, "hp.$deviceID")
         getGangguan(tokenAuth)
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -141,7 +136,6 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.llBody.setOnRefreshListener {
             mainBinding.loadingAnim.visibility = View.VISIBLE
-            refreshAuthToken(email, idadmin, "hp.$deviceID")
             getGangguan(tokenAuth)
         }
     }
@@ -170,23 +164,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
-            }
-        })
-    }
-
-    private fun refreshAuthToken(email: String, idadmin: String, deviceID: String) {
-        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.refreshAuthToken(email, idadmin, deviceID).enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    if (response.body()!!.status == "success") {
-                        myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
             }
         })

@@ -3,9 +3,8 @@ package com.jaylangkung.brainnet_staff.auth
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.provider.Settings.Secure
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -31,17 +30,6 @@ class LoginActivity : AppCompatActivity() {
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
         myPreferences = MySharedPreferences(this@LoginActivity)
-
-        //Ketika user sudah login tidak perlu ke halaman login lagi
-        if (myPreferences.getValue(Constants.USER).equals(Constants.LOGIN)) {
-            val email = myPreferences.getValue(Constants.USER_EMAIL).toString()
-            val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
-            val deviceID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
-            refreshAuthToken(email, idadmin, "hp.$deviceID")
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            finish()
-            return
-        }
 
         val deviceID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
         loginBinding.btnLogin.setOnClickListener {
@@ -116,25 +104,6 @@ class LoginActivity : AppCompatActivity() {
                 Toasty.error(this@LoginActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
             }
 
-        })
-    }
-
-    private fun refreshAuthToken(email: String, idadmin: String, deviceID: String) {
-        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.refreshAuthToken(email, idadmin, deviceID).enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    if (response.body()!!.status == "success") {
-                        myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-                        val token = myPreferences.getValue(Constants.TokenAuth).toString()
-                        Log.e("login token", token)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toasty.error(this@LoginActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
-            }
         })
     }
 }

@@ -20,6 +20,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".auth.LoginWebAppActivity" />
         <activity android:name=".settings.EditProfileActivity" />
         <activity android:name=".settings.SettingActivity" />
@@ -29,15 +38,7 @@
         <activity android:name=".restart.RestartActivity" />
         <activity android:name=".gangguan.GangguanDetailActivity" />
         <activity android:name=".presensi.ScannerActivity" />
-        <activity
-            android:name=".auth.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".auth.LoginActivity" />
         <activity android:name=".MainActivity" />
 
         <service
