@@ -1,5 +1,6 @@
 package com.jaylangkung.brainnet_staff.todo_list
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -17,6 +18,7 @@ import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.TodoResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
+import dev.shreyaspatil.MaterialDialog.MaterialDialog
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
@@ -102,6 +104,51 @@ class TodoActivity : AppCompatActivity() {
                             setHasFixedSize(true)
                             adapter = todoAdapter
                         }
+                        todoAdapter.setOnItemClickCallback(object : TodoAdapter.OnItemClickCallback {
+                            override fun onItemClicked(data: ArrayList<TodoEntity>, position: Int) {
+                                val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
+                                val idtodoList = listTodo[position].idtodo_list
+
+                                val mDialog = MaterialDialog.Builder(this@TodoActivity as Activity)
+                                    .setTitle("Selesaikan ToDo")
+                                    .setMessage("Apakah Anda yakin ingin menyelesaikan ToDo ini?")
+                                    .setCancelable(true)
+                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_restart)
+                                    { dialogInterface, _ ->
+                                        service.editTodo(idtodoList, idadmin, tokenAuth)
+                                            .enqueue(object : Callback<DefaultResponse> {
+                                                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                                                    if (response.isSuccessful) {
+                                                        if (response.body()!!.status == "success") {
+                                                            Toasty.success(this@TodoActivity, "Todo berhasil diselesaikan", Toasty.LENGTH_LONG).show()
+                                                            listTodo.removeAt(position)
+                                                            if (listTodo.isNullOrEmpty()) {
+                                                                todoBinding.empty.visibility = View.VISIBLE
+                                                                todoBinding.loadingAnim.visibility = View.GONE
+                                                                listTodo.clear()
+                                                            }
+                                                            todoAdapter.setTodoItem(listTodo)
+                                                            todoAdapter.notifyDataSetChanged()
+                                                        }
+                                                    }
+                                                }
+
+                                                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                                                    Toasty.error(this@TodoActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                                                }
+                                            })
+                                        dialogInterface.dismiss()
+                                    }
+                                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
+                                    { dialogInterface, _ ->
+                                        dialogInterface.dismiss()
+                                    }
+                                    .build()
+                                // Show Dialog
+                                mDialog.show()
+                            }
+
+                        })
                     } else if (response.body()!!.status == "empty") {
                         todoBinding.empty.visibility = View.VISIBLE
                         todoBinding.loadingAnim.visibility = View.GONE

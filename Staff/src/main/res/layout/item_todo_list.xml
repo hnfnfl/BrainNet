@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <CheckBox
+        <TextView
             android:id="@+id/tv_todo_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
