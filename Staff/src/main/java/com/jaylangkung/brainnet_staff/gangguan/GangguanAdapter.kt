@@ -83,9 +83,7 @@ class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.GangguanItemHolder>
         holder.bind(gangguanItem)
     }
 
-    override fun getItemCount(): Int {
-        return orderList.size
-    }
+    override fun getItemCount(): Int = orderList.size
 
 }
 

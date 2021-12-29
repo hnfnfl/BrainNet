@@ -97,9 +97,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
         holder.bind(vendorItem)
     }
 
-    override fun getItemCount(): Int {
-        return listUser.size
-    }
+    override fun getItemCount(): Int = listUser.size
 
     override fun getFilter(): Filter {
         return object : Filter() {

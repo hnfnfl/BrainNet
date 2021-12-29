@@ -42,9 +42,7 @@ class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.HalBaikItemHolder>() 
         holder.bind(vendorItem)
     }
 
-    override fun getItemCount(): Int {
-        return listHalBaik.size
-    }
+    override fun getItemCount(): Int = listHalBaik.size
 }
 
 

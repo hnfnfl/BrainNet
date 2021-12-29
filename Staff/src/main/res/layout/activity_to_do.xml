@@ -43,6 +43,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
         android:paddingHorizontal="24dp"
+        android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,14 +75,14 @@
         app:layout_constraintTop_toTopOf="@+id/rv_todo_list" />
 
     <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fab_add_good_things"
+        android:id="@+id/fab_add_todo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:src="@drawable/ic_add"
-        app:fab_colorNormal="@color/primaryColor"
-        app:fab_colorPressed="@color/primaryDarkColor"
-        app:fab_colorRipple="@color/primaryColor"
+        app:fab_colorNormal="@color/secondaryColor"
+        app:fab_colorPressed="@color/secondaryDarkColor"
+        app:fab_colorRipple="@color/secondaryColor"
         app:fab_label="@string/login_webapp"
         app:fab_size="normal"
         app:layout_constraintBottom_toBottomOf="parent"
