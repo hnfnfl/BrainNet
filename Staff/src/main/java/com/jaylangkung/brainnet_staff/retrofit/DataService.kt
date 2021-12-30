@@ -1,10 +1,11 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
 import com.jaylangkung.brainnet_staff.retrofit.response.*
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Header
+import retrofit2.http.POST
 
 interface DataService {
     @FormUrlEncoded
@@ -115,4 +116,14 @@ interface DataService {
         @Field("idadmin") idadmin: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @POST("main/getUserDisconnected")
+    fun getUserDisconnected(
+        @Header("Authorization") tokenAuth: String
+    ): Call<UserDCResponse>
+
+    @POST("main/getEthernet")
+    fun getEthernet(
+        @Header("Authorization") tokenAuth: String
+    ): Call<EthernetResponse>
 }

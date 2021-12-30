@@ -53,4 +53,9 @@
     <string name="presensi">Presensi</string>
     <string name="login_webapp">Login Web App</string>
     <string name="todo_list">ToDo List</string>
+    <string name="icon_monitoring">icon monitoring</string>
+    <string name="monitoring_gangguan">Monitoring Gangguan</string>
+    <string name="paket_phone">Paket : %1$s - No HP : %2$s</string>
+    <string name="kabel">Kabel : %1$s %2$s m</string>
+    <string name="nomer_switch">SW : %1$s</string>
 </resources>

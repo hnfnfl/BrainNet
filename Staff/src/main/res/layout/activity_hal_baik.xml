@@ -37,23 +37,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_list_item"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_hal_baik"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
-        android:orientation="vertical"
         android:paddingHorizontal="24dp"
+        android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_hal_baik"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_hal_baik" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_hal_baik" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loading_anim"
@@ -65,13 +58,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ll_list_item" />
+        app:layout_constraintTop_toTopOf="@id/rv_hal_baik" />
+
+    <ImageView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/icon_warning"
+        android:src="@drawable/ic_empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_hal_baik"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_hal_baik" />
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_add_good_things"
         android:layout_width="wrap_content"
-        android:layout_margin="12dp"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:src="@drawable/ic_add"
         app:fab_colorNormal="@color/secondaryColor"
         app:fab_colorPressed="@color/secondaryDarkColor"

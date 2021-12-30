@@ -104,6 +104,12 @@ class HalBaikActivity : AppCompatActivity() {
                             setHasFixedSize(true)
                             adapter = halBaikAdapter
                         }
+                    } else if (response.body()!!.status == "empty") {
+                        halBaikBinding.empty.visibility = View.VISIBLE
+                        halBaikBinding.loadingAnim.visibility = View.GONE
+                        listHalBaik.clear()
+                        halBaikAdapter.setHalBaikItem(listHalBaik)
+                        halBaikAdapter.notifyDataSetChanged()
                     }
                 }
             }
