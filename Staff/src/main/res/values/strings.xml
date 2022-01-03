@@ -58,4 +58,5 @@
     <string name="paket_phone">Paket : %1$s - No HP : %2$s</string>
     <string name="kabel">Kabel : %1$s %2$s m</string>
     <string name="nomer_switch">SW : %1$s</string>
+    <string name="notifikasi">Notifikasi</string>
 </resources>

@@ -14,13 +14,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.notifikasi.NotifikasiActivity
 import kotlin.random.Random
 
 class NotificationHelper(private val context: Context) {
 
     fun displayNotification(title: String, message: String) {
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, NotifikasiActivity::class.java)
         val pendingIntent= PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.ringtone1)
@@ -36,8 +37,6 @@ class NotificationHelper(private val context: Context) {
             .setLights(Color.BLUE, 200, 200)
             .setSound(sound)
 
-//        val mNotificationMgr = NotificationManagerCompat.from(context)
-//        mNotificationMgr.notify(1, mBuilder.build())
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.

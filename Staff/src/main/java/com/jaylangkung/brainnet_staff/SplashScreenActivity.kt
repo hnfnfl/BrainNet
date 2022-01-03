@@ -60,7 +60,7 @@ class SplashScreenActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toasty.error(this@SplashScreenActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                Toasty.error(this@SplashScreenActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
             }
         })
     }

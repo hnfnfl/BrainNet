@@ -11,21 +11,16 @@ class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.HalBaikItemHolder>() 
 
     private var listHalBaik = ArrayList<HalBaikEntity>()
 
-    fun setHalBaikItem(userItem: List<HalBaikEntity>?) {
-        if (userItem == null) return
+    fun setHalBaikItem(halBaikItem: List<HalBaikEntity>?) {
+        if (halBaikItem == null) return
         this.listHalBaik.clear()
-        this.listHalBaik.addAll(userItem)
+        this.listHalBaik.addAll(halBaikItem)
         notifyDataSetChanged()
     }
 
     class HalBaikItemHolder(private val binding: ItemHalBaikBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        private lateinit var myPreferences: MySharedPreferences
-
         fun bind(halBaikItem: HalBaikEntity) {
             with(binding) {
-                myPreferences = MySharedPreferences(itemView.context)
-
                 tvDate.text = halBaikItem.tanggal
                 tvHalBaik.text = halBaikItem.hal_baik
             }

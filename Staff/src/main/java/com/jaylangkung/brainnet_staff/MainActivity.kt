@@ -24,6 +24,7 @@ import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
 import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
 import com.jaylangkung.brainnet_staff.monitoring.MonitoringActivity
+import com.jaylangkung.brainnet_staff.notifikasi.NotifikasiActivity
 import com.jaylangkung.brainnet_staff.presensi.ScannerActivity
 import com.jaylangkung.brainnet_staff.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
@@ -101,6 +102,11 @@ class MainActivity : AppCompatActivity() {
             in 12..14 -> getString(R.string.greetings, "Selamat Siang", nama)
             in 15..17 -> getString(R.string.greetings, "Selamat Sore", nama)
             else -> getString(R.string.greetings, "Selamat Malam", nama)
+        }
+
+        mainBinding.btnNotification.setOnClickListener {
+            startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
+            finish()
         }
 
         mainBinding.llMonitoring.setOnClickListener {

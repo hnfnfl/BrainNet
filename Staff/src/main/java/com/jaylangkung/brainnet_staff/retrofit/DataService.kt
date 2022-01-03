@@ -126,4 +126,9 @@ interface DataService {
     fun getEthernet(
         @Header("Authorization") tokenAuth: String
     ): Call<EthernetResponse>
+
+    @POST("main/getNotification")
+    fun getNotification(
+        @Header("Authorization") tokenAuth: String
+    ): Call<NotifikasiResponse>
 }
