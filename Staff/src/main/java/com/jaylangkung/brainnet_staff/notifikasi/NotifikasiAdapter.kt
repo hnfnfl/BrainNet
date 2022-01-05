@@ -20,8 +20,7 @@ class NotifikasiAdapter : RecyclerView.Adapter<NotifikasiAdapter.NotifItemHolder
         fun bind(notifItem: NotifikasiEntity) {
             with(binding) {
                 tvJenis.text = notifItem.jenis
-                tvTodoList.text = notifItem.todo
-                tvCreator.text = notifItem.oleh
+                tvIsi.text = notifItem.isi
                 tvDate.text = notifItem.waktu
             }
         }

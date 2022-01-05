@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.jaylangkung.brainnet_staff.BuildConfig
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.auth.LoginActivity
@@ -73,6 +74,8 @@ class SettingActivity : AppCompatActivity() {
             
             mDialog.show()
         }
+
+        settingBinding.appVersion.text = BuildConfig.VERSION_NAME
     }
 
     override fun onBackPressed() {
