@@ -79,11 +79,13 @@ class RestartActivity : AppCompatActivity() {
                         }
                     }
                 } else {
+                    restartBinding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(this@RestartActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                restartBinding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(this@RestartActivity, t.message.toString())
             }
         })

@@ -38,7 +38,6 @@ import com.jaylangkung.brainnet_staff.todo_list.TodoActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -215,11 +214,13 @@ class MainActivity : AppCompatActivity() {
                         gangguanAdapter.notifyDataSetChanged()
                     }
                 } else {
+                    mainBinding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(this@MainActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
+                mainBinding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(this@MainActivity, t.message.toString())
             }
         })

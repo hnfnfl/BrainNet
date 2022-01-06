@@ -146,6 +146,7 @@ class MonitoringActivity : AppCompatActivity() {
                         userDCAdapter.notifyDataSetChanged()
                     }
                 } else {
+                    monitoringBinding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(this@MonitoringActivity, response.message())
                 }
             }

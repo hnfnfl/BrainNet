@@ -114,7 +114,7 @@ class TodoActivity : AppCompatActivity() {
                                     .setTitle("Selesaikan ToDo")
                                     .setMessage("Apakah Anda yakin ingin menyelesaikan ToDo ini?")
                                     .setCancelable(true)
-                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_restart)
+                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked)
                                     { dialogInterface, _ ->
                                         service.editTodo(idtodoList, idadmin, tokenAuth)
                                             .enqueue(object : Callback<DefaultResponse> {
@@ -132,11 +132,13 @@ class TodoActivity : AppCompatActivity() {
                                                             todoAdapter.notifyDataSetChanged()
                                                         }
                                                     } else {
+                                                        todoBinding.loadingAnim.visibility = View.GONE
                                                         ErrorHandler().responseHandler(this@TodoActivity, response.message())
                                                     }
                                                 }
 
                                                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                                                    todoBinding.loadingAnim.visibility = View.GONE
                                                     ErrorHandler().responseHandler(this@TodoActivity, t.message.toString())
                                                 }
                                             })
@@ -160,11 +162,13 @@ class TodoActivity : AppCompatActivity() {
                         todoAdapter.notifyDataSetChanged()
                     }
                 } else {
+                    todoBinding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(this@TodoActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<TodoResponse>, t: Throwable) {
+                todoBinding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(this@TodoActivity, t.message.toString())
             }
         })

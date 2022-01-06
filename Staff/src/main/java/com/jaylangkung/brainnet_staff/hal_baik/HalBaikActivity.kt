@@ -113,6 +113,7 @@ class HalBaikActivity : AppCompatActivity() {
                         halBaikAdapter.notifyDataSetChanged()
                     }
                 } else {
+                    halBaikBinding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(this@HalBaikActivity, response.message())
                 }
             }
