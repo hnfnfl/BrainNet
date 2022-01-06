@@ -97,13 +97,19 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@LoginActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@LoginActivity,
+                        "loginProcess | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 loginBinding.btnLogin.endAnimation()
-                ErrorHandler().responseHandler(this@LoginActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@LoginActivity,
+                    "loginProcess | onResponse", t.message.toString()
+                )
             }
         })
     }

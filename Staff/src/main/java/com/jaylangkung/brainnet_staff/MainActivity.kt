@@ -176,12 +176,18 @@ class MainActivity : AppCompatActivity() {
                         Log.d("sukses ", "sukses menambahkan device token")
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@MainActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@MainActivity,
+                        "insertToken | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(this@MainActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@MainActivity,
+                    "insertToken | onFailure", t.message.toString()
+                )
             }
         })
     }
@@ -215,13 +221,19 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     mainBinding.loadingAnim.visibility = View.GONE
-                    ErrorHandler().responseHandler(this@MainActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@MainActivity,
+                        "getGangguan | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
                 mainBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@MainActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@MainActivity,
+                    "getGangguan | onFailure", t.message.toString()
+                )
             }
         })
     }

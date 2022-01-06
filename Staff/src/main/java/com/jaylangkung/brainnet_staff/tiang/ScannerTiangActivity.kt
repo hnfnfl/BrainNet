@@ -108,13 +108,19 @@ class ScannerTiangActivity : AppCompatActivity() {
                     }
                 } else {
                     onBackPressed()
-                    ErrorHandler().responseHandler(this@ScannerTiangActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@ScannerTiangActivity,
+                        "getTiang | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<TiangResponse>, t: Throwable) {
                 scannerTiangBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@ScannerTiangActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@ScannerTiangActivity,
+                    "getTiang | onFailure", t.message.toString()
+                )
             }
         })
     }

@@ -65,13 +65,19 @@ class HalBaikActivity : AppCompatActivity() {
                                 Toasty.success(this@HalBaikActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                             }
                         } else {
-                            ErrorHandler().responseHandler(this@HalBaikActivity, response.message())
+                            ErrorHandler().responseHandler(
+                                this@HalBaikActivity,
+                                "insertHalBaik | onResponse", response.message()
+                            )
                         }
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         halBaikBinding.loadingAnim.visibility = View.GONE
-                        ErrorHandler().responseHandler(this@HalBaikActivity, t.message.toString())
+                        ErrorHandler().responseHandler(
+                            this@HalBaikActivity,
+                            "insertHalBaik | onFailure", t.message.toString()
+                        )
                     }
                 })
                 dialog.dismiss()
@@ -114,13 +120,19 @@ class HalBaikActivity : AppCompatActivity() {
                     }
                 } else {
                     halBaikBinding.loadingAnim.visibility = View.GONE
-                    ErrorHandler().responseHandler(this@HalBaikActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@HalBaikActivity,
+                        "getHalBaik | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<HalBaikResponse>, t: Throwable) {
                 halBaikBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@HalBaikActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@HalBaikActivity,
+                    "getHalBaik | onFailure", t.message.toString()
+                )
             }
         })
     }

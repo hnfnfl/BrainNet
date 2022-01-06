@@ -104,13 +104,19 @@ class LoginWebAppActivity : AppCompatActivity() {
                         onBackPressed()
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@LoginWebAppActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@LoginWebAppActivity,
+                        "insertWebApp | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 loginWebAppBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@LoginWebAppActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@LoginWebAppActivity,
+                    "insertWebApp | onResponse", t.message.toString()
+                )
             }
         })
     }

@@ -104,13 +104,19 @@ class MonitoringActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@MonitoringActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@MonitoringActivity,
+                        "getEthernet | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<EthernetResponse>, t: Throwable) {
                 monitoringBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@MonitoringActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@MonitoringActivity,
+                    "getEthernet | onFailure", t.message.toString()
+                )
             }
         })
     }
@@ -147,13 +153,19 @@ class MonitoringActivity : AppCompatActivity() {
                     }
                 } else {
                     monitoringBinding.loadingAnim.visibility = View.GONE
-                    ErrorHandler().responseHandler(this@MonitoringActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@MonitoringActivity,
+                        "getUserDisconnected | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<UserDCResponse>, t: Throwable) {
                 monitoringBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@MonitoringActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@MonitoringActivity,
+                    "getUserDisconnected | onFailure", t.message.toString()
+                )
             }
         })
     }

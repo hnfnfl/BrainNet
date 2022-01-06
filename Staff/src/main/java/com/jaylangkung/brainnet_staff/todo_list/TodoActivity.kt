@@ -133,13 +133,19 @@ class TodoActivity : AppCompatActivity() {
                                                         }
                                                     } else {
                                                         todoBinding.loadingAnim.visibility = View.GONE
-                                                        ErrorHandler().responseHandler(this@TodoActivity, response.message())
+                                                        ErrorHandler().responseHandler(
+                                                            this@TodoActivity,
+                                                            "editTodo | onResponse", response.message()
+                                                        )
                                                     }
                                                 }
 
                                                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                                                     todoBinding.loadingAnim.visibility = View.GONE
-                                                    ErrorHandler().responseHandler(this@TodoActivity, t.message.toString())
+                                                    ErrorHandler().responseHandler(
+                                                        this@TodoActivity,
+                                                        "editTodo | onResponse", t.message.toString()
+                                                    )
                                                 }
                                             })
                                         dialogInterface.dismiss()
@@ -163,13 +169,19 @@ class TodoActivity : AppCompatActivity() {
                     }
                 } else {
                     todoBinding.loadingAnim.visibility = View.GONE
-                    ErrorHandler().responseHandler(this@TodoActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@TodoActivity,
+                        "getTodo | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<TodoResponse>, t: Throwable) {
                 todoBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@TodoActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@TodoActivity,
+                    "getTodo | onFailure", t.message.toString()
+                )
             }
         })
     }

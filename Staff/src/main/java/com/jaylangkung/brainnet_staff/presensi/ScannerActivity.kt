@@ -112,13 +112,19 @@ class ScannerActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@ScannerActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@ScannerActivity,
+                        "getAbsensi | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 scannerBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@ScannerActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@ScannerActivity,
+                    "getAbsensi | onFailure", t.message.toString()
+                )
             }
         })
     }

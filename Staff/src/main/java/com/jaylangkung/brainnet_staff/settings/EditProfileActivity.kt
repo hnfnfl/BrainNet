@@ -104,13 +104,19 @@ class EditProfileActivity : AppCompatActivity() {
                         finish()
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@EditProfileActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@EditProfileActivity,
+                        "editProfile | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 editProfileBinding.btnSave.endAnimation()
-                ErrorHandler().responseHandler(this@EditProfileActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@EditProfileActivity,
+                    "editProfile | onFailure", t.message.toString()
+                )
             }
         })
     }

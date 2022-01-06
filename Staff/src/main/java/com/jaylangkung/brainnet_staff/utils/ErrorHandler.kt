@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.Log
 import com.jaylangkung.brainnet_staff.R
 import es.dmoral.toasty.Toasty
+import java.util.*
 
 class ErrorHandler {
-    fun responseHandler(context: Context, message: String) {
+    fun responseHandler(context: Context, func: String, message: String) {
+        val now: Date = Calendar.getInstance().time
         when {
             message.contains("failed to connect to", ignoreCase = true) -> {
                 Toasty.error(context, "Terdapat permasalahan pada server", Toasty.LENGTH_LONG).show()
@@ -18,6 +20,6 @@ class ErrorHandler {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
             }
         }
-        Log.e("error message", message)
+        Log.e("Logger", "context : $context, fun : $func, message : $message")
     }
 }

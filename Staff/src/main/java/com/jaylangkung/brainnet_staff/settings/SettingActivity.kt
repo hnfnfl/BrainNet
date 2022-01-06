@@ -94,12 +94,18 @@ class SettingActivity : AppCompatActivity() {
                         Log.d("sukses ", "berhasil logout")
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@SettingActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@SettingActivity,
+                        "logout | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(this@SettingActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@SettingActivity,
+                    "logout | onFailure", t.message.toString()
+                )
             }
         })
     }

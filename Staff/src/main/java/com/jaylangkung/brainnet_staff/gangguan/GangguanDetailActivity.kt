@@ -74,12 +74,18 @@ class GangguanDetailActivity : AppCompatActivity() {
                         Toasty.success(this@GangguanDetailActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@GangguanDetailActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@GangguanDetailActivity,
+                        "editGangguan | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(this@GangguanDetailActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@GangguanDetailActivity,
+                    "editGangguan | onFailure", t.message.toString()
+                )
             }
         })
     }

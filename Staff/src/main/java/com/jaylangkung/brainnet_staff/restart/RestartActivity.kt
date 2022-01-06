@@ -80,13 +80,19 @@ class RestartActivity : AppCompatActivity() {
                     }
                 } else {
                     restartBinding.loadingAnim.visibility = View.GONE
-                    ErrorHandler().responseHandler(this@RestartActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@RestartActivity,
+                        "getPelanggan | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 restartBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@RestartActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@RestartActivity,
+                    "getPelanggan | onFailure", t.message.toString()
+                )
             }
         })
     }

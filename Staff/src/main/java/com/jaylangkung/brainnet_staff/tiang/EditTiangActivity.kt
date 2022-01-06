@@ -143,12 +143,18 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
                         finish()
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@EditTiangActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@EditTiangActivity,
+                        "editTiang | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(this@EditTiangActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@EditTiangActivity,
+                    "editTiang | onFailure", t.message.toString()
+                )
             }
         })
     }

@@ -74,13 +74,19 @@ class NotifikasiActivity : AppCompatActivity() {
                         notifikasiAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    ErrorHandler().responseHandler(this@NotifikasiActivity, response.message())
+                    ErrorHandler().responseHandler(
+                        this@NotifikasiActivity,
+                        "getNotification | onResponse", response.message()
+                    )
                 }
             }
 
             override fun onFailure(call: Call<NotifikasiResponse>, t: Throwable) {
                 notifikasiBinding.loadingAnim.visibility = View.GONE
-                ErrorHandler().responseHandler(this@NotifikasiActivity, t.message.toString())
+                ErrorHandler().responseHandler(
+                    this@NotifikasiActivity,
+                    "getNotification | onFailure", t.message.toString()
+                )
             }
         })
     }
