@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.view.View
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.auth.LoginActivity
 import com.jaylangkung.brainnet_staff.databinding.ActivitySplashScreenBinding
@@ -14,6 +15,7 @@ import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -56,12 +58,15 @@ class SplashScreenActivity : AppCompatActivity() {
                         startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
                         finish()
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@SplashScreenActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toasty.error(this@SplashScreenActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@SplashScreenActivity, t.message.toString())
             }
         })
     }
+
 }

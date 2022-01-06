@@ -14,8 +14,8 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.UserResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,11 +78,13 @@ class RestartActivity : AppCompatActivity() {
                             adapter = userAdapter
                         }
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@RestartActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Toasty.error(this@RestartActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@RestartActivity, t.message.toString())
             }
         })
     }

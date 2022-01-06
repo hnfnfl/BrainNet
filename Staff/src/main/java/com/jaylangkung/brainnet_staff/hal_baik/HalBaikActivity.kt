@@ -3,11 +3,9 @@ package com.jaylangkung.brainnet_staff.hal_baik
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chand.progressbutton.ProgressButton
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -18,6 +16,7 @@ import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.HalBaikResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -65,12 +64,14 @@ class HalBaikActivity : AppCompatActivity() {
                                 getHalBaik(idadmin, tokenAuth)
                                 Toasty.success(this@HalBaikActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                             }
+                        } else {
+                            ErrorHandler().responseHandler(this@HalBaikActivity, response.message())
                         }
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         halBaikBinding.loadingAnim.visibility = View.GONE
-                        Toasty.error(this@HalBaikActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                        ErrorHandler().responseHandler(this@HalBaikActivity, t.message.toString())
                     }
                 })
                 dialog.dismiss()
@@ -111,13 +112,16 @@ class HalBaikActivity : AppCompatActivity() {
                         halBaikAdapter.setHalBaikItem(listHalBaik)
                         halBaikAdapter.notifyDataSetChanged()
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@HalBaikActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<HalBaikResponse>, t: Throwable) {
                 halBaikBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@HalBaikActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@HalBaikActivity, t.message.toString())
             }
         })
     }
+
 }

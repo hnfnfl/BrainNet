@@ -17,6 +17,7 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -111,13 +112,13 @@ class ScannerActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
+                    ErrorHandler().responseHandler(this@ScannerActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 scannerBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@ScannerActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@ScannerActivity, t.message.toString())
             }
         })
     }

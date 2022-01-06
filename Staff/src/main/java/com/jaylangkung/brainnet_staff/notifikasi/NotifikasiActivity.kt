@@ -13,8 +13,8 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.NotifikasiResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,12 +73,14 @@ class NotifikasiActivity : AppCompatActivity() {
                         notifikasiAdapter.setNotifItem(listNotif)
                         notifikasiAdapter.notifyDataSetChanged()
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@NotifikasiActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<NotifikasiResponse>, t: Throwable) {
                 notifikasiBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@NotifikasiActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@NotifikasiActivity, t.message.toString())
             }
         })
     }

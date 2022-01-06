@@ -36,6 +36,7 @@ import com.jaylangkung.brainnet_staff.settings.SettingActivity
 import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
 import com.jaylangkung.brainnet_staff.todo_list.TodoActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -175,11 +176,13 @@ class MainActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         Log.d("sukses ", "sukses menambahkan device token")
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@MainActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                Toasty.error(this@MainActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@MainActivity, t.message.toString())
             }
         })
     }
@@ -212,13 +215,14 @@ class MainActivity : AppCompatActivity() {
                         gangguanAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    Toasty.error(this@MainActivity, response.message(), Toasty.LENGTH_LONG).show()
+                    ErrorHandler().responseHandler(this@MainActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
-                Toasty.error(this@MainActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@MainActivity, t.message.toString())
             }
         })
     }
+
 }

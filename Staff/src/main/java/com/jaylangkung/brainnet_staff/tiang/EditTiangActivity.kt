@@ -4,10 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -25,6 +23,7 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -143,11 +142,13 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
                         Toasty.success(this@EditTiangActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         finish()
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@EditTiangActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                Toasty.error(this@EditTiangActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@EditTiangActivity, t.message.toString())
             }
         })
     }

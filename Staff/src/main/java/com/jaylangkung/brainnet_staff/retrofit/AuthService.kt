@@ -33,13 +33,6 @@ interface AuthService {
         @Field("device_id") device_id: String
     ): Call<LoginResponse>
 
-    //get Foto User
-    @FormUrlEncoded
-    @POST("penjual/auth_penjual/getUserFoto")
-    fun getUserFoto(
-        @Field("idpenjual") idpenjual: String
-    ): Call<LoginResponse>
-
     //logout
     @FormUrlEncoded
     @POST("auth/logout")

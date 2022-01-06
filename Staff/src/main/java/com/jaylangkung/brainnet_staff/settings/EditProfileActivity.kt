@@ -9,6 +9,7 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -102,12 +103,14 @@ class EditProfileActivity : AppCompatActivity() {
                         startActivity(Intent(this@EditProfileActivity, SettingActivity::class.java))
                         finish()
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@EditProfileActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 editProfileBinding.btnSave.endAnimation()
-                Toasty.error(this@EditProfileActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@EditProfileActivity, t.message.toString())
             }
         })
     }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings.Secure
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -13,6 +12,7 @@ import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -96,14 +96,16 @@ class LoginActivity : AppCompatActivity() {
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@LoginActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 loginBinding.btnLogin.endAnimation()
-                Toasty.error(this@LoginActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@LoginActivity, t.message.toString())
             }
-
         })
     }
+
 }

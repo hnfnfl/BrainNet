@@ -17,6 +17,7 @@ import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.TodoResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import dev.shreyaspatil.MaterialDialog.MaterialDialog
 import es.dmoral.toasty.Toasty
@@ -130,11 +131,13 @@ class TodoActivity : AppCompatActivity() {
                                                             todoAdapter.setTodoItem(listTodo)
                                                             todoAdapter.notifyDataSetChanged()
                                                         }
+                                                    } else {
+                                                        ErrorHandler().responseHandler(this@TodoActivity, response.message())
                                                     }
                                                 }
 
                                                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                                                    Toasty.error(this@TodoActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                                                    ErrorHandler().responseHandler(this@TodoActivity, t.message.toString())
                                                 }
                                             })
                                         dialogInterface.dismiss()
@@ -157,13 +160,14 @@ class TodoActivity : AppCompatActivity() {
                         todoAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    Toasty.error(this@TodoActivity, response.message(), Toasty.LENGTH_LONG).show()
+                    ErrorHandler().responseHandler(this@TodoActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<TodoResponse>, t: Throwable) {
-                Toasty.error(this@TodoActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@TodoActivity, t.message.toString())
             }
         })
     }
+
 }

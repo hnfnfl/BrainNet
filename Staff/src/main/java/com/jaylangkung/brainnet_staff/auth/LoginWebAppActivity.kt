@@ -16,6 +16,7 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -103,14 +104,15 @@ class LoginWebAppActivity : AppCompatActivity() {
                         onBackPressed()
                     }
                 } else {
-                    Toasty.error(this@LoginWebAppActivity, response.message(), Toasty.LENGTH_LONG).show()
+                    ErrorHandler().responseHandler(this@LoginWebAppActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 loginWebAppBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@LoginWebAppActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@LoginWebAppActivity, t.message.toString())
             }
         })
     }
+
 }

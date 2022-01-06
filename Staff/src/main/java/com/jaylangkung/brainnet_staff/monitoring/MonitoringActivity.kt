@@ -16,8 +16,8 @@ import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.EthernetResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.UserDCResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -103,12 +103,14 @@ class MonitoringActivity : AppCompatActivity() {
                             adapter = ethernetAdapter
                         }
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@MonitoringActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<EthernetResponse>, t: Throwable) {
                 monitoringBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@MonitoringActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@MonitoringActivity, t.message.toString())
             }
         })
     }
@@ -143,13 +145,16 @@ class MonitoringActivity : AppCompatActivity() {
                         userDCAdapter.setUserDCItem(listUserDC)
                         userDCAdapter.notifyDataSetChanged()
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@MonitoringActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<UserDCResponse>, t: Throwable) {
                 monitoringBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@MonitoringActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@MonitoringActivity, t.message.toString())
             }
         })
     }
+
 }

@@ -13,6 +13,7 @@ import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import dev.shreyaspatil.MaterialDialog.MaterialDialog
 import es.dmoral.toasty.Toasty
@@ -71,7 +72,7 @@ class SettingActivity : AppCompatActivity() {
                     dialogInterface.dismiss()
                 }
                 .build()
-            
+
             mDialog.show()
         }
 
@@ -89,13 +90,16 @@ class SettingActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
+                        Toasty.success(this@SettingActivity, "Berhasil Logout", Toasty.LENGTH_LONG).show()
                         Log.d("sukses ", "berhasil logout")
                     }
+                } else {
+                    ErrorHandler().responseHandler(this@SettingActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                Toasty.error(this@SettingActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@SettingActivity, t.message.toString())
             }
         })
     }

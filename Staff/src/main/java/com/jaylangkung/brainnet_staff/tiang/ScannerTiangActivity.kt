@@ -17,6 +17,7 @@ import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
 import com.jaylangkung.brainnet_staff.retrofit.response.TiangResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
+import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -105,12 +106,15 @@ class ScannerTiangActivity : AppCompatActivity() {
                         Toasty.warning(this@ScannerTiangActivity, "Nomor Seri tiang tidak ditemukan", Toast.LENGTH_LONG).show()
                         onBackPressed()
                     }
+                } else {
+                    onBackPressed()
+                    ErrorHandler().responseHandler(this@ScannerTiangActivity, response.message())
                 }
             }
 
             override fun onFailure(call: Call<TiangResponse>, t: Throwable) {
                 scannerTiangBinding.loadingAnim.visibility = View.GONE
-                Toasty.error(this@ScannerTiangActivity, R.string.try_again, Toasty.LENGTH_LONG).show()
+                ErrorHandler().responseHandler(this@ScannerTiangActivity, t.message.toString())
             }
         })
     }
