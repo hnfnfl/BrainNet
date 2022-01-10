@@ -15,6 +15,7 @@ import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
+import com.jaylangkung.brainnet_staff.utils.room.LoggerActivity
 import dev.shreyaspatil.MaterialDialog.MaterialDialog
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
@@ -76,7 +77,12 @@ class SettingActivity : AppCompatActivity() {
             mDialog.show()
         }
 
-        settingBinding.appVersion.text = BuildConfig.VERSION_NAME
+        settingBinding.appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
+
+        settingBinding.appVersion.setOnClickListener {
+            startActivity(Intent(this@SettingActivity, LoggerActivity::class.java))
+            finish()
+        }
     }
 
     override fun onBackPressed() {

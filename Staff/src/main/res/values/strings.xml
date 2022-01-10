@@ -59,4 +59,6 @@
     <string name="kabel">Kabel : %1$s %2$s m</string>
     <string name="nomer_switch">SW : %1$s</string>
     <string name="notifikasi">Notifikasi</string>
+    <string name="app_version">App Version %1$s</string>
+    <string name="error_logger">Error Logger</string>
 </resources>

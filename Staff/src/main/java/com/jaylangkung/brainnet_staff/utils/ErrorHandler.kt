@@ -2,11 +2,20 @@ package com.jaylangkung.brainnet_staff.utils
 
 import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.utils.room.Logger
+import com.jaylangkung.brainnet_staff.utils.room.LoggerDatabase
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class ErrorHandler {
+
+    private lateinit var loggerDatabase: LoggerDatabase
+
     fun responseHandler(context: Context, func: String, message: String) {
         val now: Date = Calendar.getInstance().time
         when {
@@ -20,6 +29,17 @@ class ErrorHandler {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
             }
         }
-        Log.e("Logger", "context : $context, fun : $func, message : $message")
+
+        GlobalScope.launch {
+            insertDB(context, func, message, now.toString())
+        }
+        Log.e("Logger", "context : $context, fun : $func, message : $message, time : $now")
+    }
+
+    private fun insertDB(context: Context, func: String, message: String, time: String) {
+        loggerDatabase = Room.databaseBuilder(context, LoggerDatabase::class.java, "logger.db").build()
+        loggerDatabase.loggerDao().insert(
+            Logger(context.toString(), func, message, time)
+        )
     }
 }
