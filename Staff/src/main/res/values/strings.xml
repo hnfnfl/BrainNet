@@ -61,4 +61,10 @@
     <string name="notifikasi">Notifikasi</string>
     <string name="app_version">App Version %1$s</string>
     <string name="error_logger">Error Logger</string>
+    <string name="icon_todo_list">icon todo list</string>
+    <string name="icon_tambah_pelanggan">icon tambah pelanggan</string>
+    <string name="tambah_pelanggan">Tambah Pelanggan</string>
+    <string name="aktivasi_pelanggan">Aktivasi Pelanggan</string>
+    <string name="icon_aktivasi_pelanggan">icon aktivasi pelanggan</string>
+    <string name="icon_setting">icon setting</string>
 </resources>

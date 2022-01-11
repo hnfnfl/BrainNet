@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
+        <activity android:name=".pelanggan.AddCustomerActivity"></activity>
         <activity android:name=".utils.room.LoggerActivity" />
         <activity android:name=".notifikasi.NotifikasiActivity" />
         <activity android:name=".monitoring.MonitoringActivity" />
