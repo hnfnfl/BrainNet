@@ -67,4 +67,12 @@
     <string name="aktivasi_pelanggan">Aktivasi Pelanggan</string>
     <string name="icon_aktivasi_pelanggan">icon aktivasi pelanggan</string>
     <string name="icon_setting">icon setting</string>
+    <string name="add_customer_ktp">No KTP</string>
+    <string name="add_customer_name">Nama Pelanggan</string>
+    <string name="add_customer_address">Alamat Pelanggan</string>
+    <string name="add_customer_rt">RT</string>
+    <string name="add_customer_rw">RW</string>
+    <string name="add_customer_phone">Nomor HP</string>
+    <string name="add_customer_install_address">Alamat Pasang</string>
+    <string name="add_customer_lokasi">Lokasi</string>
 </resources>

@@ -1,10 +1,13 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
+import com.jaylangkung.brainnet_staff.retrofit.response.AddCustomerSpinnerResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.WilayahResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AuthService {
@@ -39,4 +42,16 @@ interface AuthService {
     fun logout(
         @Field("idadmin") idadmin: String,
     ): Call<DefaultResponse>
+
+    @GET("auth/getPaketInternet")
+    fun getPaketInternet(
+    ): Call<AddCustomerSpinnerResponse>
+
+    @GET("auth/getMarketing")
+    fun getMarketing(
+    ): Call<AddCustomerSpinnerResponse>
+
+    @GET("auth/getRekanan")
+    fun getRekanan(
+    ): Call<AddCustomerSpinnerResponse>
 }

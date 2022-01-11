@@ -131,4 +131,26 @@ interface DataService {
     fun getNotification(
         @Header("Authorization") tokenAuth: String
     ): Call<NotifikasiResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertPelanggan")
+    fun insertPelanggan(
+        @Field("noktp") noktp: String,
+        @Field("nama") nama: String,
+        @Field("alamat") alamat: String,
+        @Field("rt") rt: String,
+        @Field("rw") rw: String,
+        @Field("kelurahan") kelurahan: String,
+        @Field("kecamatan") kecamatan: String,
+        @Field("kota") kota: String,
+        @Field("provinsi") provinsi: String,
+        @Field("nohp") nohp: String,
+        @Field("idmarketing") idmarketing: String,
+        @Field("alamat_pasang") alamat_pasang: String,
+        @Field("paket") paket: String,
+        @Field("idrekanan") idrekanan: String,
+        @Field("lokasi") lokasi: String,
+        @Field("penagih") penagih: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

@@ -15,8 +15,8 @@ android {
         applicationId "com.jaylangkung.brainnet_staff"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 5
-        versionName "1.6"
+        versionCode 1
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -99,7 +99,7 @@ dependencies {
     //Rounded image
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    // For pict image
+    //for pict image
     implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
     implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
 
@@ -109,4 +109,7 @@ dependencies {
 
     //floating action button
     implementation 'com.github.clans:fab:1.6.4'
+
+    //spinner
+    implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
 }
