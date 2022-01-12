@@ -1,9 +1,8 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
-import com.jaylangkung.brainnet_staff.retrofit.response.AddCustomerSpinnerResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.WilayahResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -45,13 +44,25 @@ interface AuthService {
 
     @GET("auth/getPaketInternet")
     fun getPaketInternet(
-    ): Call<AddCustomerSpinnerResponse>
+    ): Call<DataSpinnerResponse>
 
     @GET("auth/getMarketing")
     fun getMarketing(
-    ): Call<AddCustomerSpinnerResponse>
+    ): Call<DataSpinnerResponse>
 
     @GET("auth/getRekanan")
     fun getRekanan(
-    ): Call<AddCustomerSpinnerResponse>
+    ): Call<DataSpinnerResponse>
+
+    @GET("auth/getPelanggan")
+    fun getPelanggan(
+    ): Call<DataSpinnerResponse>
+
+    @GET("auth/getSwitch")
+    fun getSwitch(
+    ): Call<DataSpinnerResponse>
+
+    @GET("auth/getPaketInstalasi")
+    fun getPaketInstalasi(
+    ): Call<DataSpinnerResponse>
 }

@@ -12,7 +12,7 @@ import com.jaylangkung.brainnet_staff.databinding.ActivityAddCustomerBinding
 import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.DataSpinnerEntity
 import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.WilayahEntity
 import com.jaylangkung.brainnet_staff.retrofit.*
-import com.jaylangkung.brainnet_staff.retrofit.response.AddCustomerSpinnerResponse
+import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.WilayahResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
@@ -288,8 +288,8 @@ class AddCustomerActivity : AppCompatActivity() {
 
     private fun getPaketInternet() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getPaketInternet().enqueue(object : Callback<AddCustomerSpinnerResponse> {
-            override fun onResponse(call: Call<AddCustomerSpinnerResponse>, response: Response<AddCustomerSpinnerResponse>) {
+        service.getPaketInternet().enqueue(object : Callback<DataSpinnerResponse> {
+            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listPaketInternet.clear()
                     listPaketInternet = response.body()!!.paketInternet
@@ -315,7 +315,7 @@ class AddCustomerActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<AddCustomerSpinnerResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
                     this@AddCustomerActivity,
                     "getPaketInternet | onFailure", t.message.toString()
@@ -326,8 +326,8 @@ class AddCustomerActivity : AppCompatActivity() {
 
     private fun getMarketing() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getMarketing().enqueue(object : Callback<AddCustomerSpinnerResponse> {
-            override fun onResponse(call: Call<AddCustomerSpinnerResponse>, response: Response<AddCustomerSpinnerResponse>) {
+        service.getMarketing().enqueue(object : Callback<DataSpinnerResponse> {
+            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listMarketing.clear()
                     listMarketing = response.body()!!.marketing
@@ -363,7 +363,7 @@ class AddCustomerActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<AddCustomerSpinnerResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
                     this@AddCustomerActivity,
                     "getMarketing | onFailure", t.message.toString()
@@ -374,8 +374,8 @@ class AddCustomerActivity : AppCompatActivity() {
 
     private fun getRekanan() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getRekanan().enqueue(object : Callback<AddCustomerSpinnerResponse> {
-            override fun onResponse(call: Call<AddCustomerSpinnerResponse>, response: Response<AddCustomerSpinnerResponse>) {
+        service.getRekanan().enqueue(object : Callback<DataSpinnerResponse> {
+            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listRekanan.clear()
                     listRekanan = response.body()!!.rekanan
@@ -401,7 +401,7 @@ class AddCustomerActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<AddCustomerSpinnerResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
                     this@AddCustomerActivity,
                     "getRekanan | onFailure", t.message.toString()

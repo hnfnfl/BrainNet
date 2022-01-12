@@ -26,6 +26,7 @@ import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
 import com.jaylangkung.brainnet_staff.monitoring.MonitoringActivity
 import com.jaylangkung.brainnet_staff.notifikasi.NotifikasiActivity
 import com.jaylangkung.brainnet_staff.pelanggan.AddCustomerActivity
+import com.jaylangkung.brainnet_staff.pelanggan.CustomerActivationActivity
 import com.jaylangkung.brainnet_staff.presensi.ScannerActivity
 import com.jaylangkung.brainnet_staff.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
@@ -152,6 +153,11 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.llAddCustomer.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddCustomerActivity::class.java))
+            finish()
+        }
+
+        mainBinding.llActivateCustomer.setOnClickListener {
+            startActivity(Intent(this@MainActivity, CustomerActivationActivity::class.java))
             finish()
         }
 
