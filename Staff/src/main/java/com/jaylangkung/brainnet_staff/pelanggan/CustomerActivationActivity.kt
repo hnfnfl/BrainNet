@@ -50,10 +50,7 @@ class CustomerActivationActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        getPelanggan()
-        getSwitch()
-        getRekanan()
-        getPaketInstalasi()
+        getSpinnerData()
 
         val listTerminal = ArrayList<String>()
         listTerminal.add("Tidak")
@@ -99,18 +96,42 @@ class CustomerActivationActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun getPelanggan() {
+    private fun getSpinnerData() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getPelanggan().enqueue(object : Callback<DataSpinnerResponse> {
+        service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listPelanggan.clear()
+                    listSwitch.clear()
+                    listRekanan.clear()
+                    listPaketInstalasi.clear()
+
                     listPelanggan = response.body()!!.pelanggan
-                    val list = ArrayList<String>()
+                    listSwitch = response.body()!!.switch
+                    listRekanan = response.body()!!.rekanan
+                    listPaketInstalasi = response.body()!!.paketInstalasi
+
+                    val listA = ArrayList<String>()
+                    val listB = ArrayList<String>()
+                    val listC = ArrayList<String>()
+                    val listD = ArrayList<String>()
                     for (i in 0 until listPelanggan.size) {
-                        list.add(response.body()!!.pelanggan[i].nama)
+                        listA.add(response.body()!!.pelanggan[i].nama)
                     }
-                    customerActivationBinding.spinnerPelanggan.item = list as List<Any>?
+                    for (i in 0 until listSwitch.size) {
+                        listB.add(response.body()!!.switch[i].nomer)
+                    }
+                    for (i in 0 until listRekanan.size) {
+                        listC.add(response.body()!!.rekanan[i].nama)
+                    }
+                    for (i in 0 until listPaketInstalasi.size) {
+                        listD.add(response.body()!!.paketInstalasi[i].paket_instalasi)
+                    }
+
+                    customerActivationBinding.spinnerPelanggan.item = listA as List<Any>?
+                    customerActivationBinding.spinnerSwitch.item = listB as List<Any>?
+                    customerActivationBinding.spinnerRekanan.item = listC as List<Any>?
+                    customerActivationBinding.spinnerPaketInstalasi.item = listD as List<Any>?
 
                     customerActivationBinding.spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -121,35 +142,6 @@ class CustomerActivationActivity : AppCompatActivity() {
                         override fun onNothingSelected(p0: AdapterView<*>?) {}
 
                     }
-                } else {
-                    ErrorHandler().responseHandler(
-                        this@CustomerActivationActivity,
-                        "getPelanggan | onResponse", response.message()
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(
-                    this@CustomerActivationActivity,
-                    "getPelanggan | onFailure", t.message.toString()
-                )
-            }
-        })
-    }
-
-    private fun getSwitch() {
-        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getSwitch().enqueue(object : Callback<DataSpinnerResponse> {
-            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
-                if (response.isSuccessful) {
-                    listSwitch.clear()
-                    listSwitch = response.body()!!.switch
-                    val list = ArrayList<String>()
-                    for (i in 0 until listSwitch.size) {
-                        list.add(response.body()!!.switch[i].nomer)
-                    }
-                    customerActivationBinding.spinnerSwitch.item = list as List<Any>?
 
                     customerActivationBinding.spinnerSwitch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -159,35 +151,6 @@ class CustomerActivationActivity : AppCompatActivity() {
                         override fun onNothingSelected(p0: AdapterView<*>?) {}
 
                     }
-                } else {
-                    ErrorHandler().responseHandler(
-                        this@CustomerActivationActivity,
-                        "getSwitch | onResponse", response.message()
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(
-                    this@CustomerActivationActivity,
-                    "getSwitch | onFailure", t.message.toString()
-                )
-            }
-        })
-    }
-
-    private fun getRekanan() {
-        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getRekanan().enqueue(object : Callback<DataSpinnerResponse> {
-            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
-                if (response.isSuccessful) {
-                    listRekanan.clear()
-                    listRekanan = response.body()!!.rekanan
-                    val list = ArrayList<String>()
-                    for (i in 0 until listRekanan.size) {
-                        list.add(response.body()!!.rekanan[i].nama)
-                    }
-                    customerActivationBinding.spinnerRekanan.item = list as List<Any>?
 
                     customerActivationBinding.spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -197,35 +160,6 @@ class CustomerActivationActivity : AppCompatActivity() {
                         override fun onNothingSelected(p0: AdapterView<*>?) {}
 
                     }
-                } else {
-                    ErrorHandler().responseHandler(
-                        this@CustomerActivationActivity,
-                        "getRekanan | onResponse", response.message()
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
-                ErrorHandler().responseHandler(
-                    this@CustomerActivationActivity,
-                    "getRekanan | onFailure", t.message.toString()
-                )
-            }
-        })
-    }
-
-    private fun getPaketInstalasi() {
-        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getPaketInstalasi().enqueue(object : Callback<DataSpinnerResponse> {
-            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
-                if (response.isSuccessful) {
-                    listPaketInstalasi.clear()
-                    listPaketInstalasi = response.body()!!.paketInstalasi
-                    val list = ArrayList<String>()
-                    for (i in 0 until listPaketInstalasi.size) {
-                        list.add(response.body()!!.paketInstalasi[i].paket_instalasi)
-                    }
-                    customerActivationBinding.spinnerPaketInstalasi.item = list as List<Any>?
 
                     customerActivationBinding.spinnerPaketInstalasi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -238,7 +172,7 @@ class CustomerActivationActivity : AppCompatActivity() {
                 } else {
                     ErrorHandler().responseHandler(
                         this@CustomerActivationActivity,
-                        "getPaketInstalasi | onResponse", response.message()
+                        "getSpinnerData | onResponse", response.message()
                     )
                 }
             }
@@ -246,7 +180,7 @@ class CustomerActivationActivity : AppCompatActivity() {
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
                     this@CustomerActivationActivity,
-                    "getPaketInstalasi | onFailure", t.message.toString()
+                    "getSpinnerData | onFailure", t.message.toString()
                 )
             }
         })
@@ -279,7 +213,14 @@ class CustomerActivationActivity : AppCompatActivity() {
     }
 
     private fun insertAktivasi(
-        idpelanggan: String, paket: String, idadmin: String, isterminal: String, idswitch: String, idrekanan: String, idpaket_instalasi: String, tokenAuth: String
+        idpelanggan: String,
+        paket: String,
+        idadmin: String,
+        isterminal: String,
+        idswitch: String,
+        idrekanan: String,
+        idpaket_instalasi: String,
+        tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertAktivasi(

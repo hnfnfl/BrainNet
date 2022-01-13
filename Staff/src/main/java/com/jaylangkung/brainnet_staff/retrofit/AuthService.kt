@@ -42,6 +42,11 @@ interface AuthService {
         @Field("idadmin") idadmin: String,
     ): Call<DefaultResponse>
 
+
+    @GET("auth/getSpinnerData")
+    fun getSpinnerData(
+    ): Call<DataSpinnerResponse>
+
     @GET("auth/getPaketInternet")
     fun getPaketInternet(
     ): Call<DataSpinnerResponse>
