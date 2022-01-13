@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Aktivasi Pelanggan"
+            android:text="@string/aktivasi_pelanggan"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -105,12 +105,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:spinnerMode="dropdown"
                     app:smsp_floatingLabelColor="@color/primaryColor"
                     app:smsp_floatingLabelText="Switch"
                     app:smsp_hint="Pilih Switch"
                     app:smsp_hintColor="@color/primaryColor"
                     app:smsp_isOutlined="true"
+                    app:smsp_isSearchable="true"
                     app:smsp_itemColor="@color/black"
                     app:smsp_itemListColor="@color/black"
                     app:smsp_itemListHintBackgroundColor="#808080"
@@ -119,6 +119,8 @@
                     app:smsp_outlinedBoxColor="@color/primaryColor"
                     app:smsp_outlinedBoxRadius="4dp"
                     app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderBackgroundColor="@color/secondaryColor"
+                    app:smsp_searchHeaderText="Pilih/Cari Switch"
                     app:smsp_selectedItemListColor="@color/primaryDarkColor" />
 
             </LinearLayout>

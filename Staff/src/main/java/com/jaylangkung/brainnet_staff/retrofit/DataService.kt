@@ -153,4 +153,17 @@ interface DataService {
         @Field("penagih") penagih: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertAktivasi")
+    fun insertAktivasi(
+        @Field("idpelanggan") idpelanggan: String,
+        @Field("paket") paket: String,
+        @Field("idadmin") idadmin: String,
+        @Field("isterminal") isterminal: String,
+        @Field("idswitch") idswitch: String,
+        @Field("idrekanan") idrekanan: String,
+        @Field("idpaket_instalasi") idpaket_instalasi: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }
