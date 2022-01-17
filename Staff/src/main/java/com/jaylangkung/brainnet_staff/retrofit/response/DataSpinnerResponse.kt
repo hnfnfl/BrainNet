@@ -9,4 +9,5 @@ class DataSpinnerResponse(
     var pelanggan: ArrayList<DataSpinnerEntity>,
     var switch: ArrayList<DataSpinnerEntity>,
     var paketInstalasi: ArrayList<DataSpinnerEntity>,
+    var tagihan: ArrayList<DataSpinnerEntity>,
 )

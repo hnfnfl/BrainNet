@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.brainnet_staff.auth.LoginWebAppActivity
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
+import com.jaylangkung.brainnet_staff.databinding.BottomSheetMenuPelangganBinding
+import com.jaylangkung.brainnet_staff.databinding.BottomSheetMenuPelayananBinding
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
 import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
@@ -48,6 +51,8 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
+    private lateinit var bottomSheetMenuPelangganBinding: BottomSheetMenuPelangganBinding
+    private lateinit var bottomSheetMenuPelayananBinding: BottomSheetMenuPelayananBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var gangguanAdapter: GangguanAdapter
     private var listGangguanAdapter: ArrayList<GangguanEntity> = arrayListOf()
@@ -106,6 +111,11 @@ class MainActivity : AppCompatActivity() {
             else -> getString(R.string.greetings, "Selamat Malam", nama)
         }
 
+        mainBinding.btnSetting.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+            finish()
+        }
+
         mainBinding.btnNotification.setOnClickListener {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
             finish()
@@ -131,10 +141,68 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        mainBinding.llRestart.setOnClickListener {
-            startActivity(Intent(this@MainActivity, RestartActivity::class.java))
-            finish()
+        mainBinding.llMenuUser.setOnClickListener {
+            bottomSheetMenuPelangganBinding = BottomSheetMenuPelangganBinding.inflate(layoutInflater)
+
+            val dialog = BottomSheetDialog(this@MainActivity)
+
+            bottomSheetMenuPelangganBinding.llRestart.setOnClickListener {
+                startActivity(Intent(this@MainActivity, RestartActivity::class.java))
+                finish()
+                dialog.dismiss()
+            }
+
+            bottomSheetMenuPelangganBinding.llAddCustomer.setOnClickListener {
+                startActivity(Intent(this@MainActivity, AddCustomerActivity::class.java))
+                finish()
+                dialog.dismiss()
+            }
+
+            bottomSheetMenuPelangganBinding.llActivateCustomer.setOnClickListener {
+                startActivity(Intent(this@MainActivity, CustomerActivationActivity::class.java))
+                finish()
+                dialog.dismiss()
+            }
+
+            dialog.setCancelable(true)
+            dialog.setContentView(bottomSheetMenuPelangganBinding.root)
+            dialog.show()
         }
+
+        mainBinding.llServices.setOnClickListener {
+            bottomSheetMenuPelayananBinding = BottomSheetMenuPelayananBinding.inflate(layoutInflater)
+
+            val dialog = BottomSheetDialog(this@MainActivity)
+
+            bottomSheetMenuPelayananBinding.llInsertInterference.setOnClickListener {
+
+                finish()
+                dialog.dismiss()
+            }
+
+            bottomSheetMenuPelayananBinding.llInstallationComplete.setOnClickListener {
+
+                finish()
+                dialog.dismiss()
+            }
+
+            bottomSheetMenuPelayananBinding.llPayment.setOnClickListener {
+
+                finish()
+                dialog.dismiss()
+            }
+
+            bottomSheetMenuPelayananBinding.llDispensation.setOnClickListener {
+
+                finish()
+                dialog.dismiss()
+            }
+
+            dialog.setCancelable(true)
+            dialog.setContentView(bottomSheetMenuPelayananBinding.root)
+            dialog.show()
+        }
+
 
         mainBinding.llGoodThings.setOnClickListener {
             startActivity(Intent(this@MainActivity, HalBaikActivity::class.java))
@@ -146,20 +214,6 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        mainBinding.llSettings.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SettingActivity::class.java))
-            finish()
-        }
-
-        mainBinding.llAddCustomer.setOnClickListener {
-            startActivity(Intent(this@MainActivity, AddCustomerActivity::class.java))
-            finish()
-        }
-
-        mainBinding.llActivateCustomer.setOnClickListener {
-            startActivity(Intent(this@MainActivity, CustomerActivationActivity::class.java))
-            finish()
-        }
 
         mainBinding.llBody.setOnRefreshListener {
             mainBinding.loadingAnim.visibility = View.VISIBLE

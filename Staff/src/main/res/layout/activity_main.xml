@@ -32,12 +32,25 @@
         app:layout_constraintStart_toEndOf="@+id/img_photo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/btn_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:background="@null"
+        android:contentDescription="@string/btn_setting"
+        android:src="@drawable/ic_setting"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/ll_body"
+        app:layout_constraintEnd_toStartOf="@+id/btn_notification"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
         android:id="@+id/btn_notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
         android:layout_marginEnd="18dp"
+        android:background="@null"
         android:contentDescription="@string/btn_notification"
         android:src="@drawable/ic_notification"
         app:layout_constraintBottom_toTopOf="@+id/ll_body"
@@ -166,7 +179,7 @@
                     android:weightSum="2">
 
                     <LinearLayout
-                        android:id="@+id/ll_restart"
+                        android:id="@+id/ll_menu_user"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginEnd="20dp"
@@ -189,25 +202,25 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/icon_restart"
-                                android:src="@drawable/ic_restart"
+                                android:contentDescription="@string/icon_menu_pelanggan"
+                                android:src="@drawable/ic_user"
                                 app:tint="@color/primaryDarkColor" />
 
                         </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
-                            android:text="@string/restart_router"
+                            android:text="@string/menu_pelanggan"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/ll_good_things"
+                        android:id="@+id/ll_services"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_weight="1"
@@ -229,18 +242,18 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/icon_good_things"
-                                android:src="@drawable/ic_good"
+                                android:contentDescription="@string/icon_pelayanan"
+                                android:src="@drawable/ic_services"
                                 app:tint="@color/primaryDarkColor" />
 
                         </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
-                            android:text="@string/tambahkan_hal_baik_hari_ini"
+                            android:text="@string/services"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
@@ -287,7 +300,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
@@ -298,7 +311,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/ll_add_customer"
+                        android:id="@+id/ll_good_things"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_weight="1"
@@ -320,116 +333,24 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/icon_tambah_pelanggan"
-                                android:src="@drawable/ic_add_user"
+                                android:contentDescription="@string/icon_good_things"
+                                android:src="@drawable/ic_good"
                                 app:tint="@color/primaryDarkColor" />
 
                         </LinearLayout>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
-                            android:text="@string/tambah_pelanggan"
+                            android:text="@string/tambahkan_hal_baik_hari_ini"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <LinearLayout
-                        android:id="@+id/ll_activate_customer"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/menu_box"
-                        android:backgroundTint="@color/primaryColor"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/menu_box"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="6dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/icon_aktivasi_pelanggan"
-                                android:src="@drawable/ic_check_user"
-                                app:tint="@color/primaryDarkColor" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="@string/aktivasi_pelanggan"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_settings"
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/menu_box"
-                        android:backgroundTint="@color/primaryColor"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/menu_box"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="6dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/icon_setting"
-                                android:src="@drawable/ic_setting"
-                                app:tint="@color/primaryDarkColor" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="@string/settings"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
 
             </LinearLayout>
 

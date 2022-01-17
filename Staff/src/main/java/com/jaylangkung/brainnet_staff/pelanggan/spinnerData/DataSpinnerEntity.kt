@@ -11,4 +11,7 @@ class DataSpinnerEntity(
     var nomer: String = "",
     var idpaket_instalasi: String = "",
     var paket_instalasi: String = "",
+    var idtagihan: String = "",
+    var no_invoice: String = "",
+    var total: String = "",
 )

@@ -18,7 +18,7 @@
     <string name="gangguan_address">Alamat : %1$s</string>
     <string name="gangguan_to">Kepada : %1$s</string>
     <string name="gangguan_detail">Isi : %1$s</string>
-    <string name="restart_router">Restart Router User</string>
+    <string name="restart_router">Restart Router Pelanggan</string>
     <string name="edit_data_tiang">Edit Data Tiang</string>
     <string name="home_data_gangguan">Data Gangguan</string>
     <string name="icon_restart">icon restart</string>
@@ -75,4 +75,18 @@
     <string name="add_customer_phone">Nomor HP</string>
     <string name="add_customer_install_address">Alamat Pasang</string>
     <string name="add_customer_lokasi">Lokasi</string>
+    <string name="btn_setting">tombol setting</string>
+    <string name="icon_menu_pelanggan">icon menu pelanggan</string>
+    <string name="menu_pelanggan">Menu Pelanggan</string>
+    <string name="tombol_close">tombol close</string>
+    <string name="icon_pelayanan">icon pelayanan</string>
+    <string name="services">Menu Pelayanan</string>
+    <string name="icon_insert_gangguan">icon insert gangguan</string>
+    <string name="tambah_gangguan">Tambah Gangguan</string>
+    <string name="icon_pemasangan_selesai">icon pemasangan selesai</string>
+    <string name="pemasangan_selesai">Pemasangan Selesai</string>
+    <string name="icon_pembayaran">icon pembayaran</string>
+    <string name="pembayaran">Pembayaran</string>
+    <string name="icon_dispensasi">icon dispensasi</string>
+    <string name="dispensasi">Dispensasi</string>
 </resources>
