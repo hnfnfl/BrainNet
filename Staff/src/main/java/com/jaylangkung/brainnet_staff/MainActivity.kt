@@ -29,6 +29,7 @@ import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
 import com.jaylangkung.brainnet_staff.menu_pelanggan.AddCustomerActivity
 import com.jaylangkung.brainnet_staff.menu_pelanggan.CustomerActivationActivity
 import com.jaylangkung.brainnet_staff.menu_pelanggan.restart.RestartActivity
+import com.jaylangkung.brainnet_staff.menu_pelayanan.dispensasi.DispensasiActivity
 import com.jaylangkung.brainnet_staff.menu_pelayanan.pemasangan_selesai.PemasanganSelesaiActivity
 import com.jaylangkung.brainnet_staff.menu_pelayanan.pembayaran.PembayaranActivity
 import com.jaylangkung.brainnet_staff.menu_pelayanan.tambah_gangguan.TambahGangguanActivity
@@ -196,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             bottomSheetMenuPelayananBinding.llDispensation.setOnClickListener {
-
+                startActivity(Intent(this@MainActivity, DispensasiActivity::class.java))
                 finish()
                 dialog.dismiss()
             }

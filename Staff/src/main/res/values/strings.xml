@@ -94,4 +94,6 @@
     <string name="pembayaran_nama">Nama : %1$s</string>
     <string name="pembayaran_invoice">No. Invoice : %1$s</string>
     <string name="pembayaran_tagihan">Total Tagihan : Rp %1$s</string>
+    <string name="pilih_tanggal_janji">Pilih Tanggal Janji</string>
+    <string name="dispensasi_tgl_janji">Tanggal Janji : %1$s</string>
 </resources>

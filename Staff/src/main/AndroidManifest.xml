@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
-        <activity android:name=".menu_pelayanan.pembayaran.PembayaranActivity"></activity>
+        <activity android:name=".menu_pelayanan.dispensasi.DispensasiActivity" />
+        <activity android:name=".menu_pelayanan.pembayaran.PembayaranActivity" />
         <activity android:name=".menu_pelayanan.pemasangan_selesai.PemasanganSelesaiActivity" />
         <activity android:name=".menu_pelayanan.tambah_gangguan.TambahGangguanActivity" />
         <activity android:name=".menu_pelanggan.CustomerActivationActivity" />

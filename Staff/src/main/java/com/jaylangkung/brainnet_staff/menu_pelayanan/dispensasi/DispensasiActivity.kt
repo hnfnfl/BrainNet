@@ -1,14 +1,15 @@
-package com.jaylangkung.brainnet_staff.menu_pelayanan.pembayaran
+package com.jaylangkung.brainnet_staff.menu_pelayanan.dispensasi
 
-import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
-import com.jaylangkung.brainnet_staff.databinding.ActivityPembayaranBinding
+import com.jaylangkung.brainnet_staff.databinding.ActivityDispensasiBinding
 import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
@@ -18,31 +19,29 @@ import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import dev.shreyaspatil.MaterialDialog.MaterialDialog
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
-class PembayaranActivity : AppCompatActivity() {
+class DispensasiActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPembayaranBinding
+    private lateinit var binding: ActivityDispensasiBinding
     private lateinit var myPreferences: MySharedPreferences
 
-    private var listTagihan: ArrayList<DataSpinnerEntity> = arrayListOf()
+    private var listPelanggan: ArrayList<DataSpinnerEntity> = arrayListOf()
 
-    private var nama: String = ""
-    private var idtagihan: String = ""
-    private var total: String = ""
+    private var idpelanggan: String = ""
+    private var tgl: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPembayaranBinding.inflate(layoutInflater)
+        binding = ActivityDispensasiBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        myPreferences = MySharedPreferences(this@PembayaranActivity)
+        myPreferences = MySharedPreferences(this@DispensasiActivity)
 
-        val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSpinnerData()
@@ -51,30 +50,33 @@ class PembayaranActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        binding.btnTglJanji.setOnClickListener {
+            val newCalendar: Calendar = Calendar.getInstance()
+            val datePickerDialog = DatePickerDialog(
+                this@DispensasiActivity,
+                { _, year, monthOfYear, dayOfMonth ->
+                    val newDate: Calendar = Calendar.getInstance()
+                    newDate.set(year, monthOfYear, dayOfMonth)
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                    tgl = dateFormatter.format(newDate.time)
+                    binding.tvTglJanji.text = tgl
+                },
+                newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+            )
+            datePickerDialog.show()
+        }
+
         binding.btnConfirmPayment.setOnClickListener {
             if (validate()) {
-                val mDialog = MaterialDialog.Builder(this@PembayaranActivity as Activity)
-                    .setTitle("Konfirmasi Pembayaran")
-                    .setMessage("Konfirmasikan pembayaran pelanggan atas nama $nama?")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_pay)
-                    { dialogInterface, _ ->
-                        insertPembayaran(idtagihan, total, idadmin, tokenAuth)
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+                insertDispensasi(idpelanggan, tgl, tokenAuth)
             }
         }
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this@PembayaranActivity, MainActivity::class.java))
+        startActivity(Intent(this@DispensasiActivity, MainActivity::class.java))
         finish()
     }
 
@@ -83,30 +85,21 @@ class PembayaranActivity : AppCompatActivity() {
         service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
-                    listTagihan.clear()
+                    listPelanggan.clear()
 
-                    listTagihan = response.body()!!.tagihan
+                    listPelanggan = response.body()!!.pelanggan
 
                     val listA = ArrayList<String>()
 
-                    for (i in 0 until listTagihan.size) {
-                        listA.add(response.body()!!.tagihan[i].nama)
+                    for (i in 0 until listPelanggan.size) {
+                        listA.add(response.body()!!.pelanggan[i].nama)
                     }
 
                     binding.spinnerPelanggan.item = listA as List<Any>?
 
                     binding.spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            nama = listTagihan[p2].nama
-                            idtagihan = listTagihan[p2].idtagihan
-                            total = listTagihan[p2].total
-                            binding.paymentName.text = getString(R.string.pembayaran_nama, listTagihan[p2].nama)
-                            binding.paymentInvoice.text = getString(R.string.pembayaran_invoice, listTagihan[p2].no_invoice)
-                            val formatter = DecimalFormat("#,###.#")
-                            binding.paymentTotal.text = getString(
-                                R.string.pembayaran_tagihan,
-                                formatter.format(listTagihan[p2].total.toFloat())
-                            )
+                            idpelanggan = listPelanggan[p2].idpelanggan
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -114,7 +107,7 @@ class PembayaranActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@PembayaranActivity,
+                        this@DispensasiActivity,
                         "getSpinnerData | onResponse", response.message()
                     )
                 }
@@ -122,7 +115,7 @@ class PembayaranActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@PembayaranActivity,
+                    this@DispensasiActivity,
                     "getSpinnerData | onFailure", t.message.toString()
                 )
             }
@@ -130,38 +123,44 @@ class PembayaranActivity : AppCompatActivity() {
     }
 
     private fun validate(): Boolean {
-        return if (idtagihan == "") {
-            Toasty.warning(this@PembayaranActivity, "Pelanggan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-            false
-        } else true
+        return when {
+            idpelanggan == "" -> {
+                Toasty.warning(this@DispensasiActivity, "Pelanggan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                false
+            }
+            tgl == "" -> {
+                Toasty.warning(this@DispensasiActivity, "Tanggal Janji tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                false
+            }
+            else -> true
+        }
     }
 
-    private fun insertPembayaran(
-        idtagihan: String,
-        jumlah_tagihan: String,
-        idadmin: String,
+    private fun insertDispensasi(
+        idpelanggan: String,
+        tanggal_janji: String,
         tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.insertPembayaran(idtagihan, jumlah_tagihan, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.insertDispensasi(idpelanggan, tanggal_janji, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        Toasty.success(this@PembayaranActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                        Toasty.success(this@DispensasiActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         onBackPressed()
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@PembayaranActivity,
-                        "insertPembayaran | onResponse", response.message()
+                        this@DispensasiActivity,
+                        "insertDispensasi | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@PembayaranActivity,
-                    "insertPembayaran | onResponse", t.message.toString()
+                    this@DispensasiActivity,
+                    "insertDispensasi | onResponse", t.message.toString()
                 )
             }
         })
