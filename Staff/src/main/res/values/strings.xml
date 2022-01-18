@@ -89,4 +89,9 @@
     <string name="pembayaran">Pembayaran</string>
     <string name="icon_dispensasi">icon dispensasi</string>
     <string name="dispensasi">Dispensasi</string>
+    <string name="nama_pelanggan">Nama Pelanggan : %1$s</string>
+    <string name="isi_gangguan">Isi Gangguan</string>
+    <string name="pembayaran_nama">Nama : %1$s</string>
+    <string name="pembayaran_invoice">No. Invoice : %1$s</string>
+    <string name="pembayaran_tagihan">Total Tagihan : Rp %1$s</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.jaylangkung.brainnet_staff.retrofit.response
 
-import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
 
 class DataSpinnerResponse(
     var paketInternet: ArrayList<DataSpinnerEntity>,

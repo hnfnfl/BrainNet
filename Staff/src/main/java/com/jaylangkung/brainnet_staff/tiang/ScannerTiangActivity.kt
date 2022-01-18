@@ -26,19 +26,19 @@ import retrofit2.Response
 
 class ScannerTiangActivity : AppCompatActivity() {
 
-    private lateinit var scannerTiangBinding: ActivityScannerTiangBinding
+    private lateinit var binding: ActivityScannerTiangBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var codeScanner: CodeScanner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scannerTiangBinding = ActivityScannerTiangBinding.inflate(layoutInflater)
-        setContentView(scannerTiangBinding.root)
+        binding = ActivityScannerTiangBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@ScannerTiangActivity)
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@ScannerTiangActivity, scannerTiangBinding.scannerView)
+        codeScanner = CodeScanner(this@ScannerTiangActivity, binding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
@@ -52,13 +52,13 @@ class ScannerTiangActivity : AppCompatActivity() {
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
-                scannerTiangBinding.loadingAnim.visibility = View.VISIBLE
+                binding.loadingAnim.visibility = View.VISIBLE
                 getTiang(it.text, tokenAuth)
             }
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        scannerTiangBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
     }
@@ -91,7 +91,7 @@ class ScannerTiangActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getTiang(idadmin, tokenAuth).enqueue(object : Callback<TiangResponse> {
             override fun onResponse(call: Call<TiangResponse>, response: Response<TiangResponse>) {
-                scannerTiangBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
                     vibrate()
                     if (response.body()!!.status == "success") {
@@ -116,7 +116,7 @@ class ScannerTiangActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TiangResponse>, t: Throwable) {
-                scannerTiangBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@ScannerTiangActivity,
                     "getTiang | onFailure", t.message.toString()

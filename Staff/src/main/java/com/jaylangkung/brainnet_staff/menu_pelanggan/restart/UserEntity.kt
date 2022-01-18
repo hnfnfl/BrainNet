@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.restart
+package com.jaylangkung.brainnet_staff.menu_pelanggan.restart
 
 class UserEntity(
     var user: String = "",

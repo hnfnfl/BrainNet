@@ -21,14 +21,14 @@ import retrofit2.Response
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private lateinit var splashScreenBinding: ActivitySplashScreenBinding
+    private lateinit var binding: ActivitySplashScreenBinding
     private lateinit var myPreferences: MySharedPreferences
 
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        splashScreenBinding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        setContentView(splashScreenBinding.root)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@SplashScreenActivity)
 
         Handler(Looper.getMainLooper()).postDelayed({

@@ -25,7 +25,7 @@ import retrofit2.Response
 
 class HalBaikActivity : AppCompatActivity() {
 
-    private lateinit var halBaikBinding: ActivityHalBaikBinding
+    private lateinit var binding: ActivityHalBaikBinding
     private lateinit var addHalBaikBinding: BottomSheetHalBaikBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var halBaikAdapter: HalBaikAdapter
@@ -33,8 +33,8 @@ class HalBaikActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        halBaikBinding = ActivityHalBaikBinding.inflate(layoutInflater)
-        setContentView(halBaikBinding.root)
+        binding = ActivityHalBaikBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@HalBaikActivity)
         halBaikAdapter = HalBaikAdapter()
 
@@ -43,18 +43,18 @@ class HalBaikActivity : AppCompatActivity() {
 
         getHalBaik(idadmin, tokenAuth)
 
-        halBaikBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        halBaikBinding.fabAddGoodThings.setOnClickListener {
+        binding.fabAddGoodThings.setOnClickListener {
             addHalBaikBinding = BottomSheetHalBaikBinding.inflate(layoutInflater)
 
             val dialog = BottomSheetDialog(this@HalBaikActivity)
             val btnSave = addHalBaikBinding.btnSaveHalBaik
 
             btnSave.setOnClickListener {
-                halBaikBinding.loadingAnim.visibility = View.VISIBLE
+                binding.loadingAnim.visibility = View.VISIBLE
                 val halBaik = addHalBaikBinding.inputHalBaik.text.toString()
                 val service = RetrofitClient().apiRequest().create(DataService::class.java)
                 service.insertHalBaik(idadmin, halBaik, tokenAuth).enqueue(object : Callback<DefaultResponse> {
@@ -73,7 +73,7 @@ class HalBaikActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                        halBaikBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         ErrorHandler().responseHandler(
                             this@HalBaikActivity,
                             "insertHalBaik | onFailure", t.message.toString()
@@ -99,27 +99,27 @@ class HalBaikActivity : AppCompatActivity() {
             override fun onResponse(call: Call<HalBaikResponse>, response: Response<HalBaikResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        halBaikBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listHalBaik = listData
                         halBaikAdapter.setHalBaikItem(listHalBaik)
                         halBaikAdapter.notifyDataSetChanged()
 
-                        with(halBaikBinding.rvHalBaik) {
+                        with(binding.rvHalBaik) {
                             layoutManager = LinearLayoutManager(this@HalBaikActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
                             adapter = halBaikAdapter
                         }
                     } else if (response.body()!!.status == "empty") {
-                        halBaikBinding.empty.visibility = View.VISIBLE
-                        halBaikBinding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
                         listHalBaik.clear()
                         halBaikAdapter.setHalBaikItem(listHalBaik)
                         halBaikAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    halBaikBinding.loadingAnim.visibility = View.GONE
+                    binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
                         this@HalBaikActivity,
                         "getHalBaik | onResponse", response.message()
@@ -128,7 +128,7 @@ class HalBaikActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<HalBaikResponse>, t: Throwable) {
-                halBaikBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@HalBaikActivity,
                     "getHalBaik | onFailure", t.message.toString()

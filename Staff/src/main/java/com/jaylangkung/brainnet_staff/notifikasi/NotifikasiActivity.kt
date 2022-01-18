@@ -21,15 +21,15 @@ import retrofit2.Response
 
 class NotifikasiActivity : AppCompatActivity() {
 
-    private lateinit var notifikasiBinding: ActivityNotifikasiBinding
+    private lateinit var binding: ActivityNotifikasiBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var notifikasiAdapter: NotifikasiAdapter
     private var listNotif: ArrayList<NotifikasiEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        notifikasiBinding = ActivityNotifikasiBinding.inflate(layoutInflater)
-        setContentView(notifikasiBinding.root)
+        binding = ActivityNotifikasiBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@NotifikasiActivity)
         notifikasiAdapter = NotifikasiAdapter()
 
@@ -37,7 +37,7 @@ class NotifikasiActivity : AppCompatActivity() {
 
         getNotification(tokenAuth)
 
-        notifikasiBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
@@ -54,21 +54,21 @@ class NotifikasiActivity : AppCompatActivity() {
             override fun onResponse(call: Call<NotifikasiResponse>, response: Response<NotifikasiResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        notifikasiBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listNotif = listData
                         notifikasiAdapter.setNotifItem(listNotif)
                         notifikasiAdapter.notifyDataSetChanged()
 
-                        with(notifikasiBinding.rvNotifikasi) {
+                        with(binding.rvNotifikasi) {
                             layoutManager = LinearLayoutManager(this@NotifikasiActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
                             adapter = notifikasiAdapter
                         }
                     } else if (response.body()!!.status == "empty") {
-                        notifikasiBinding.empty.visibility = View.VISIBLE
-                        notifikasiBinding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
                         listNotif.clear()
                         notifikasiAdapter.setNotifItem(listNotif)
                         notifikasiAdapter.notifyDataSetChanged()
@@ -82,7 +82,7 @@ class NotifikasiActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<NotifikasiResponse>, t: Throwable) {
-                notifikasiBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@NotifikasiActivity,
                     "getNotification | onFailure", t.message.toString()

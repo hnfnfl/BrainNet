@@ -1,6 +1,6 @@
 package com.jaylangkung.brainnet_staff.retrofit.response
 
-import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.WilayahEntity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.WilayahEntity
 
 class WilayahResponse(
     var provinsi: ArrayList<WilayahEntity>,

@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.pelanggan
+package com.jaylangkung.brainnet_staff.menu_pelanggan
 
 import android.app.Activity
 import android.content.Intent
@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ActivityAddCustomerBinding
-import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.DataSpinnerEntity
-import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.WilayahEntity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.WilayahEntity
 import com.jaylangkung.brainnet_staff.retrofit.*
 import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
 import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
@@ -26,7 +26,7 @@ import retrofit2.Response
 
 class AddCustomerActivity : AppCompatActivity() {
 
-    private lateinit var addCustomerBinding: ActivityAddCustomerBinding
+    private lateinit var binding: ActivityAddCustomerBinding
     private lateinit var myPreferences: MySharedPreferences
 
     private var listProvinsi: ArrayList<WilayahEntity> = arrayListOf()
@@ -48,8 +48,8 @@ class AddCustomerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addCustomerBinding = ActivityAddCustomerBinding.inflate(layoutInflater)
-        setContentView(addCustomerBinding.root)
+        binding = ActivityAddCustomerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@AddCustomerActivity)
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
@@ -57,20 +57,20 @@ class AddCustomerActivity : AppCompatActivity() {
         getProvinsi()
         getSpinnerData()
 
-        addCustomerBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        addCustomerBinding.btnAddCustomer.setOnClickListener {
+        binding.btnAddCustomer.setOnClickListener {
             if (validate()) {
-                val noktp = addCustomerBinding.customerInputKtp.text.toString()
-                val namaPelanggan = addCustomerBinding.customerName.text.toString()
-                val alamatPelanggan = addCustomerBinding.customerAddress.text.toString()
-                val rt = addCustomerBinding.customerRt.text.toString()
-                val rw = addCustomerBinding.customerRw.text.toString()
-                val nohp = addCustomerBinding.customerPhone.text.toString()
-                val alamatPasang = addCustomerBinding.customerAddressInstall.text.toString()
-                val lokasi = addCustomerBinding.customerLocation.text.toString()
+                val noktp = binding.customerInputKtp.text.toString()
+                val namaPelanggan = binding.customerName.text.toString()
+                val alamatPelanggan = binding.customerAddress.text.toString()
+                val rt = binding.customerRt.text.toString()
+                val rw = binding.customerRw.text.toString()
+                val nohp = binding.customerPhone.text.toString()
+                val alamatPasang = binding.customerAddressInstall.text.toString()
+                val lokasi = binding.customerLocation.text.toString()
 
                 val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity)
                     .setTitle("Tambahkan Pelanggan Baru")
@@ -129,14 +129,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                     list.sort()
                     listProvinsi.sortBy { it.nama }
-                    addCustomerBinding.spinnerProvinsi.item = list as List<Any>?
+                    binding.spinnerProvinsi.item = list as List<Any>?
 
-                    addCustomerBinding.spinnerProvinsi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerProvinsi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             listKotaKab.clear()
                             listKecamatan.clear()
-                            addCustomerBinding.spinnerKecamatan.item = arrayListOf()
-                            addCustomerBinding.spinnerKelurahan.item = arrayListOf()
+                            binding.spinnerKecamatan.item = arrayListOf()
+                            binding.spinnerKelurahan.item = arrayListOf()
                             provinsi = listProvinsi[p2].nama
                             getKotaKab(listProvinsi[p2].id)
                         }
@@ -173,13 +173,13 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                     list.sort()
                     listKotaKab.sortBy { it.nama }
-                    addCustomerBinding.spinnerKotaKab.item = list as List<Any>?
+                    binding.spinnerKotaKab.item = list as List<Any>?
 
-                    addCustomerBinding.spinnerKotaKab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerKotaKab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             listKecamatan.clear()
                             listKelurahan.clear()
-                            addCustomerBinding.spinnerKelurahan.item = arrayListOf()
+                            binding.spinnerKelurahan.item = arrayListOf()
                             kotaKab = listKotaKab[p2].nama
                             getkecamatan(listKotaKab[p2].id)
                         }
@@ -216,9 +216,9 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                     list.sort()
                     listKecamatan.sortBy { it.nama }
-                    addCustomerBinding.spinnerKecamatan.item = list as List<Any>?
+                    binding.spinnerKecamatan.item = list as List<Any>?
 
-                    addCustomerBinding.spinnerKecamatan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerKecamatan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             listKelurahan.clear()
                             kecamatan = listKecamatan[p2].nama
@@ -257,9 +257,9 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                     list.sort()
                     listKelurahan.sortBy { it.nama }
-                    addCustomerBinding.spinnerKelurahan.item = list as List<Any>?
+                    binding.spinnerKelurahan.item = list as List<Any>?
 
-                    addCustomerBinding.spinnerKelurahan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerKelurahan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             kelurahan = listKelurahan[p2].nama
                         }
@@ -309,13 +309,13 @@ class AddCustomerActivity : AppCompatActivity() {
                     for (i in 0 until listRekanan.size) {
                         listC.add(response.body()!!.rekanan[i].nama)
                     }
-                    addCustomerBinding.spinnerPaket.item = listA as List<Any>?
-                    addCustomerBinding.spinnerMarketing.item = listB as List<Any>?
-                    addCustomerBinding.spinnerPenagih.item = listB as List<Any>?
-                    addCustomerBinding.spinnerRekanan.item = listC as List<Any>?
+                    binding.spinnerPaket.item = listA as List<Any>?
+                    binding.spinnerMarketing.item = listB as List<Any>?
+                    binding.spinnerPenagih.item = listB as List<Any>?
+                    binding.spinnerRekanan.item = listC as List<Any>?
 
 
-                    addCustomerBinding.spinnerPaket.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerPaket.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             paketInternet = listPaketInternet[p2].idpaket_internet
                         }
@@ -324,7 +324,7 @@ class AddCustomerActivity : AppCompatActivity() {
 
                     }
 
-                    addCustomerBinding.spinnerMarketing.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerMarketing.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             marketing = listMarketing[p2].idmarketing
                         }
@@ -333,7 +333,7 @@ class AddCustomerActivity : AppCompatActivity() {
 
                     }
 
-                    addCustomerBinding.spinnerPenagih.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerPenagih.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             penagih = listMarketing[p2].idmarketing
                         }
@@ -342,7 +342,7 @@ class AddCustomerActivity : AppCompatActivity() {
 
                     }
 
-                    addCustomerBinding.spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             rekanan = listRekanan[p2].idrekanan
                         }
@@ -369,44 +369,44 @@ class AddCustomerActivity : AppCompatActivity() {
 
     private fun validate(): Boolean {
         when {
-            addCustomerBinding.customerInputKtp.text.toString() == "" -> {
-                addCustomerBinding.customerInputKtp.error = "Nomor KTP tidak boleh kosong"
-                addCustomerBinding.customerInputKtp.requestFocus()
+            binding.customerInputKtp.text.toString() == "" -> {
+                binding.customerInputKtp.error = "Nomor KTP tidak boleh kosong"
+                binding.customerInputKtp.requestFocus()
                 return false
             }
-            addCustomerBinding.customerName.text.toString() == "" -> {
-                addCustomerBinding.customerName.error = "Nama Pelanggan tidak boleh kosong"
-                addCustomerBinding.customerName.requestFocus()
+            binding.customerName.text.toString() == "" -> {
+                binding.customerName.error = "Nama Pelanggan tidak boleh kosong"
+                binding.customerName.requestFocus()
                 return false
             }
-            addCustomerBinding.customerAddress.text.toString() == "" -> {
-                addCustomerBinding.customerAddress.error = "Alamat Pelanggan tidak boleh kosong"
-                addCustomerBinding.customerAddress.requestFocus()
+            binding.customerAddress.text.toString() == "" -> {
+                binding.customerAddress.error = "Alamat Pelanggan tidak boleh kosong"
+                binding.customerAddress.requestFocus()
                 return false
             }
-            addCustomerBinding.customerRt.text.toString() == "" -> {
-                addCustomerBinding.customerRt.error = "RT tidak boleh kosong"
-                addCustomerBinding.customerRt.requestFocus()
+            binding.customerRt.text.toString() == "" -> {
+                binding.customerRt.error = "RT tidak boleh kosong"
+                binding.customerRt.requestFocus()
                 return false
             }
-            addCustomerBinding.customerRw.text.toString() == "" -> {
-                addCustomerBinding.customerRw.error = "RW tidak boleh kosong"
-                addCustomerBinding.customerRw.requestFocus()
+            binding.customerRw.text.toString() == "" -> {
+                binding.customerRw.error = "RW tidak boleh kosong"
+                binding.customerRw.requestFocus()
                 return false
             }
-            addCustomerBinding.customerPhone.text.toString() == "" -> {
-                addCustomerBinding.customerPhone.error = "Nomor HP tidak boleh kosong"
-                addCustomerBinding.customerPhone.requestFocus()
+            binding.customerPhone.text.toString() == "" -> {
+                binding.customerPhone.error = "Nomor HP tidak boleh kosong"
+                binding.customerPhone.requestFocus()
                 return false
             }
-            addCustomerBinding.customerAddressInstall.text.toString() == "" -> {
-                addCustomerBinding.customerAddressInstall.error = "Alamat Pemasangan tidak boleh kosong"
-                addCustomerBinding.customerAddressInstall.requestFocus()
+            binding.customerAddressInstall.text.toString() == "" -> {
+                binding.customerAddressInstall.error = "Alamat Pemasangan tidak boleh kosong"
+                binding.customerAddressInstall.requestFocus()
                 return false
             }
-            addCustomerBinding.customerLocation.text.toString() == "" -> {
-                addCustomerBinding.customerLocation.error = "Lokasi tidak boleh kosong"
-                addCustomerBinding.customerLocation.requestFocus()
+            binding.customerLocation.text.toString() == "" -> {
+                binding.customerLocation.error = "Lokasi tidak boleh kosong"
+                binding.customerLocation.requestFocus()
                 return false
             }
             provinsi == "" -> {

@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.pelanggan
+package com.jaylangkung.brainnet_staff.menu_pelanggan
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ActivityCustomerActivationBinding
-import com.jaylangkung.brainnet_staff.pelanggan.spinnerData.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
@@ -26,7 +26,7 @@ import retrofit2.Response
 
 class CustomerActivationActivity : AppCompatActivity() {
 
-    private lateinit var customerActivationBinding: ActivityCustomerActivationBinding
+    private lateinit var binding: ActivityCustomerActivationBinding
     private lateinit var myPreferences: MySharedPreferences
 
     private var listPelanggan: ArrayList<DataSpinnerEntity> = arrayListOf()
@@ -43,8 +43,8 @@ class CustomerActivationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        customerActivationBinding = ActivityCustomerActivationBinding.inflate(layoutInflater)
-        setContentView(customerActivationBinding.root)
+        binding = ActivityCustomerActivationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@CustomerActivationActivity)
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
@@ -55,8 +55,8 @@ class CustomerActivationActivity : AppCompatActivity() {
         val listTerminal = ArrayList<String>()
         listTerminal.add("Tidak")
         listTerminal.add("Ya")
-        customerActivationBinding.spinnerIsterminal.item = listTerminal as List<Any>?
-        customerActivationBinding.spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerIsterminal.item = listTerminal as List<Any>?
+        binding.spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 isterminal = listTerminal[p2]
             }
@@ -65,11 +65,11 @@ class CustomerActivationActivity : AppCompatActivity() {
 
         }
 
-        customerActivationBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        customerActivationBinding.btnActivateCustomer.setOnClickListener {
+        binding.btnActivateCustomer.setOnClickListener {
             if (validate()) {
                 val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
                     .setTitle("Aktivasi Pelanggan Baru")
@@ -128,12 +128,12 @@ class CustomerActivationActivity : AppCompatActivity() {
                         listD.add(response.body()!!.paketInstalasi[i].paket_instalasi)
                     }
 
-                    customerActivationBinding.spinnerPelanggan.item = listA as List<Any>?
-                    customerActivationBinding.spinnerSwitch.item = listB as List<Any>?
-                    customerActivationBinding.spinnerRekanan.item = listC as List<Any>?
-                    customerActivationBinding.spinnerPaketInstalasi.item = listD as List<Any>?
+                    binding.spinnerPelanggan.item = listA as List<Any>?
+                    binding.spinnerSwitch.item = listB as List<Any>?
+                    binding.spinnerRekanan.item = listC as List<Any>?
+                    binding.spinnerPaketInstalasi.item = listD as List<Any>?
 
-                    customerActivationBinding.spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             idpelanggan = listPelanggan[p2].idpelanggan
                             paket = listPelanggan[p2].paket
@@ -143,7 +143,7 @@ class CustomerActivationActivity : AppCompatActivity() {
 
                     }
 
-                    customerActivationBinding.spinnerSwitch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerSwitch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             idswitch = listSwitch[p2].idswitch
                         }
@@ -152,7 +152,7 @@ class CustomerActivationActivity : AppCompatActivity() {
 
                     }
 
-                    customerActivationBinding.spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             idrekanan = listRekanan[p2].idrekanan
                         }
@@ -161,7 +161,7 @@ class CustomerActivationActivity : AppCompatActivity() {
 
                     }
 
-                    customerActivationBinding.spinnerPaketInstalasi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    binding.spinnerPaketInstalasi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             idpaketinstalasi = listPaketInstalasi[p2].idpaket_instalasi
                         }
@@ -187,28 +187,28 @@ class CustomerActivationActivity : AppCompatActivity() {
     }
 
     private fun validate(): Boolean {
-        when {
+        return when {
             idpelanggan == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Pelanggan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
+                false
             }
             isterminal == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Silahkan pilih apakah terminal atau tidak", Toasty.LENGTH_SHORT).show()
-                return false
+                false
             }
             idswitch == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Switch tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
+                false
             }
             idrekanan == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Rekanan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
+                false
             }
             idpaketinstalasi == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Paket Instalasi tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                 return false
             }
-            else -> return true
+            else -> true
         }
     }
 

@@ -19,7 +19,7 @@ import retrofit2.Response
 
 class GangguanDetailActivity : AppCompatActivity() {
 
-    private lateinit var gangguanDetailBinding: ActivityGangguanDetailBinding
+    private lateinit var binding: ActivityGangguanDetailBinding
     private lateinit var myPreferences: MySharedPreferences
 
     companion object {
@@ -28,22 +28,22 @@ class GangguanDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        gangguanDetailBinding = ActivityGangguanDetailBinding.inflate(layoutInflater)
-        setContentView(gangguanDetailBinding.root)
+        binding = ActivityGangguanDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@GangguanDetailActivity)
 
         val idgangguan = intent.getStringExtra(idgangguan).toString()
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        gangguanDetailBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        gangguanDetailBinding.btnSubmit.setOnClickListener {
-            val penyelesaian = gangguanDetailBinding.tvValueSolution.text.toString()
+        binding.btnSubmit.setOnClickListener {
+            val penyelesaian = binding.tvValueSolution.text.toString()
             if (validate()) {
-                gangguanDetailBinding.btnSubmit.startAnimation()
+                binding.btnSubmit.startAnimation()
                 editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth)
             }
         }
@@ -55,9 +55,9 @@ class GangguanDetailActivity : AppCompatActivity() {
     }
 
     private fun validate(): Boolean {
-        if (gangguanDetailBinding.tvValueSolution.text.toString() == "") {
-            gangguanDetailBinding.tvValueSolution.error = "Penyelesaian tidak boleh kosong"
-            gangguanDetailBinding.tvValueSolution.requestFocus()
+        if (binding.tvValueSolution.text.toString() == "") {
+            binding.tvValueSolution.error = "Penyelesaian tidak boleh kosong"
+            binding.tvValueSolution.requestFocus()
             return false
         }
         return true
@@ -69,7 +69,7 @@ class GangguanDetailActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        gangguanDetailBinding.btnSubmit.endAnimation()
+                        binding.btnSubmit.endAnimation()
                         startActivity(Intent(this@GangguanDetailActivity, MainActivity::class.java))
                         Toasty.success(this@GangguanDetailActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                     }

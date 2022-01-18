@@ -33,7 +33,7 @@ import retrofit2.Response
 
 class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var editTiangBinding: ActivityEditTiangBinding
+    private lateinit var binding: ActivityEditTiangBinding
     private lateinit var myPreferences: MySharedPreferences
     var currentMarker: Marker? = null
     lateinit var client: FusedLocationProviderClient
@@ -49,8 +49,8 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        editTiangBinding = ActivityEditTiangBinding.inflate(layoutInflater)
-        setContentView(editTiangBinding.root)
+        binding = ActivityEditTiangBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@EditTiangActivity)
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
@@ -62,13 +62,13 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this@EditTiangActivity)
 
-        editTiangBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        editTiangBinding.btnSave.setOnClickListener {
-            editTiangBinding.btnSave.startAnimation()
-            val keterangan = editTiangBinding.tvValueDesc.text.toString()
+        binding.btnSave.setOnClickListener {
+            binding.btnSave.startAnimation()
+            val keterangan = binding.tvValueDesc.text.toString()
             editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
         }
     }
@@ -96,8 +96,8 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
             LocationRequest.PRIORITY_HIGH_ACCURACY
             latitude = it.result.latitude
             longitude = it.result.longitude
-            editTiangBinding.tvLat.text = getString(R.string.detail_tiang_latitude, latitude.toString())
-            editTiangBinding.tvLng.text = getString(R.string.detail_tiang_longitude, longitude.toString())
+            binding.tvLat.text = getString(R.string.detail_tiang_latitude, latitude.toString())
+            binding.tvLng.text = getString(R.string.detail_tiang_longitude, longitude.toString())
             val pos = LatLng(latitude!!, longitude!!)
             drawMarker(pos)
         }
@@ -109,8 +109,8 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
                     currentMarker?.remove()
 
                 newLatLng = p0.position
-                editTiangBinding.tvLat.text = getString(R.string.detail_tiang_latitude, newLatLng.latitude.toString())
-                editTiangBinding.tvLng.text = getString(R.string.detail_tiang_longitude, newLatLng.longitude.toString())
+                binding.tvLat.text = getString(R.string.detail_tiang_latitude, newLatLng.latitude.toString())
+                binding.tvLng.text = getString(R.string.detail_tiang_longitude, newLatLng.longitude.toString())
                 drawMarker(newLatLng)
             }
 
@@ -137,7 +137,7 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        editTiangBinding.btnSave.endAnimation()
+                        binding.btnSave.endAnimation()
                         startActivity(Intent(this@EditTiangActivity, MainActivity::class.java))
                         Toasty.success(this@EditTiangActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         finish()

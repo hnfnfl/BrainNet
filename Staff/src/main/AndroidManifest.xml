@@ -20,8 +20,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_staff">
-        <activity android:name=".pelanggan.CustomerActivationActivity"></activity>
-        <activity android:name=".pelanggan.AddCustomerActivity" />
+        <activity android:name=".menu_pelayanan.pembayaran.PembayaranActivity"></activity>
+        <activity android:name=".menu_pelayanan.pemasangan_selesai.PemasanganSelesaiActivity" />
+        <activity android:name=".menu_pelayanan.tambah_gangguan.TambahGangguanActivity" />
+        <activity android:name=".menu_pelanggan.CustomerActivationActivity" />
+        <activity android:name=".menu_pelanggan.AddCustomerActivity" />
         <activity android:name=".utils.room.LoggerActivity" />
         <activity android:name=".notifikasi.NotifikasiActivity" />
         <activity android:name=".monitoring.MonitoringActivity" />
@@ -41,7 +44,7 @@
         <activity android:name=".hal_baik.HalBaikActivity" />
         <activity android:name=".tiang.EditTiangActivity" />
         <activity android:name=".tiang.ScannerTiangActivity" />
-        <activity android:name=".restart.RestartActivity" />
+        <activity android:name=".menu_pelanggan.restart.RestartActivity" />
         <activity android:name=".gangguan.GangguanDetailActivity" />
         <activity android:name=".presensi.ScannerActivity" />
         <activity android:name=".auth.LoginActivity" />

@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.pelanggan.spinnerData
+package com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData
 
 class WilayahEntity(
     var id: String = "",

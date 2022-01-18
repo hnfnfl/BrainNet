@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menu_pelanggan.CustomerActivationActivity">
+    tools:context=".menu_pelayanan.tambah_gangguan.TambahGangguanActivity">
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/aktivasi_pelanggan"
+            android:text="@string/tambah_gangguan"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -79,15 +79,15 @@
                 android:weightSum="2">
 
                 <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                    android:id="@+id/spinner_isterminal"
+                    android:id="@+id/spinner_kepada"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
                     android:spinnerMode="dropdown"
                     app:smsp_floatingLabelColor="@color/primaryColor"
-                    app:smsp_floatingLabelText="Terminal?"
-                    app:smsp_hint="Terminal?"
+                    app:smsp_floatingLabelText="Kepada"
+                    app:smsp_hint="Pilih Kepada"
                     app:smsp_hintColor="@color/primaryColor"
                     app:smsp_isOutlined="true"
                     app:smsp_itemColor="@color/black"
@@ -101,16 +101,16 @@
                     app:smsp_selectedItemListColor="@color/primaryDarkColor" />
 
                 <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                    android:id="@+id/spinner_switch"
+                    android:id="@+id/spinner_prioritas"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:spinnerMode="dropdown"
                     app:smsp_floatingLabelColor="@color/primaryColor"
-                    app:smsp_floatingLabelText="Switch"
-                    app:smsp_hint="Pilih Switch"
+                    app:smsp_floatingLabelText="Prioritas"
+                    app:smsp_hint="Pilih Prioritas"
                     app:smsp_hintColor="@color/primaryColor"
                     app:smsp_isOutlined="true"
-                    app:smsp_isSearchable="true"
                     app:smsp_itemColor="@color/black"
                     app:smsp_itemListColor="@color/black"
                     app:smsp_itemListHintBackgroundColor="#808080"
@@ -119,66 +119,29 @@
                     app:smsp_outlinedBoxColor="@color/primaryColor"
                     app:smsp_outlinedBoxRadius="4dp"
                     app:smsp_outlinedStrokeWidth="1dp"
-                    app:smsp_searchHeaderBackgroundColor="@color/secondaryColor"
-                    app:smsp_searchHeaderText="Pilih/Cari Switch"
                     app:smsp_selectedItemListColor="@color/primaryDarkColor" />
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                app:endIconMode="clear_text">
 
-                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                    android:id="@+id/spinner_rekanan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:spinnerMode="dropdown"
-                    app:smsp_floatingLabelColor="@color/primaryColor"
-                    app:smsp_floatingLabelText="Rekanan"
-                    app:smsp_hint="Pilih Rekanan"
-                    app:smsp_hintColor="@color/primaryColor"
-                    app:smsp_isOutlined="true"
-                    app:smsp_itemColor="@color/black"
-                    app:smsp_itemListColor="@color/black"
-                    app:smsp_itemListHintBackgroundColor="#808080"
-                    app:smsp_itemListHintColor="#FFFFFF"
-                    app:smsp_multilineError="false"
-                    app:smsp_outlinedBoxColor="@color/primaryColor"
-                    app:smsp_outlinedBoxRadius="4dp"
-                    app:smsp_outlinedStrokeWidth="1dp"
-                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_tambah_gangguan_isi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/isi_gangguan"
+                    android:inputType="text" />
 
-                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                    android:id="@+id/spinner_paket_instalasi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:spinnerMode="dropdown"
-                    app:smsp_floatingLabelColor="@color/primaryColor"
-                    app:smsp_floatingLabelText="Paket Instalasi"
-                    app:smsp_hint="Pilih Paket Instalasi"
-                    app:smsp_hintColor="@color/primaryColor"
-                    app:smsp_isOutlined="true"
-                    app:smsp_itemColor="@color/black"
-                    app:smsp_itemListColor="@color/black"
-                    app:smsp_itemListHintBackgroundColor="#808080"
-                    app:smsp_itemListHintColor="#FFFFFF"
-                    app:smsp_multilineError="false"
-                    app:smsp_outlinedBoxColor="@color/primaryColor"
-                    app:smsp_outlinedBoxRadius="4dp"
-                    app:smsp_outlinedStrokeWidth="1dp"
-                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.chand.progressbutton.ProgressButton
-                android:id="@+id/btn_activate_customer"
+                android:id="@+id/btn_add_gangguan"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginVertical="16dp"
@@ -191,13 +154,12 @@
                 app:p_progressColor="@color/primaryLightColor"
                 app:p_rippleColor="@color/primaryLightColor"
                 app:p_style="circleBar"
-                app:p_text="Aktivasi Pelanggan"
+                app:p_text="Tambah Gangguan"
                 app:p_textColor="@color/white"
                 app:p_textSize="18sp" />
 
         </LinearLayout>
 
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

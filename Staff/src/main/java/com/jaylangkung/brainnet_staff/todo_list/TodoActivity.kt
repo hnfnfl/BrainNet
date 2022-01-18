@@ -27,7 +27,7 @@ import retrofit2.Response
 
 class TodoActivity : AppCompatActivity() {
 
-    private lateinit var todoBinding: ActivityToDoBinding
+    private lateinit var binding: ActivityToDoBinding
     private lateinit var addTodoBinding: BottomSheetTodoBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var todoAdapter: TodoAdapter
@@ -35,26 +35,26 @@ class TodoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        todoBinding = ActivityToDoBinding.inflate(layoutInflater)
-        setContentView(todoBinding.root)
+        binding = ActivityToDoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@TodoActivity)
         todoAdapter = TodoAdapter()
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
 
-        todoBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        todoBinding.fabAddTodo.setOnClickListener {
+        binding.fabAddTodo.setOnClickListener {
             addTodoBinding = BottomSheetTodoBinding.inflate(layoutInflater)
 
             val dialog = BottomSheetDialog(this@TodoActivity)
             val btnSave = addTodoBinding.btnSaveTodo
 
             btnSave.setOnClickListener {
-                todoBinding.loadingAnim.visibility = View.VISIBLE
+                binding.loadingAnim.visibility = View.VISIBLE
                 val todo = addTodoBinding.inputTodo.text.toString()
                 val service = RetrofitClient().apiRequest().create(DataService::class.java)
                 service.insertTodo(idadmin, todo, tokenAuth).enqueue(object : Callback<DefaultResponse> {
@@ -68,7 +68,7 @@ class TodoActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                        todoBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         Toasty.error(this@TodoActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
                     }
                 })
@@ -92,14 +92,14 @@ class TodoActivity : AppCompatActivity() {
             override fun onResponse(call: Call<TodoResponse>, response: Response<TodoResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        todoBinding.loadingAnim.visibility = View.GONE
-                        todoBinding.empty.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listTodo = listData
                         todoAdapter.setTodoItem(listTodo)
                         todoAdapter.notifyDataSetChanged()
 
-                        with(todoBinding.rvTodoList) {
+                        with(binding.rvTodoList) {
                             layoutManager = LinearLayoutManager(this@TodoActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
@@ -124,15 +124,15 @@ class TodoActivity : AppCompatActivity() {
                                                             Toasty.success(this@TodoActivity, "Todo berhasil diselesaikan", Toasty.LENGTH_LONG).show()
                                                             listTodo.removeAt(position)
                                                             if (listTodo.isNullOrEmpty()) {
-                                                                todoBinding.empty.visibility = View.VISIBLE
-                                                                todoBinding.loadingAnim.visibility = View.GONE
+                                                                binding.empty.visibility = View.VISIBLE
+                                                                binding.loadingAnim.visibility = View.GONE
                                                                 listTodo.clear()
                                                             }
                                                             todoAdapter.setTodoItem(listTodo)
                                                             todoAdapter.notifyDataSetChanged()
                                                         }
                                                     } else {
-                                                        todoBinding.loadingAnim.visibility = View.GONE
+                                                        binding.loadingAnim.visibility = View.GONE
                                                         ErrorHandler().responseHandler(
                                                             this@TodoActivity,
                                                             "editTodo | onResponse", response.message()
@@ -141,7 +141,7 @@ class TodoActivity : AppCompatActivity() {
                                                 }
 
                                                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                                                    todoBinding.loadingAnim.visibility = View.GONE
+                                                    binding.loadingAnim.visibility = View.GONE
                                                     ErrorHandler().responseHandler(
                                                         this@TodoActivity,
                                                         "editTodo | onResponse", t.message.toString()
@@ -161,14 +161,14 @@ class TodoActivity : AppCompatActivity() {
 
                         })
                     } else if (response.body()!!.status == "empty") {
-                        todoBinding.empty.visibility = View.VISIBLE
-                        todoBinding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
                         listTodo.clear()
                         todoAdapter.setTodoItem(listTodo)
                         todoAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    todoBinding.loadingAnim.visibility = View.GONE
+                    binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
                         this@TodoActivity,
                         "getTodo | onResponse", response.message()
@@ -177,7 +177,7 @@ class TodoActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TodoResponse>, t: Throwable) {
-                todoBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@TodoActivity,
                     "getTodo | onFailure", t.message.toString()

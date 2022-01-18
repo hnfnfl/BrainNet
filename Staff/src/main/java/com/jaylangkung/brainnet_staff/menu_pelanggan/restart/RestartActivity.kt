@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.restart
+package com.jaylangkung.brainnet_staff.menu_pelanggan.restart
 
 import android.content.Intent
 import android.os.Bundle

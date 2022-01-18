@@ -24,7 +24,7 @@ import retrofit2.Response
 
 class MonitoringActivity : AppCompatActivity() {
 
-    private lateinit var monitoringBinding: ActivityMonitoringBinding
+    private lateinit var binding: ActivityMonitoringBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var ethernetAdapter: EthernetAdapter
     private lateinit var userDCAdapter: UserDCAdapter
@@ -34,23 +34,23 @@ class MonitoringActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        monitoringBinding = ActivityMonitoringBinding.inflate(layoutInflater)
-        setContentView(monitoringBinding.root)
+        binding = ActivityMonitoringBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MonitoringActivity)
         ethernetAdapter = EthernetAdapter()
         userDCAdapter = UserDCAdapter()
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        monitoringBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
         getEthernet(tokenAuth)
         getUserDisconnected(tokenAuth)
 
-        monitoringBinding.fabDisconnected.setOnClickListener {
-            monitoringBinding.loadingAnim.visibility = View.VISIBLE
+        binding.fabDisconnected.setOnClickListener {
+            binding.loadingAnim.visibility = View.VISIBLE
             filterUserDC.clear()
             Handler(Looper.getMainLooper()).postDelayed({
                 listUserDC.forEach { ListData ->
@@ -60,12 +60,12 @@ class MonitoringActivity : AppCompatActivity() {
                 }
                 userDCAdapter.setUserDCItem(filterUserDC)
                 userDCAdapter.notifyDataSetChanged()
-                monitoringBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
             }, 500)
         }
 
-        monitoringBinding.fabIsolation.setOnClickListener {
-            monitoringBinding.loadingAnim.visibility = View.VISIBLE
+        binding.fabIsolation.setOnClickListener {
+            binding.loadingAnim.visibility = View.VISIBLE
             filterUserDC.clear()
             Handler(Looper.getMainLooper()).postDelayed({
                 listUserDC.forEach { ListData ->
@@ -75,7 +75,7 @@ class MonitoringActivity : AppCompatActivity() {
                 }
                 userDCAdapter.setUserDCItem(filterUserDC)
                 userDCAdapter.notifyDataSetChanged()
-                monitoringBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
             }, 500)
         }
     }
@@ -96,7 +96,7 @@ class MonitoringActivity : AppCompatActivity() {
                         ethernetAdapter.setEthernetItem(listEthernet)
                         ethernetAdapter.notifyDataSetChanged()
 
-                        with(monitoringBinding.rvEthernet) {
+                        with(binding.rvEthernet) {
                             layoutManager = LinearLayoutManager(this@MonitoringActivity, LinearLayoutManager.HORIZONTAL, false)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
@@ -112,7 +112,7 @@ class MonitoringActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<EthernetResponse>, t: Throwable) {
-                monitoringBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@MonitoringActivity,
                     "getEthernet | onFailure", t.message.toString()
@@ -127,7 +127,7 @@ class MonitoringActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UserDCResponse>, response: Response<UserDCResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        monitoringBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listUserDC = listData
                         listUserDC.forEach { ListData ->
@@ -138,21 +138,21 @@ class MonitoringActivity : AppCompatActivity() {
                         userDCAdapter.setUserDCItem(filterUserDC)
                         userDCAdapter.notifyDataSetChanged()
 
-                        with(monitoringBinding.rvUserDc) {
+                        with(binding.rvUserDc) {
                             layoutManager = LinearLayoutManager(this@MonitoringActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
                             adapter = userDCAdapter
                         }
                     } else if (response.body()!!.status == "empty") {
-                        monitoringBinding.empty.visibility = View.VISIBLE
-                        monitoringBinding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
                         listUserDC.clear()
                         userDCAdapter.setUserDCItem(listUserDC)
                         userDCAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    monitoringBinding.loadingAnim.visibility = View.GONE
+                    binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
                         this@MonitoringActivity,
                         "getUserDisconnected | onResponse", response.message()
@@ -161,7 +161,7 @@ class MonitoringActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<UserDCResponse>, t: Throwable) {
-                monitoringBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@MonitoringActivity,
                     "getUserDisconnected | onFailure", t.message.toString()

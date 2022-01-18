@@ -26,20 +26,20 @@ import retrofit2.Response
 
 class ScannerActivity : AppCompatActivity() {
 
-    private lateinit var scannerBinding: ActivityScannerBinding
+    private lateinit var binding: ActivityScannerBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var codeScanner: CodeScanner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scannerBinding = ActivityScannerBinding.inflate(layoutInflater)
-        setContentView(scannerBinding.root)
+        binding = ActivityScannerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@ScannerActivity)
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@ScannerActivity, scannerBinding.scannerView)
+        codeScanner = CodeScanner(this@ScannerActivity, binding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
@@ -52,13 +52,13 @@ class ScannerActivity : AppCompatActivity() {
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
-                scannerBinding.loadingAnim.visibility = View.VISIBLE
+                binding.loadingAnim.visibility = View.VISIBLE
                 getAbsensi(it.text, idadmin, tokenAuth)
             }
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        scannerBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
     }
@@ -91,7 +91,7 @@ class ScannerActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getAbsensi(token, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                scannerBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
                     vibrate()
                     when (response.body()!!.status) {
@@ -120,7 +120,7 @@ class ScannerActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                scannerBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@ScannerActivity,
                     "getAbsensi | onFailure", t.message.toString()

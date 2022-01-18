@@ -18,14 +18,14 @@ import retrofit2.Response
 
 class EditProfileActivity : AppCompatActivity() {
 
-    private lateinit var editProfileBinding: ActivityEditProfileBinding
+    private lateinit var binding: ActivityEditProfileBinding
     private lateinit var myPreferences: MySharedPreferences
 //    var photoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        editProfileBinding = ActivityEditProfileBinding.inflate(layoutInflater)
-        setContentView(editProfileBinding.root)
+        binding = ActivityEditProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@EditProfileActivity)
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
@@ -35,18 +35,18 @@ class EditProfileActivity : AppCompatActivity() {
         val alamat = myPreferences.getValue(Constants.USER_ALAMAT).toString()
         val telp = myPreferences.getValue(Constants.USER_TELP).toString()
 
-        editProfileBinding.tvValueEmailEdit.setText(email)
-        editProfileBinding.tvValueNameEdit.setText(nama)
-        editProfileBinding.tvValueAddressEdit.setText(alamat)
-        editProfileBinding.tvValuePhoneEdit.setText(telp)
+        binding.tvValueEmailEdit.setText(email)
+        binding.tvValueNameEdit.setText(nama)
+        binding.tvValueAddressEdit.setText(alamat)
+        binding.tvValuePhoneEdit.setText(telp)
 
-        editProfileBinding.btnSave.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             if (validate()) {
-                editProfileBinding.btnSave.startAnimation()
-                val editEmail = editProfileBinding.tvValueEmailEdit.text.toString()
-                val editName = editProfileBinding.tvValueNameEdit.text.toString()
-                val editAddress = editProfileBinding.tvValueAddressEdit.text.toString()
-                val editPhone = editProfileBinding.tvValuePhoneEdit.text.toString()
+                binding.btnSave.startAnimation()
+                val editEmail = binding.tvValueEmailEdit.text.toString()
+                val editName = binding.tvValueNameEdit.text.toString()
+                val editAddress = binding.tvValueAddressEdit.text.toString()
+                val editPhone = binding.tvValuePhoneEdit.text.toString()
                 editProfile(idadmin, editEmail, editName, editAddress, editPhone, tokenAuth)
             }
         }
@@ -60,29 +60,29 @@ class EditProfileActivity : AppCompatActivity() {
     private fun validate(): Boolean {
         fun String.isValidEmail() = isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
         when {
-            editProfileBinding.tvValueEmailEdit.text.toString() == "" -> {
-                editProfileBinding.tvValueEmailEdit.error = getString(R.string.email_cant_empty)
-                editProfileBinding.tvValueEmailEdit.requestFocus()
+            binding.tvValueEmailEdit.text.toString() == "" -> {
+                binding.tvValueEmailEdit.error = getString(R.string.email_cant_empty)
+                binding.tvValueEmailEdit.requestFocus()
                 return false
             }
-            !editProfileBinding.tvValueEmailEdit.text.toString().isValidEmail() -> {
-                editProfileBinding.tvValueEmailEdit.error = getString(R.string.email_format_error)
-                editProfileBinding.tvValueEmailEdit.requestFocus()
+            !binding.tvValueEmailEdit.text.toString().isValidEmail() -> {
+                binding.tvValueEmailEdit.error = getString(R.string.email_format_error)
+                binding.tvValueEmailEdit.requestFocus()
                 return false
             }
-            editProfileBinding.tvValueNameEdit.text.toString() == "" -> {
-                editProfileBinding.tvValueNameEdit.error = "Nama tidak boleh kosong"
-                editProfileBinding.tvValueNameEdit.requestFocus()
+            binding.tvValueNameEdit.text.toString() == "" -> {
+                binding.tvValueNameEdit.error = "Nama tidak boleh kosong"
+                binding.tvValueNameEdit.requestFocus()
                 return false
             }
-            editProfileBinding.tvValueAddressEdit.text.toString() == "" -> {
-                editProfileBinding.tvValueAddressEdit.error = "Alamat tidak boleh kosong"
-                editProfileBinding.tvValueAddressEdit.requestFocus()
+            binding.tvValueAddressEdit.text.toString() == "" -> {
+                binding.tvValueAddressEdit.error = "Alamat tidak boleh kosong"
+                binding.tvValueAddressEdit.requestFocus()
                 return false
             }
-            editProfileBinding.tvValuePhoneEdit.text.toString() == "" -> {
-                editProfileBinding.tvValuePhoneEdit.error = "Nomor HP tidak boleh kosong"
-                editProfileBinding.tvValuePhoneEdit.requestFocus()
+            binding.tvValuePhoneEdit.text.toString() == "" -> {
+                binding.tvValuePhoneEdit.error = "Nomor HP tidak boleh kosong"
+                binding.tvValuePhoneEdit.requestFocus()
                 return false
             }
             else -> return true
@@ -112,7 +112,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                editProfileBinding.btnSave.endAnimation()
+                binding.btnSave.endAnimation()
                 ErrorHandler().responseHandler(
                     this@EditProfileActivity,
                     "editProfile | onFailure", t.message.toString()

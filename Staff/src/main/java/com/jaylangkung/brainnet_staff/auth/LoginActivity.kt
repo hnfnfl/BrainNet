@@ -21,23 +21,23 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var loginBinding: ActivityLoginBinding
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var myPreferences: MySharedPreferences
 
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginBinding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(loginBinding.root)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@LoginActivity)
 
         val deviceID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
-        loginBinding.btnLogin.setOnClickListener {
-            val email = loginBinding.tvValueEmailLogin.text.toString()
-            val pass = loginBinding.tvValuePasswordLogin.text.toString()
+        binding.btnLogin.setOnClickListener {
+            val email = binding.tvValueEmailLogin.text.toString()
+            val pass = binding.tvValuePasswordLogin.text.toString()
             if (validate()) {
                 loginProcess(email, pass, "hp.$deviceID")
-                loginBinding.btnLogin.startAnimation()
+                binding.btnLogin.startAnimation()
             }
         }
     }
@@ -45,19 +45,19 @@ class LoginActivity : AppCompatActivity() {
     private fun validate(): Boolean {
         fun String.isValidEmail() = isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
         when {
-            loginBinding.tvValueEmailLogin.text.toString() == "" -> {
-                loginBinding.tvValueEmailLogin.error = getString(R.string.email_cant_empty)
-                loginBinding.tvValueEmailLogin.requestFocus()
+            binding.tvValueEmailLogin.text.toString() == "" -> {
+                binding.tvValueEmailLogin.error = getString(R.string.email_cant_empty)
+                binding.tvValueEmailLogin.requestFocus()
                 return false
             }
-            !loginBinding.tvValueEmailLogin.text.toString().isValidEmail() -> {
-                loginBinding.tvValueEmailLogin.error = getString(R.string.email_format_error)
-                loginBinding.tvValueEmailLogin.requestFocus()
+            !binding.tvValueEmailLogin.text.toString().isValidEmail() -> {
+                binding.tvValueEmailLogin.error = getString(R.string.email_format_error)
+                binding.tvValueEmailLogin.requestFocus()
                 return false
             }
-            loginBinding.tvValuePasswordLogin.text.toString() == "" -> {
-                loginBinding.tvValuePasswordLogin.error = getString(R.string.password_cant_empty)
-                loginBinding.tvValuePasswordLogin.requestFocus()
+            binding.tvValuePasswordLogin.text.toString() == "" -> {
+                binding.tvValuePasswordLogin.error = getString(R.string.password_cant_empty)
+                binding.tvValuePasswordLogin.requestFocus()
                 return false
             }
             else -> return true
@@ -84,15 +84,15 @@ class LoginActivity : AppCompatActivity() {
                             finish()
                         }
                         "not_exist" -> {
-                            loginBinding.btnLogin.endAnimation()
+                            binding.btnLogin.endAnimation()
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
                         "unauthorized" -> {
-                            loginBinding.btnLogin.endAnimation()
+                            binding.btnLogin.endAnimation()
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
                         "too_many_attempt" -> {
-                            loginBinding.btnLogin.endAnimation()
+                            binding.btnLogin.endAnimation()
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
                     }
@@ -105,7 +105,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                loginBinding.btnLogin.endAnimation()
+                binding.btnLogin.endAnimation()
                 ErrorHandler().responseHandler(
                     this@LoginActivity,
                     "loginProcess | onResponse", t.message.toString()

@@ -166,4 +166,45 @@ interface DataService {
         @Field("idpaket_instalasi") idpaket_instalasi: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertGangguan")
+    fun insertGangguan(
+        @Field("idpelanggan") idpelanggan: String,
+        @Field("kepada") kepada: String,
+        @Field("prioritas") prioritas: String,
+        @Field("isi") isi: String,
+        @Field("idadmin") idadmin: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @POST("main/getBelumTerpasang")
+    fun getBelumTerpasang(
+        @Header("Authorization") tokenAuth: String
+    ): Call<BelumTerpasangResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertBayarTeknisi")
+    fun insertBayarTeknisi(
+        @Field("idpelanggan") idpelanggan: String,
+        @Field("idadmin") idadmin: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertPembayaran")
+    fun insertPembayaran(
+        @Field("idtagihan") idtagihan: String,
+        @Field("jumlah_tagihan") jumlah_tagihan: String,
+        @Field("idadmin") idadmin: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertDispensasi")
+    fun insertDispensasi(
+        @Field("idpelanggan") idpelanggan: String,
+        @Field("tanggal_janji") tanggal_janji: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

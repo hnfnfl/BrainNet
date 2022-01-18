@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.restart
+package com.jaylangkung.brainnet_staff.menu_pelanggan.restart
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -55,7 +55,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                 itemView.setOnClickListener {
                     val mDialog = MaterialDialog.Builder(itemView.context as Activity)
                         .setTitle("Konfirmasi Restart")
-                        .setMessage("Apakah Anda yakin ingin me-restart router pelanggan $nama?")
+                        .setMessage("Apakah Anda yakin ingin me-restart router menu_pelanggan $nama?")
                         .setCancelable(true)
                         .setPositiveButton(itemView.context.getString(R.string.yes), R.drawable.ic_restart)
                         { dialogInterface, _ ->

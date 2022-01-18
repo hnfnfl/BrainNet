@@ -26,8 +26,8 @@ class NotificationHelper(private val context: Context) {
 
         val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.ringtone1)
         val channelId = "Default Channel"
-        val mBuilder = NotificationCompat.Builder(context, channelId)
-            .setColor(ContextCompat.getColor(context, android.R.color.holo_green_light))
+        val mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
+            .setColor(ContextCompat.getColor(context, R.color.primaryColor))
             .setContentTitle(title)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
@@ -52,7 +52,7 @@ class NotificationHelper(private val context: Context) {
             channel.enableVibration(true)
             channel.vibrationPattern = longArrayOf(100, 200, 300, 400, 100, 100, 100)
             channel.enableLights(true)
-            channel.lightColor = Color.RED
+            channel.lightColor = Color.BLUE
             channel.setSound(sound, audioAttributes)
             notificationManager.createNotificationChannel(channel)
         }

@@ -25,20 +25,20 @@ import retrofit2.Response
 
 class LoginWebAppActivity : AppCompatActivity() {
 
-    private lateinit var loginWebAppBinding: ActivityLoginWebAppBinding
+    private lateinit var binding: ActivityLoginWebAppBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var codeScanner: CodeScanner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginWebAppBinding = ActivityLoginWebAppBinding.inflate(layoutInflater)
-        setContentView(loginWebAppBinding.root)
+        binding = ActivityLoginWebAppBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@LoginWebAppActivity)
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@LoginWebAppActivity, loginWebAppBinding.scannerView)
+        codeScanner = CodeScanner(this@LoginWebAppActivity, binding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
@@ -52,7 +52,7 @@ class LoginWebAppActivity : AppCompatActivity() {
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
-                loginWebAppBinding.loadingAnim.visibility = View.VISIBLE
+                binding.loadingAnim.visibility = View.VISIBLE
                 if (it.text.contains("webapp", ignoreCase = true)) {
                     insertWebApp(idadmin, it.text, tokenAuth)
                 } else {
@@ -63,7 +63,7 @@ class LoginWebAppActivity : AppCompatActivity() {
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        loginWebAppBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
     }
@@ -96,7 +96,7 @@ class LoginWebAppActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertWebApp(idadmin, device_id, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                loginWebAppBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
                     vibrate()
                     if (response.body()!!.status == "success") {
@@ -112,7 +112,7 @@ class LoginWebAppActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                loginWebAppBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@LoginWebAppActivity,
                     "insertWebApp | onResponse", t.message.toString()

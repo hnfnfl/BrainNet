@@ -26,12 +26,15 @@ import com.jaylangkung.brainnet_staff.databinding.BottomSheetMenuPelayananBindin
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
 import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
 import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.AddCustomerActivity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.CustomerActivationActivity
+import com.jaylangkung.brainnet_staff.menu_pelanggan.restart.RestartActivity
+import com.jaylangkung.brainnet_staff.menu_pelayanan.pemasangan_selesai.PemasanganSelesaiActivity
+import com.jaylangkung.brainnet_staff.menu_pelayanan.pembayaran.PembayaranActivity
+import com.jaylangkung.brainnet_staff.menu_pelayanan.tambah_gangguan.TambahGangguanActivity
 import com.jaylangkung.brainnet_staff.monitoring.MonitoringActivity
 import com.jaylangkung.brainnet_staff.notifikasi.NotifikasiActivity
-import com.jaylangkung.brainnet_staff.pelanggan.AddCustomerActivity
-import com.jaylangkung.brainnet_staff.pelanggan.CustomerActivationActivity
 import com.jaylangkung.brainnet_staff.presensi.ScannerActivity
-import com.jaylangkung.brainnet_staff.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
@@ -50,7 +53,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainBinding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var bottomSheetMenuPelangganBinding: BottomSheetMenuPelangganBinding
     private lateinit var bottomSheetMenuPelayananBinding: BottomSheetMenuPelayananBinding
     private lateinit var myPreferences: MySharedPreferences
@@ -59,8 +62,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mainBinding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
         gangguanAdapter = GangguanAdapter()
 
@@ -87,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             .apply(RequestOptions().override(120))
             .placeholder(R.drawable.ic_profile)
             .error(R.drawable.ic_profile)
-            .into(mainBinding.imgPhoto)
+            .into(binding.imgPhoto)
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -104,44 +107,44 @@ class MainActivity : AppCompatActivity() {
         getGangguan(tokenAuth)
 
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        mainBinding.tvGreetings.text = when (currentHour) {
+        binding.tvGreetings.text = when (currentHour) {
             in 4..11 -> getString(R.string.greetings, "Selamat Pagi", nama)
             in 12..14 -> getString(R.string.greetings, "Selamat Siang", nama)
             in 15..17 -> getString(R.string.greetings, "Selamat Sore", nama)
             else -> getString(R.string.greetings, "Selamat Malam", nama)
         }
 
-        mainBinding.btnSetting.setOnClickListener {
+        binding.btnSetting.setOnClickListener {
             startActivity(Intent(this@MainActivity, SettingActivity::class.java))
             finish()
         }
 
-        mainBinding.btnNotification.setOnClickListener {
+        binding.btnNotification.setOnClickListener {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
             finish()
         }
 
-        mainBinding.llMonitoring.setOnClickListener {
+        binding.llMonitoring.setOnClickListener {
             startActivity(Intent(this@MainActivity, MonitoringActivity::class.java))
             finish()
         }
 
-        mainBinding.fabPresensi.setOnClickListener {
+        binding.fabPresensi.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
             finish()
         }
 
-        mainBinding.fabTiang.setOnClickListener {
+        binding.fabTiang.setOnClickListener {
             startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
             finish()
         }
 
-        mainBinding.fabWebApp.setOnClickListener {
+        binding.fabWebApp.setOnClickListener {
             startActivity(Intent(this@MainActivity, LoginWebAppActivity::class.java))
             finish()
         }
 
-        mainBinding.llMenuUser.setOnClickListener {
+        binding.llMenuUser.setOnClickListener {
             bottomSheetMenuPelangganBinding = BottomSheetMenuPelangganBinding.inflate(layoutInflater)
 
             val dialog = BottomSheetDialog(this@MainActivity)
@@ -169,25 +172,25 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
         }
 
-        mainBinding.llServices.setOnClickListener {
+        binding.llServices.setOnClickListener {
             bottomSheetMenuPelayananBinding = BottomSheetMenuPelayananBinding.inflate(layoutInflater)
 
             val dialog = BottomSheetDialog(this@MainActivity)
 
             bottomSheetMenuPelayananBinding.llInsertInterference.setOnClickListener {
-
+                startActivity(Intent(this@MainActivity, TambahGangguanActivity::class.java))
                 finish()
                 dialog.dismiss()
             }
 
             bottomSheetMenuPelayananBinding.llInstallationComplete.setOnClickListener {
-
+                startActivity(Intent(this@MainActivity, PemasanganSelesaiActivity::class.java))
                 finish()
                 dialog.dismiss()
             }
 
             bottomSheetMenuPelayananBinding.llPayment.setOnClickListener {
-
+                startActivity(Intent(this@MainActivity, PembayaranActivity::class.java))
                 finish()
                 dialog.dismiss()
             }
@@ -204,19 +207,19 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        mainBinding.llGoodThings.setOnClickListener {
+        binding.llGoodThings.setOnClickListener {
             startActivity(Intent(this@MainActivity, HalBaikActivity::class.java))
             finish()
         }
 
-        mainBinding.llTodoList.setOnClickListener {
+        binding.llTodoList.setOnClickListener {
             startActivity(Intent(this@MainActivity, TodoActivity::class.java))
             finish()
         }
 
 
-        mainBinding.llBody.setOnRefreshListener {
-            mainBinding.loadingAnim.visibility = View.VISIBLE
+        binding.llBody.setOnRefreshListener {
+            binding.loadingAnim.visibility = View.VISIBLE
             getGangguan(tokenAuth)
         }
     }
@@ -263,30 +266,30 @@ class MainActivity : AppCompatActivity() {
         service.getGangguan(tokenAuth).enqueue(object : Callback<GangguanResponse> {
             override fun onResponse(call: Call<GangguanResponse>, response: Response<GangguanResponse>) {
                 if (response.isSuccessful) {
-                    mainBinding.llBody.isRefreshing = false
+                    binding.llBody.isRefreshing = false
                     if (response.body()!!.status == "success") {
-                        mainBinding.loadingAnim.visibility = View.GONE
-                        mainBinding.empty.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)
                         gangguanAdapter.notifyDataSetChanged()
 
-                        with(mainBinding.rvGangguan) {
+                        with(binding.rvGangguan) {
                             layoutManager = LinearLayoutManager(this@MainActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
                             adapter = gangguanAdapter
                         }
                     } else if (response.body()!!.status == "empty") {
-                        mainBinding.empty.visibility = View.VISIBLE
-                        mainBinding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
                         listGangguanAdapter.clear()
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)
                         gangguanAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    mainBinding.loadingAnim.visibility = View.GONE
+                    binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
                         this@MainActivity,
                         "getGangguan | onResponse", response.message()
@@ -295,7 +298,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
-                mainBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@MainActivity,
                     "getGangguan | onFailure", t.message.toString()

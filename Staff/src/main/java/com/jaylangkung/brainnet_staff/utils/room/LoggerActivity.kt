@@ -11,16 +11,16 @@ import kotlinx.coroutines.launch
 
 class LoggerActivity : AppCompatActivity() {
 
-    private lateinit var loggerBinding: ActivityLoggerBinding
+    private lateinit var binding: ActivityLoggerBinding
     private lateinit var loggerDatabase: LoggerDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loggerBinding = ActivityLoggerBinding.inflate(layoutInflater)
-        setContentView(loggerBinding.root)
+        binding = ActivityLoggerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         loggerDatabase = Room.databaseBuilder(this@LoggerActivity, LoggerDatabase::class.java, "logger.db").build()
 
-        loggerBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
@@ -41,7 +41,7 @@ class LoggerActivity : AppCompatActivity() {
             displayText += "\nTime : ${key.time}\nContext : ${key.context}\nFun : ${key.func}\nMessage : ${key.message}\n"
         }
         runOnUiThread {
-            loggerBinding.tvDisplay.text = displayText
+            binding.tvDisplay.text = displayText
         }
     }
 }

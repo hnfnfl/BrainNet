@@ -24,27 +24,27 @@ import retrofit2.Response
 
 class SettingActivity : AppCompatActivity() {
 
-    private lateinit var settingBinding: ActivitySettingBinding
+    private lateinit var binding: ActivitySettingBinding
     private lateinit var myPreferences: MySharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingBinding = ActivitySettingBinding.inflate(layoutInflater)
-        setContentView(settingBinding.root)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@SettingActivity)
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
 
-        settingBinding.btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
-        settingBinding.btnEditProfile.setOnClickListener {
+        binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(this@SettingActivity, EditProfileActivity::class.java))
             finish()
         }
 
-        settingBinding.btnLogout.setOnClickListener {
+        binding.btnLogout.setOnClickListener {
             val mDialog = MaterialDialog.Builder(this@SettingActivity)
                 .setTitle("Logout")
                 .setMessage(getString(R.string.confirm_logout))
@@ -77,9 +77,9 @@ class SettingActivity : AppCompatActivity() {
             mDialog.show()
         }
 
-        settingBinding.appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
+        binding.appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
 
-        settingBinding.appVersion.setOnClickListener {
+        binding.appVersion.setOnClickListener {
             startActivity(Intent(this@SettingActivity, LoggerActivity::class.java))
             finish()
         }
