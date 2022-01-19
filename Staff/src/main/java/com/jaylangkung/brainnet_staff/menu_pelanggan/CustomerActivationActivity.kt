@@ -29,7 +29,7 @@ class CustomerActivationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCustomerActivationBinding
     private lateinit var myPreferences: MySharedPreferences
 
-    private var listPelanggan: ArrayList<DataSpinnerEntity> = arrayListOf()
+    private var listBelumAktif: ArrayList<DataSpinnerEntity> = arrayListOf()
     private var listSwitch: ArrayList<DataSpinnerEntity> = arrayListOf()
     private var listRekanan: ArrayList<DataSpinnerEntity> = arrayListOf()
     private var listPaketInstalasi: ArrayList<DataSpinnerEntity> = arrayListOf()
@@ -101,12 +101,12 @@ class CustomerActivationActivity : AppCompatActivity() {
         service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
-                    listPelanggan.clear()
+                    listBelumAktif.clear()
                     listSwitch.clear()
                     listRekanan.clear()
                     listPaketInstalasi.clear()
 
-                    listPelanggan = response.body()!!.pelanggan
+                    listBelumAktif = response.body()!!.belumAktif
                     listSwitch = response.body()!!.switch
                     listRekanan = response.body()!!.rekanan
                     listPaketInstalasi = response.body()!!.paketInstalasi
@@ -115,8 +115,8 @@ class CustomerActivationActivity : AppCompatActivity() {
                     val listB = ArrayList<String>()
                     val listC = ArrayList<String>()
                     val listD = ArrayList<String>()
-                    for (i in 0 until listPelanggan.size) {
-                        listA.add(response.body()!!.pelanggan[i].nama)
+                    for (i in 0 until listBelumAktif.size) {
+                        listA.add("${i + 1}. ${response.body()!!.belumAktif[i].nama}")
                     }
                     for (i in 0 until listSwitch.size) {
                         listB.add(response.body()!!.switch[i].nomer)
@@ -135,8 +135,8 @@ class CustomerActivationActivity : AppCompatActivity() {
 
                     binding.spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            idpelanggan = listPelanggan[p2].idpelanggan
-                            paket = listPelanggan[p2].paket
+                            idpelanggan = listBelumAktif[p2].idpelanggan
+                            paket = listBelumAktif[p2].paket
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {}

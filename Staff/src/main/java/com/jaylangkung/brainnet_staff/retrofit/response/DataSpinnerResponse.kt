@@ -7,6 +7,7 @@ class DataSpinnerResponse(
     var marketing: ArrayList<DataSpinnerEntity>,
     var rekanan: ArrayList<DataSpinnerEntity>,
     var pelanggan: ArrayList<DataSpinnerEntity>,
+    var belumAktif: ArrayList<DataSpinnerEntity>,
     var switch: ArrayList<DataSpinnerEntity>,
     var paketInstalasi: ArrayList<DataSpinnerEntity>,
     var tagihan: ArrayList<DataSpinnerEntity>,
