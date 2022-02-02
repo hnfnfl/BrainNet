@@ -97,7 +97,7 @@ class TodoActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         listTodo = listData
                         todoAdapter.setTodoItem(listTodo)
-                        todoAdapter.notifyDataSetChanged()
+                        todoAdapter.notifyItemRangeChanged(0, listTodo.size)
 
                         with(binding.rvTodoList) {
                             layoutManager = LinearLayoutManager(this@TodoActivity)
@@ -129,7 +129,7 @@ class TodoActivity : AppCompatActivity() {
                                                                 listTodo.clear()
                                                             }
                                                             todoAdapter.setTodoItem(listTodo)
-                                                            todoAdapter.notifyDataSetChanged()
+                                                            todoAdapter.notifyItemRangeChanged(0, listTodo.size)
                                                         }
                                                     } else {
                                                         binding.loadingAnim.visibility = View.GONE
@@ -165,7 +165,7 @@ class TodoActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         listTodo.clear()
                         todoAdapter.setTodoItem(listTodo)
-                        todoAdapter.notifyDataSetChanged()
+                        todoAdapter.notifyItemRangeChanged(0, listTodo.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

@@ -13,7 +13,7 @@ class NotifikasiAdapter : RecyclerView.Adapter<NotifikasiAdapter.NotifItemHolder
         if (notifItem == null) return
         this.listNotifikasi.clear()
         this.listNotifikasi.addAll(notifItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listNotifikasi.size)
     }
 
     class NotifItemHolder(private val binding: ItemNotifikasiBinding) : RecyclerView.ViewHolder(binding.root) {

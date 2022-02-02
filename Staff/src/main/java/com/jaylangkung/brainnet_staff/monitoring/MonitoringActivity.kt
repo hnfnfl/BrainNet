@@ -59,7 +59,7 @@ class MonitoringActivity : AppCompatActivity() {
                     }
                 }
                 userDCAdapter.setUserDCItem(filterUserDC)
-                userDCAdapter.notifyDataSetChanged()
+                userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
                 binding.loadingAnim.visibility = View.GONE
             }, 500)
         }
@@ -74,7 +74,7 @@ class MonitoringActivity : AppCompatActivity() {
                     }
                 }
                 userDCAdapter.setUserDCItem(filterUserDC)
-                userDCAdapter.notifyDataSetChanged()
+                userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
                 binding.loadingAnim.visibility = View.GONE
             }, 500)
         }
@@ -94,7 +94,7 @@ class MonitoringActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         listEthernet = listData
                         ethernetAdapter.setEthernetItem(listEthernet)
-                        ethernetAdapter.notifyDataSetChanged()
+                        ethernetAdapter.notifyItemRangeChanged(0, filterUserDC.size)
 
                         with(binding.rvEthernet) {
                             layoutManager = LinearLayoutManager(this@MonitoringActivity, LinearLayoutManager.HORIZONTAL, false)
@@ -136,7 +136,7 @@ class MonitoringActivity : AppCompatActivity() {
                             }
                         }
                         userDCAdapter.setUserDCItem(filterUserDC)
-                        userDCAdapter.notifyDataSetChanged()
+                        userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
 
                         with(binding.rvUserDc) {
                             layoutManager = LinearLayoutManager(this@MonitoringActivity)
@@ -149,7 +149,7 @@ class MonitoringActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         listUserDC.clear()
                         userDCAdapter.setUserDCItem(listUserDC)
-                        userDCAdapter.notifyDataSetChanged()
+                        userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

@@ -19,7 +19,7 @@ class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.GangguanItemHolder>
         if (listGangguanItem == null) return
         this.orderList.clear()
         this.orderList.addAll(listGangguanItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listGangguanItem.size)
     }
 
     class GangguanItemHolder(private val binding: ItemGangguanBinding) : RecyclerView.ViewHolder(binding.root) {

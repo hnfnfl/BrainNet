@@ -63,7 +63,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         listPemasangan = listData
                         pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
-                        pemasanganSelesaiAdapter.notifyDataSetChanged()
+                        pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
 
                         with(binding.rvPemasanganSelesai) {
                             layoutManager = LinearLayoutManager(this@PemasanganSelesaiActivity)
@@ -99,7 +99,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                                                                 listPemasangan.clear()
                                                             }
                                                             pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
-                                                            pemasanganSelesaiAdapter.notifyDataSetChanged()
+                                                            pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
                                                         }
                                                     } else {
                                                         binding.loadingAnim.visibility = View.GONE
@@ -135,7 +135,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         listPemasangan.clear()
                         pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
-                        pemasanganSelesaiAdapter.notifyDataSetChanged()
+                        pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

@@ -15,7 +15,6 @@ class MySharedPreferences(mContext: Context) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()
-        editor.commit()
     }
 
     fun setValueInteger(key: String, value: Int) {

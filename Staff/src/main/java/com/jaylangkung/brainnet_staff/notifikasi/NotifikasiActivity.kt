@@ -58,7 +58,8 @@ class NotifikasiActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         listNotif = listData
                         notifikasiAdapter.setNotifItem(listNotif)
-                        notifikasiAdapter.notifyDataSetChanged()
+                        notifikasiAdapter.notifyItemRangeChanged(0, listNotif.size)
+
 
                         with(binding.rvNotifikasi) {
                             layoutManager = LinearLayoutManager(this@NotifikasiActivity)
@@ -71,7 +72,7 @@ class NotifikasiActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         listNotif.clear()
                         notifikasiAdapter.setNotifItem(listNotif)
-                        notifikasiAdapter.notifyDataSetChanged()
+                        notifikasiAdapter.notifyItemRangeChanged(0, listNotif.size)
                     }
                 } else {
                     ErrorHandler().responseHandler(

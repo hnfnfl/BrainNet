@@ -15,7 +15,7 @@ class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.HalBaikItemHolder>() 
         if (halBaikItem == null) return
         this.listHalBaik.clear()
         this.listHalBaik.addAll(halBaikItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listHalBaik.size)
     }
 
     class HalBaikItemHolder(private val binding: ItemHalBaikBinding) : RecyclerView.ViewHolder(binding.root) {

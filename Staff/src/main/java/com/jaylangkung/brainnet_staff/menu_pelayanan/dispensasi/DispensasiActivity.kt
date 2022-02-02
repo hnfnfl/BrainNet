@@ -3,7 +3,6 @@ package com.jaylangkung.brainnet_staff.menu_pelayanan.dispensasi
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity

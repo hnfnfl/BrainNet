@@ -1,21 +1,9 @@
 package com.jaylangkung.brainnet_staff.todo_list
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ItemTodoListBinding
-import com.jaylangkung.brainnet_staff.retrofit.DataService
-import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
-import com.jaylangkung.brainnet_staff.utils.Constants
-import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import dev.shreyaspatil.MaterialDialog.MaterialDialog
-import es.dmoral.toasty.Toasty
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoItemHolder>() {
 
@@ -26,7 +14,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoItemHolder>() {
         if (todoItem == null) return
         listTodo.clear()
         listTodo.addAll(todoItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listTodo.size)
     }
 
     interface OnItemClickCallback {

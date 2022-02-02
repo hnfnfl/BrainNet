@@ -31,7 +31,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
         this.listUser.clear()
         this.listUser.addAll(userItem)
         this.listUserFilter = userItem as ArrayList<UserEntity>
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listUser.size)
     }
 
     class UserItemHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -126,7 +126,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 listUser = results?.values as ArrayList<UserEntity>
-                notifyDataSetChanged()
+                notifyItemRangeChanged(0, listUser.size)
             }
 
         }

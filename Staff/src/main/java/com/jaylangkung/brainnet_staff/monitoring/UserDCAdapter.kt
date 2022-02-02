@@ -14,7 +14,7 @@ class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.UserDCItemHolder>() {
         if (todoItem == null) return
         listUserDC.clear()
         listUserDC.addAll(todoItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listUserDC.size)
     }
 
     class UserDCItemHolder(private val binding: ItemUserDcBinding) : RecyclerView.ViewHolder(binding.root) {

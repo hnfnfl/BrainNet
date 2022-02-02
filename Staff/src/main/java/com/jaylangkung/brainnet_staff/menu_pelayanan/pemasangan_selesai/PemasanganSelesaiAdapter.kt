@@ -15,7 +15,7 @@ class PemasanganSelesaiAdapter : RecyclerView.Adapter<PemasanganSelesaiAdapter.P
         if (pemasanganItem == null) return
         listPemasanganSelesai.clear()
         listPemasanganSelesai.addAll(pemasanganItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listPemasanganSelesai.size)
     }
 
     interface OnItemClickCallback {

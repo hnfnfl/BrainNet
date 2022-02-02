@@ -15,7 +15,7 @@ class EthernetAdapter : RecyclerView.Adapter<EthernetAdapter.EthernetItemHolder>
         if (todoItem == null) return
         listEthernet.clear()
         listEthernet.addAll(todoItem)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, listEthernet.size)
     }
 
     class EthernetItemHolder(private val binding: ItemEthernetBinding) : RecyclerView.ViewHolder(binding.root) {

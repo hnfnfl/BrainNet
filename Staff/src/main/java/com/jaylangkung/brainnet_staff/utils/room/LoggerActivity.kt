@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.databinding.ActivityLoggerBinding
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

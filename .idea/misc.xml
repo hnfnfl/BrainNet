@@ -8,10 +8,21 @@
         <entry key="..\:/Work Pak Eko/Absensi/Brainnet/Staff/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Work Pak Eko/Absensi/Brainnet/Staff/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Work Pak Eko/Absensi/Brainnet/Staff/src/main/res/layout/activity_splash_screen.xml" value="0.1641337386018237" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/drawable/ic_empty.xml" value="0.2203125" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/activity_to_do.xml" value="0.10461956521739131" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/bottom_sheet_todo.xml" value="0.10416666666666667" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_ethernet.xml" value="0.1539855072463768" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_gangguan.xml" value="0.10461956521739131" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_hal_baik.xml" value="0.10461956521739131" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_notifikasi.xml" value="0.10461956521739131" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_pemasangan_selesai.xml" value="0.10461956521739131" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_user.xml" value="0.15" />
+        <entry key="..\:/Work_Pak_Eko/Absensi/App/Staff/src/main/res/layout/item_user_dc.xml" value="0.1539855072463768" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

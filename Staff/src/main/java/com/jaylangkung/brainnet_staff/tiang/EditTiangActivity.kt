@@ -30,13 +30,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityEditTiangBinding
     private lateinit var myPreferences: MySharedPreferences
     var currentMarker: Marker? = null
-    lateinit var client: FusedLocationProviderClient
+    private lateinit var client: FusedLocationProviderClient
     lateinit var newLatLng: LatLng
     private var latitude: Double? = null
     private var longitude: Double? = null
