@@ -90,7 +90,8 @@ class PembayaranActivity : AppCompatActivity() {
                     val listA = ArrayList<String>()
 
                     for (i in 0 until listTagihan.size) {
-                        listA.add(response.body()!!.tagihan[i].nama)
+                        val text = "$i. ${response.body()!!.tagihan[i].nama}"
+                        listA.add(text)
                     }
 
                     binding.spinnerPelanggan.item = listA as List<Any>?
