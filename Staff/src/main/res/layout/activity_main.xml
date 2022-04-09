@@ -36,7 +36,7 @@
         android:id="@+id/btn_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="6dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/btn_setting"
         android:minWidth="48dp"

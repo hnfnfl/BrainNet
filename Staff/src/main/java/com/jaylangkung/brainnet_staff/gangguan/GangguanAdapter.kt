@@ -8,8 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ItemGangguanBinding
-import com.jaylangkung.brainnet_staff.utils.Constants
-import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 
 class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.GangguanItemHolder>() {
 

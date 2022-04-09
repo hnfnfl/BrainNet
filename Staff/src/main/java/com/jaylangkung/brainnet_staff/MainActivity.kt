@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)
-                        gangguanAdapter.notifyDataSetChanged()
+                        gangguanAdapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
 
                         with(binding.rvGangguan) {
                             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -287,7 +287,7 @@ class MainActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         listGangguanAdapter.clear()
                         gangguanAdapter.setListGangguanItem(listGangguanAdapter)
-                        gangguanAdapter.notifyDataSetChanged()
+                        gangguanAdapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

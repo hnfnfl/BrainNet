@@ -69,7 +69,7 @@ class RestartActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         userSearch = listData
                         userAdapter.setUserItem(userSearch)
-                        userAdapter.notifyDataSetChanged()
+                        userAdapter.notifyItemRangeChanged(0, userSearch.size)
 
                         with(restartBinding.rvUserList) {
                             layoutManager = LinearLayoutManager(this@RestartActivity)

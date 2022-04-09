@@ -97,4 +97,6 @@
     <string name="pilih_tanggal_janji">Pilih Tanggal Janji</string>
     <string name="dispensasi_tgl_janji">Tanggal Janji : %1$s</string>
     <string name="pembayaran_text_detail">Detail Tagihan :</string>
+    <string name="app_logo">app logo</string>
+    <string name="password_modem">Password Modem</string>
 </resources>

@@ -103,7 +103,7 @@ class HalBaikActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         listHalBaik = listData
                         halBaikAdapter.setHalBaikItem(listHalBaik)
-                        halBaikAdapter.notifyDataSetChanged()
+                        halBaikAdapter.notifyItemRangeChanged(0, listHalBaik.size)
 
                         with(binding.rvHalBaik) {
                             layoutManager = LinearLayoutManager(this@HalBaikActivity)
@@ -116,7 +116,7 @@ class HalBaikActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         listHalBaik.clear()
                         halBaikAdapter.setHalBaikItem(listHalBaik)
-                        halBaikAdapter.notifyDataSetChanged()
+                        halBaikAdapter.notifyItemRangeChanged(0, listHalBaik.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.databinding.ItemHalBaikBinding
-import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
-import kotlin.collections.ArrayList
 
 class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.HalBaikItemHolder>() {
 
