@@ -27,9 +27,8 @@
     <string name="tambahkan_hal_baik_hari_ini">Tambahkan Hal Baik</string>
     <string name="btn_back">tombol kembali</string>
     <string name="gangguan_title">Penyelesaian Gangguan</string>
-    <string name="user_name">Nama pelanggan : %1$s</string>
+    <string name="user_name">Nama pelanggan : %1$s (%2$s)</string>
     <string name="user_address">Alamat Pasang : %1$s</string>
-    <string name="user_package">Paket : %1$s</string>
     <string name="no">Tidak</string>
     <string name="yes">Ya</string>
     <string name="icon_warning">icon warning</string>
@@ -99,4 +98,6 @@
     <string name="pembayaran_text_detail">Detail Tagihan :</string>
     <string name="app_logo">app logo</string>
     <string name="password_modem">Password Modem</string>
+    <string name="user_username">Username : %1$s</string>
+    <string name="user_pass">Password : %1$s</string>
 </resources>
