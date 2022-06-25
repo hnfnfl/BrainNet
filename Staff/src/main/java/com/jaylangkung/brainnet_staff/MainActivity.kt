@@ -31,7 +31,6 @@ import com.jaylangkung.brainnet_staff.menu_pelanggan.CustomerActivationActivity
 import com.jaylangkung.brainnet_staff.menu_pelanggan.restart.RestartActivity
 import com.jaylangkung.brainnet_staff.menu_pelayanan.dispensasi.DispensasiActivity
 import com.jaylangkung.brainnet_staff.menu_pelayanan.pemasangan_selesai.PemasanganSelesaiActivity
-import com.jaylangkung.brainnet_staff.menu_pelayanan.pembayaran.PembayaranActivity
 import com.jaylangkung.brainnet_staff.menu_pelayanan.tambah_gangguan.TambahGangguanActivity
 import com.jaylangkung.brainnet_staff.monitoring.MonitoringActivity
 import com.jaylangkung.brainnet_staff.notifikasi.NotifikasiActivity
@@ -47,6 +46,7 @@ import com.jaylangkung.brainnet_staff.todo_list.TodoActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
+import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -86,13 +86,6 @@ class MainActivity : AppCompatActivity() {
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
 
-        Glide.with(this@MainActivity)
-            .load(foto)
-            .apply(RequestOptions().override(120))
-            .placeholder(R.drawable.ic_profile)
-            .error(R.drawable.ic_profile)
-            .into(binding.imgPhoto)
-
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 return@OnCompleteListener
@@ -107,121 +100,129 @@ class MainActivity : AppCompatActivity() {
 
         getGangguan(tokenAuth)
 
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        binding.tvGreetings.text = when (currentHour) {
-            in 4..11 -> getString(R.string.greetings, "Selamat Pagi", nama)
-            in 12..14 -> getString(R.string.greetings, "Selamat Siang", nama)
-            in 15..17 -> getString(R.string.greetings, "Selamat Sore", nama)
-            else -> getString(R.string.greetings, "Selamat Malam", nama)
-        }
+        binding.apply {
+            Glide.with(this@MainActivity)
+                .load(foto)
+                .apply(RequestOptions().override(120))
+                .placeholder(R.drawable.ic_profile)
+                .error(R.drawable.ic_profile)
+                .into(imgPhoto)
 
-        binding.btnSetting.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SettingActivity::class.java))
-            finish()
-        }
-
-        binding.btnNotification.setOnClickListener {
-            startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
-            finish()
-        }
-
-        binding.llMonitoring.setOnClickListener {
-            startActivity(Intent(this@MainActivity, MonitoringActivity::class.java))
-            finish()
-        }
-
-        binding.fabPresensi.setOnClickListener {
-            startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
-            finish()
-        }
-
-        binding.fabTiang.setOnClickListener {
-            startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
-            finish()
-        }
-
-        binding.fabWebApp.setOnClickListener {
-            startActivity(Intent(this@MainActivity, LoginWebAppActivity::class.java))
-            finish()
-        }
-
-        binding.llMenuUser.setOnClickListener {
-            bottomSheetMenuPelangganBinding = BottomSheetMenuPelangganBinding.inflate(layoutInflater)
-
-            val dialog = BottomSheetDialog(this@MainActivity)
-
-            bottomSheetMenuPelangganBinding.llRestart.setOnClickListener {
-                startActivity(Intent(this@MainActivity, RestartActivity::class.java))
-                finish()
-                dialog.dismiss()
+            val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            tvGreetings.text = when (currentHour) {
+                in 4..11 -> getString(R.string.greetings, "Selamat Pagi", nama)
+                in 12..14 -> getString(R.string.greetings, "Selamat Siang", nama)
+                in 15..17 -> getString(R.string.greetings, "Selamat Sore", nama)
+                else -> getString(R.string.greetings, "Selamat Malam", nama)
             }
 
-            bottomSheetMenuPelangganBinding.llAddCustomer.setOnClickListener {
-                startActivity(Intent(this@MainActivity, AddCustomerActivity::class.java))
+            btnSetting.setOnClickListener {
+                startActivity(Intent(this@MainActivity, SettingActivity::class.java))
                 finish()
-                dialog.dismiss()
             }
 
-            bottomSheetMenuPelangganBinding.llActivateCustomer.setOnClickListener {
-                startActivity(Intent(this@MainActivity, CustomerActivationActivity::class.java))
+            btnNotification.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
                 finish()
-                dialog.dismiss()
             }
 
-            dialog.setCancelable(true)
-            dialog.setContentView(bottomSheetMenuPelangganBinding.root)
-            dialog.show()
-        }
-
-        binding.llServices.setOnClickListener {
-            bottomSheetMenuPelayananBinding = BottomSheetMenuPelayananBinding.inflate(layoutInflater)
-
-            val dialog = BottomSheetDialog(this@MainActivity)
-
-            bottomSheetMenuPelayananBinding.llInsertInterference.setOnClickListener {
-                startActivity(Intent(this@MainActivity, TambahGangguanActivity::class.java))
+            llMonitoring.setOnClickListener {
+                startActivity(Intent(this@MainActivity, MonitoringActivity::class.java))
                 finish()
-                dialog.dismiss()
             }
 
-            bottomSheetMenuPelayananBinding.llInstallationComplete.setOnClickListener {
-                startActivity(Intent(this@MainActivity, PemasanganSelesaiActivity::class.java))
+            fabPresensi.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
                 finish()
-                dialog.dismiss()
             }
 
-            bottomSheetMenuPelayananBinding.llPayment.setOnClickListener {
-                startActivity(Intent(this@MainActivity, PembayaranActivity::class.java))
+            fabTiang.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
                 finish()
-                dialog.dismiss()
             }
 
-            bottomSheetMenuPelayananBinding.llDispensation.setOnClickListener {
-                startActivity(Intent(this@MainActivity, DispensasiActivity::class.java))
+            fabWebApp.setOnClickListener {
+                startActivity(Intent(this@MainActivity, LoginWebAppActivity::class.java))
                 finish()
-                dialog.dismiss()
             }
 
-            dialog.setCancelable(true)
-            dialog.setContentView(bottomSheetMenuPelayananBinding.root)
-            dialog.show()
-        }
+            llMenuUser.setOnClickListener {
+                bottomSheetMenuPelangganBinding = BottomSheetMenuPelangganBinding.inflate(layoutInflater)
 
+                val dialog = BottomSheetDialog(this@MainActivity)
 
-        binding.llGoodThings.setOnClickListener {
-            startActivity(Intent(this@MainActivity, HalBaikActivity::class.java))
-            finish()
-        }
+                bottomSheetMenuPelangganBinding.llRestart.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, RestartActivity::class.java))
+                    finish()
+                    dialog.dismiss()
+                }
 
-        binding.llTodoList.setOnClickListener {
-            startActivity(Intent(this@MainActivity, TodoActivity::class.java))
-            finish()
-        }
+                bottomSheetMenuPelangganBinding.llAddCustomer.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, AddCustomerActivity::class.java))
+                    finish()
+                    dialog.dismiss()
+                }
 
+                bottomSheetMenuPelangganBinding.llActivateCustomer.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, CustomerActivationActivity::class.java))
+                    finish()
+                    dialog.dismiss()
+                }
 
-        binding.llBody.setOnRefreshListener {
-            binding.loadingAnim.visibility = View.VISIBLE
-            getGangguan(tokenAuth)
+                dialog.setCancelable(true)
+                dialog.setContentView(bottomSheetMenuPelangganBinding.root)
+                dialog.show()
+            }
+
+            llServices.setOnClickListener {
+                bottomSheetMenuPelayananBinding = BottomSheetMenuPelayananBinding.inflate(layoutInflater)
+
+                val dialog = BottomSheetDialog(this@MainActivity)
+
+                bottomSheetMenuPelayananBinding.llInsertInterference.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, TambahGangguanActivity::class.java))
+                    finish()
+                    dialog.dismiss()
+                }
+
+                bottomSheetMenuPelayananBinding.llInstallationComplete.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, PemasanganSelesaiActivity::class.java))
+                    finish()
+                    dialog.dismiss()
+                }
+
+                bottomSheetMenuPelayananBinding.llPayment.setOnClickListener {
+                    Toasty.info(this@MainActivity, "Fitur ini sedang dalam pengembangan").show()
+//                    startActivity(Intent(this@MainActivity, PembayaranActivity::class.java))
+//                    finish()
+                    dialog.dismiss()
+                }
+
+                bottomSheetMenuPelayananBinding.llDispensation.setOnClickListener {
+                    startActivity(Intent(this@MainActivity, DispensasiActivity::class.java))
+                    finish()
+                    dialog.dismiss()
+                }
+
+                dialog.setCancelable(true)
+                dialog.setContentView(bottomSheetMenuPelayananBinding.root)
+                dialog.show()
+            }
+
+            llGoodThings.setOnClickListener {
+                startActivity(Intent(this@MainActivity, HalBaikActivity::class.java))
+                finish()
+            }
+
+            llTodoList.setOnClickListener {
+                startActivity(Intent(this@MainActivity, TodoActivity::class.java))
+                finish()
+            }
+
+            llBody.setOnRefreshListener {
+                binding.loadingAnim.visibility = View.VISIBLE
+                getGangguan(tokenAuth)
+            }
         }
     }
 

@@ -46,28 +46,4 @@ interface AuthService {
     @GET("auth/getSpinnerData")
     fun getSpinnerData(
     ): Call<DataSpinnerResponse>
-
-    @GET("auth/getPaketInternet")
-    fun getPaketInternet(
-    ): Call<DataSpinnerResponse>
-
-    @GET("auth/getMarketing")
-    fun getMarketing(
-    ): Call<DataSpinnerResponse>
-
-    @GET("auth/getRekanan")
-    fun getRekanan(
-    ): Call<DataSpinnerResponse>
-
-    @GET("auth/getPelanggan")
-    fun getPelanggan(
-    ): Call<DataSpinnerResponse>
-
-    @GET("auth/getSwitch")
-    fun getSwitch(
-    ): Call<DataSpinnerResponse>
-
-    @GET("auth/getPaketInstalasi")
-    fun getPaketInstalasi(
-    ): Call<DataSpinnerResponse>
 }

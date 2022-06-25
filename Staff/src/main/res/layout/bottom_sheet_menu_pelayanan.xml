@@ -115,7 +115,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/menu_box"
-            android:backgroundTint="@color/primaryColor"
+            android:backgroundTint="@color/md_grey_500"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/icon_pembayaran"
                     android:src="@drawable/ic_pay"
-                    app:tint="@color/primaryDarkColor" />
+                    app:tint="@color/md_grey_500" />
 
             </LinearLayout>
 
