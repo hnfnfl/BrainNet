@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "578114840183",
+    "project_id": "indirisma-jaylangkung",
+    "storage_bucket": "indirisma-jaylangkung.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578114840183:android:95aec99f8f9c681425c872",
+        "android_client_info": {
+          "package_name": "com.jaylangkung.indirisma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578114840183-6debcgign4o3n6eatfbvven2i0onkif9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsDezd2MIydcfrZszyPCaCLcsTYz63bDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578114840183-6debcgign4o3n6eatfbvven2i0onkif9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
