@@ -1,7 +1,7 @@
 <resources>
     <string name="token_auth">Bearer %1$s</string>
 
-    <string name="app_name">BrainNet Staff</string>
+    <string name="app_name">Indirisma</string>
     <string name="login_title">Masuk ke akun kamu</string>
     <string name="email">Email</string>
     <string name="password">Kata sandi</string>

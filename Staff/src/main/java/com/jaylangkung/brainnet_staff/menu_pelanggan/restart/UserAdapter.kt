@@ -1,6 +1,11 @@
 package com.jaylangkung.brainnet_staff.menu_pelanggan.restart
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -42,17 +47,27 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
             with(binding) {
                 myPreferences = MySharedPreferences(itemView.context)
 
-                val nama = userItem.nama
+                val nama = userItem.nama.capitalizeWords()
                 val paket = userItem.paket
-                val alamat = userItem.alamat_pasang
+                val alamat = userItem.alamat_pasang.capitalizeWords()
                 val user = userItem.user
                 val pass = userItem.password
                 val tokenAuth = itemView.context.getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
-                tvName.text = itemView.context.getString(R.string.user_name, nama)
-                tvPackage.text = itemView.context.getString(R.string.user_package, paket)
+                tvName.text = itemView.context.getString(R.string.user_name, nama, paket)
                 tvAddress.text = itemView.context.getString(R.string.user_address, alamat)
+                tvUsername.text = itemView.context.getString(R.string.user_username, user)
+                tvPass.text = itemView.context.getString(R.string.user_pass, pass)
+
+                tvUsername.setOnClickListener {
+                    copyTextToClipboard(user)
+                }
+
+                tvPass.setOnClickListener {
+                    copyTextToClipboard(pass)
+                }
 
                 itemView.setOnClickListener {
+                    Log.e("debug", "username = $user, pass = $pass")
                     val mDialog = MaterialDialog.Builder(itemView.context as Activity)
                         .setTitle("Konfirmasi Restart")
                         .setMessage("Apakah Anda yakin ingin me-restart router menu_pelanggan $nama?")
@@ -85,6 +100,19 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                 }
             }
         }
+
+        private fun String.capitalizeWords(): String =
+            split(" ").joinToString(" ") { it ->
+                it.lowercase(Locale.getDefault())
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+            }
+
+        private fun copyTextToClipboard(text: String) {
+            val myClipboard = itemView.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val myClip: ClipData = ClipData.newPlainText("copied", text)
+            myClipboard.setPrimaryClip(myClip)
+            Toasty.success(itemView.context, "Teks berhasil disalin", Toasty.LENGTH_LONG).show()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemHolder {
@@ -114,7 +142,10 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                     val resultList = ArrayList<UserEntity>()
 
                     for (row in listUserFilter) {
-                        if (row.nama.lowercase(Locale.getDefault()).contains(charSearch.lowercase(Locale.getDefault()))) {
+                        if (row.nama.lowercase().contains(charSearch.lowercase())
+                            ||
+                            row.alamat_pasang.lowercase().contains(charSearch.lowercase())
+                        ) {
                             resultList.add(row)
                         }
                     }
@@ -124,9 +155,10 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                 return filterResults
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 listUser = results?.values as ArrayList<UserEntity>
-                notifyItemRangeChanged(0, listUser.size)
+                notifyDataSetChanged()
             }
 
         }
