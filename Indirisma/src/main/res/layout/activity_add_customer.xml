@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".menu_pelanggan.AddCustomerActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/btn_back"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/tambah_pelanggan"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:paddingHorizontal="24dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_input_ktp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/add_customer_ktp"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/add_customer_name"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/add_customer_address"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_provinsi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Provinsi"
+                    app:smsp_hint="Pilih Provinsi"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_isSearchable="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderBackgroundColor="@color/secondaryColor"
+                    app:smsp_searchHeaderText="Pilih/Cari Provinsi"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_kotaKab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Kota/Kabupaten"
+                    app:smsp_hint="Pilih Kota/Kabupaten"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_isSearchable="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderBackgroundColor="@color/secondaryColor"
+                    app:smsp_searchHeaderText="Pilih/Cari Kota/Kabupaten"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_kecamatan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Kecamatan"
+                    app:smsp_hint="Pilih Kecamatan"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_isSearchable="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderBackgroundColor="@color/secondaryColor"
+                    app:smsp_searchHeaderText="Pilih/Cari Kecamatan"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_kelurahan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Kelurahan"
+                    app:smsp_hint="Pilih Kelurahan"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_isSearchable="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_searchHeaderBackgroundColor="@color/secondaryColor"
+                    app:smsp_searchHeaderText="Pilih/Cari Kelurahan"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/customer_rt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/white"
+                        android:hint="@string/add_customer_rt"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/customer_rw"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/white"
+                        android:hint="@string/add_customer_rw"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/add_customer_phone"
+                    android:inputType="phone" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_address_install"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/add_customer_install_address"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_marketing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Marketing"
+                    app:smsp_hint="Pilih Marketing"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_paket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Paket Internet"
+                    app:smsp_hint="Pilih Paket Internet"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/add_customer_lokasi"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_rekanan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Rekanan"
+                    app:smsp_hint="Pilih Rekanan"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_penagih"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Penagih"
+                    app:smsp_hint="Pilih Penagih"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            </LinearLayout>
+
+            <com.chand.progressbutton.ProgressButton
+                android:id="@+id/btn_add_customer"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginVertical="16dp"
+                app:p_arrowVisible="false"
+                app:p_backgroundTint="@color/primaryColor"
+                app:p_bgColor="@color/colorSecondary"
+                app:p_cornerRadius="5dp"
+                app:p_layoutDirection="ltr"
+                app:p_progressBGColor="@color/primaryColor"
+                app:p_progressColor="@color/primaryLightColor"
+                app:p_rippleColor="@color/primaryLightColor"
+                app:p_style="circleBar"
+                app:p_text="Tambah Pelanggan"
+                app:p_textColor="@color/white"
+                app:p_textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

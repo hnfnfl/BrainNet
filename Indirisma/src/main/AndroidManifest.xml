@@ -6,23 +6,67 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Indirisma">
+        <activity android:name=".menu_pelayanan.dispensasi.DispensasiActivity" />
+        <activity android:name=".menu_pelayanan.pembayaran.PembayaranActivity" />
+        <activity android:name=".menu_pelayanan.pemasangan_selesai.PemasanganSelesaiActivity" />
+        <activity android:name=".menu_pelayanan.tambah_gangguan.TambahGangguanActivity" />
+        <activity android:name=".menu_pelanggan.CustomerActivationActivity" />
+        <activity android:name=".menu_pelanggan.AddCustomerActivity" />
+        <activity android:name=".utils.room.LoggerActivity" />
+        <activity android:name=".notifikasi.NotifikasiActivity" />
+        <activity android:name=".monitoring.MonitoringActivity" />
+        <activity android:name=".todo_list.TodoActivity" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".auth.LoginWebAppActivity" />
+        <activity android:name=".settings.EditProfileActivity" />
+        <activity android:name=".settings.SettingActivity" />
+        <activity android:name=".hal_baik.HalBaikActivity" />
+        <activity android:name=".tiang.EditTiangActivity" />
+        <activity android:name=".tiang.ScannerTiangActivity" />
+        <activity android:name=".menu_pelanggan.restart.RestartActivity" />
+        <activity android:name=".gangguan.GangguanDetailActivity" />
+        <activity android:name=".presensi.ScannerActivity" />
+        <activity android:name=".auth.LoginActivity" />
+        <activity android:name=".MainActivity" />
+
+        <service
+            android:name=".utils.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
     </application>
 
 </manifest>
