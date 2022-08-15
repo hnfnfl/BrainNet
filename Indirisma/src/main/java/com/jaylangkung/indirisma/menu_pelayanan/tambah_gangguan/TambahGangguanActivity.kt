@@ -58,37 +58,40 @@ class TambahGangguanActivity : AppCompatActivity() {
         listPrioritas.add("High")
         listPrioritas.add("Urgent")
 
-        binding.spinnerKepada.item = listKepada as List<Any>?
-        binding.spinnerPrioritas.item = listPrioritas as List<Any>?
+        binding.apply {
+            spinnerKepada.item = listKepada as List<Any>?
+            spinnerPrioritas.item = listPrioritas as List<Any>?
 
-        binding.spinnerKepada.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                kepada = listKepada[p2]
+            spinnerKepada.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    kepada = listKepada[p2]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            spinnerPrioritas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    prioritas = listPrioritas[p2]
+                }
 
-        }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
 
-        binding.spinnerPrioritas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                prioritas = listPrioritas[p2]
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            btnBack.setOnClickListener {
+                onBackPressed()
+            }
 
-        }
-
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
-
-        binding.btnAddGangguan.setOnClickListener {
-            if (validate()) {
-                val isi = binding.tvTambahGangguanIsi.text.toString()
-                insertGangguan(idpelanggan, kepada, prioritas, isi, idadmin, tokenAuth)
+            btnAddGangguan.setOnClickListener {
+                if (validate()) {
+                    val isi = tvTambahGangguanIsi.text.toString()
+                    insertGangguan(idpelanggan, kepada, prioritas, isi, idadmin, tokenAuth)
+                }
             }
         }
+
     }
 
     override fun onBackPressed() {
@@ -98,7 +101,7 @@ class TambahGangguanActivity : AppCompatActivity() {
 
     private fun getSpinnerData() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
+        service.getSpinnerData("true").enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listPelanggan.clear()
@@ -171,7 +174,7 @@ class TambahGangguanActivity : AppCompatActivity() {
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertGangguan(
-            idpelanggan, kepada, prioritas, isi, idadmin, tokenAuth
+            idpelanggan, kepada, prioritas, isi, idadmin, tokenAuth, "true"
         ).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {

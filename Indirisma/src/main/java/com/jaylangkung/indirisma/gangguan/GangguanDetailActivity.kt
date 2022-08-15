@@ -36,17 +36,18 @@ class GangguanDetailActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
 
-        binding.btnSubmit.setOnClickListener {
-            val penyelesaian = binding.tvValueSolution.text.toString()
-            if (validate()) {
-                binding.btnSubmit.startAnimation()
-                editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth)
+            btnSubmit.setOnClickListener {
+                val penyelesaian = tvValueSolution.text.toString()
+                if (validate()) {
+                    btnSubmit.startAnimation()
+                    editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth)
+                }
             }
         }
+
     }
 
     override fun onBackPressed() {
@@ -65,7 +66,7 @@ class GangguanDetailActivity : AppCompatActivity() {
 
     private fun editGangguan(idgangguan: String, penyelesaian: String, idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

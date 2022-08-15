@@ -7,39 +7,39 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.indirisma.R
 import com.jaylangkung.indirisma.databinding.ItemEthernetBinding
 
-class EthernetAdapter : RecyclerView.Adapter<EthernetAdapter.EthernetItemHolder>() {
+class EthernetAdapter : RecyclerView.Adapter<EthernetAdapter.ItemHolder>() {
 
-    private var listEthernet = ArrayList<EthernetEntity>()
+    private var list = ArrayList<EthernetEntity>()
 
-    fun setEthernetItem(todoItem: List<EthernetEntity>?) {
-        if (todoItem == null) return
-        listEthernet.clear()
-        listEthernet.addAll(todoItem)
-        notifyItemRangeChanged(0, listEthernet.size)
+    fun setItem(item: List<EthernetEntity>?) {
+        if (item == null) return
+        list.clear()
+        list.addAll(item)
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class EthernetItemHolder(private val binding: ItemEthernetBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(ethernetItem: EthernetEntity) {
+    class ItemHolder(private val binding: ItemEthernetBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: EthernetEntity) {
             with(binding) {
-                tvEthernet.text = ethernetItem.name
-                if (ethernetItem.status == "false") {
+                tvEthernet.text = item.name
+                if (item.status == "false") {
                     cvEthernet.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.md_red_A700))
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EthernetItemHolder {
-        val itemEthernetBinding = ItemEthernetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EthernetItemHolder(itemEthernetBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val itemBinding = ItemEthernetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: EthernetItemHolder, position: Int) {
-        val vendorItem = listEthernet[position]
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val vendorItem = list[position]
         holder.bind(vendorItem)
     }
 
-    override fun getItemCount(): Int = listEthernet.size
+    override fun getItemCount(): Int = list.size
 }
 
 

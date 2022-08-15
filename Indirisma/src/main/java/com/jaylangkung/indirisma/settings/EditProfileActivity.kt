@@ -35,21 +35,26 @@ class EditProfileActivity : AppCompatActivity() {
         val alamat = myPreferences.getValue(Constants.USER_ALAMAT).toString()
         val telp = myPreferences.getValue(Constants.USER_TELP).toString()
 
-        binding.tvValueEmailEdit.setText(email)
-        binding.tvValueNameEdit.setText(nama)
-        binding.tvValueAddressEdit.setText(alamat)
-        binding.tvValuePhoneEdit.setText(telp)
+        binding.apply {
+            tvValueEmailEdit.setText(email)
+            tvValueNameEdit.setText(nama)
+            tvValueAddressEdit.setText(alamat)
+            tvValuePhoneEdit.setText(telp)
 
-        binding.btnSave.setOnClickListener {
-            if (validate()) {
-                binding.btnSave.startAnimation()
-                val editEmail = binding.tvValueEmailEdit.text.toString()
-                val editName = binding.tvValueNameEdit.text.toString()
-                val editAddress = binding.tvValueAddressEdit.text.toString()
-                val editPhone = binding.tvValuePhoneEdit.text.toString()
-                editProfile(idadmin, editEmail, editName, editAddress, editPhone, tokenAuth)
+            btnBack.setOnClickListener { onBackPressed() }
+
+            btnSave.setOnClickListener {
+                if (validate()) {
+                    btnSave.startAnimation()
+                    val editEmail = tvValueEmailEdit.text.toString()
+                    val editName = tvValueNameEdit.text.toString()
+                    val editAddress = tvValueAddressEdit.text.toString()
+                    val editPhone = tvValuePhoneEdit.text.toString()
+                    editProfile(idadmin, editEmail, editName, editAddress, editPhone, tokenAuth)
+                }
             }
         }
+
     }
 
     override fun onBackPressed() {
@@ -91,7 +96,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun editProfile(idadmin: String, email: String, nama: String, alamat: String, telp: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.editProfile(idadmin, email, nama, alamat, telp, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.editProfile(idadmin, email, nama, alamat, telp, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

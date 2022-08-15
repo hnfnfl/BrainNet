@@ -47,30 +47,31 @@ class PembayaranActivity : AppCompatActivity() {
 
         getSpinnerData()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
 
-        binding.btnConfirmPayment.setOnClickListener {
-            if (validate()) {
-                val mDialog = MaterialDialog.Builder(this@PembayaranActivity as Activity)
-                    .setTitle("Konfirmasi Pembayaran")
-                    .setMessage("Konfirmasikan pembayaran pelanggan atas nama $nama?")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_pay)
-                    { dialogInterface, _ ->
-                        insertPembayaran(idtagihan, total, idadmin, tokenAuth)
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+            btnConfirmPayment.setOnClickListener {
+                if (validate()) {
+                    val mDialog = MaterialDialog.Builder(this@PembayaranActivity as Activity)
+                        .setTitle("Konfirmasi Pembayaran")
+                        .setMessage("Konfirmasikan pembayaran pelanggan atas nama $nama?")
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), R.drawable.ic_pay)
+                        { dialogInterface, _ ->
+                            insertPembayaran(idtagihan, total, idadmin, tokenAuth)
+                            dialogInterface.dismiss()
+                        }
+                        .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
+                        { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
+
     }
 
     override fun onBackPressed() {
@@ -80,7 +81,7 @@ class PembayaranActivity : AppCompatActivity() {
 
     private fun getSpinnerData() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
+        service.getSpinnerData("true").enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listTagihan.clear()
@@ -144,7 +145,7 @@ class PembayaranActivity : AppCompatActivity() {
         tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.insertPembayaran(idtagihan, jumlah_tagihan, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.insertPembayaran(idtagihan, jumlah_tagihan, idadmin, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

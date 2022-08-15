@@ -6,41 +6,41 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.indirisma.R
 import com.jaylangkung.indirisma.databinding.ItemUserDcBinding
 
-class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.UserDCItemHolder>() {
+class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.ItemHolder>() {
 
-    private var listUserDC = ArrayList<UserDCEntity>()
+    private var list = ArrayList<UserDCEntity>()
 
-    fun setUserDCItem(todoItem: List<UserDCEntity>?) {
-        if (todoItem == null) return
-        listUserDC.clear()
-        listUserDC.addAll(todoItem)
-        notifyItemRangeChanged(0, listUserDC.size)
+    fun setItem(item: List<UserDCEntity>?) {
+        if (item == null) return
+        list.clear()
+        list.addAll(item)
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class UserDCItemHolder(private val binding: ItemUserDcBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(userDCItem: UserDCEntity) {
+    class ItemHolder(private val binding: ItemUserDcBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: UserDCEntity) {
             with(binding) {
-                tvName.text = userDCItem.nama
-                tvUsername.text = userDCItem.user
-                tvPaketPhone.text = itemView.context.getString(R.string.paket_phone, userDCItem.paket, userDCItem.nohp)
-                tvAddress.text = userDCItem.alamat_pasang
-                tvCable.text = itemView.context.getString(R.string.kabel, userDCItem.jenis_kabel, userDCItem.panjangkabel)
-                tvSwitch.text = itemView.context.getString(R.string.nomer_switch, userDCItem.nomer_switch)
+                tvName.text = item.nama
+                tvUsername.text = item.user
+                tvPaketPhone.text = itemView.context.getString(R.string.paket_phone, item.paket, item.nohp)
+                tvAddress.text = item.alamat_pasang
+                tvCable.text = itemView.context.getString(R.string.kabel, item.jenis_kabel, item.panjangkabel)
+                tvSwitch.text = itemView.context.getString(R.string.nomer_switch, item.nomer_switch)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserDCItemHolder {
-        val itemUserDCBinding = ItemUserDcBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserDCItemHolder(itemUserDCBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val itemBinding = ItemUserDcBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: UserDCItemHolder, position: Int) {
-        val vendorItem = listUserDC[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = listUserDC.size
+    override fun getItemCount(): Int = list.size
 }
 
 

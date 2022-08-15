@@ -22,15 +22,15 @@ import retrofit2.Response
 
 class RestartActivity : AppCompatActivity() {
 
-    private lateinit var restartBinding: ActivityRestartBinding
+    private lateinit var binding: ActivityRestartBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var userAdapter: UserAdapter
     private var userSearch: ArrayList<UserEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restartBinding = ActivityRestartBinding.inflate(layoutInflater)
-        setContentView(restartBinding.root)
+        binding = ActivityRestartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@RestartActivity)
         userAdapter = UserAdapter()
 
@@ -38,20 +38,21 @@ class RestartActivity : AppCompatActivity() {
 
         getPelanggan(tokenAuth)
 
-        restartBinding.btnBack.setOnClickListener {
-            onBackPressed()
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
+
+            svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    userAdapter.filter.filter(query)
+                    return true
+                }
+            })
         }
 
-        restartBinding.svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                userAdapter.filter.filter(query)
-                return true
-            }
-        })
     }
 
     override fun onBackPressed() {
@@ -61,17 +62,17 @@ class RestartActivity : AppCompatActivity() {
 
     private fun getPelanggan(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getPelanggan(tokenAuth).enqueue(object : Callback<UserResponse> {
+        service.getPelanggan(tokenAuth, "true").enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        restartBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         userSearch = listData
-                        userAdapter.setUserItem(userSearch)
+                        userAdapter.setItem(userSearch)
                         userAdapter.notifyItemRangeChanged(0, userSearch.size)
 
-                        with(restartBinding.rvUserList) {
+                        with(binding.rvUserList) {
                             layoutManager = LinearLayoutManager(this@RestartActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
@@ -79,7 +80,7 @@ class RestartActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    restartBinding.loadingAnim.visibility = View.GONE
+                    binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
                         this@RestartActivity,
                         "getPelanggan | onResponse", response.message()
@@ -88,7 +89,7 @@ class RestartActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                restartBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@RestartActivity,
                     "getPelanggan | onFailure", t.message.toString()

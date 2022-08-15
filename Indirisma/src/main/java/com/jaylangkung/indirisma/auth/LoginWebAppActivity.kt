@@ -38,34 +38,33 @@ class LoginWebAppActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@LoginWebAppActivity, binding.scannerView)
-        // Parameters (default values)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        // ex. listOf(BarcodeFormat.QR_CODE)
-        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = false // Whether to enable flash or not
-        codeScanner.startPreview()
+        codeScanner = CodeScanner(this@LoginWebAppActivity, binding.scannerView).apply {
+            // Parameters (default values)
+            camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
+            formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
+            // ex. listOf(BarcodeFormat.QR_CODE)
+            autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
+            scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+            isAutoFocusEnabled = true // Whether to enable auto focus or not
+            isFlashEnabled = false // Whether to enable flash or not
+            startPreview()
 
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                binding.loadingAnim.visibility = View.VISIBLE
-                if (it.text.contains("webapp", ignoreCase = true)) {
-                    insertWebApp(idadmin, it.text, tokenAuth)
-                } else {
-                    Toasty.warning(this@LoginWebAppActivity, "QR Code tidak cocok", Toasty.LENGTH_LONG).show()
-                    onBackPressed()
+            // Callbacks
+            decodeCallback = DecodeCallback {
+                runOnUiThread {
+                    binding.loadingAnim.visibility = View.VISIBLE
+                    if (it.text.contains("webapp", ignoreCase = true)) {
+                        insertWebApp(idadmin, it.text, tokenAuth)
+                    } else {
+                        Toasty.warning(this@LoginWebAppActivity, "QR Code tidak cocok", Toasty.LENGTH_LONG).show()
+                        onBackPressed()
+                    }
                 }
             }
+            errorCallback = ErrorCallback.SUPPRESS
         }
-        codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.btnBack.setOnClickListener { onBackPressed() }
     }
 
     override fun onResume() {
@@ -94,7 +93,7 @@ class LoginWebAppActivity : AppCompatActivity() {
 
     private fun insertWebApp(idadmin: String, device_id: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.insertWebApp(idadmin, device_id, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.insertWebApp(idadmin, device_id, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {

@@ -25,32 +25,32 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterable {
+class UserAdapter : RecyclerView.Adapter<UserAdapter.ItemHolder>(), Filterable {
 
-    private var listUser = ArrayList<UserEntity>()
-    private var listUserFilter = ArrayList<UserEntity>()
+    private var list = ArrayList<UserEntity>()
+    private var listFilter = ArrayList<UserEntity>()
 
-    fun setUserItem(userItem: List<UserEntity>?) {
-        if (userItem == null) return
-        this.listUser.clear()
-        this.listUser.addAll(userItem)
-        this.listUserFilter = userItem as ArrayList<UserEntity>
-        notifyItemRangeChanged(0, listUser.size)
+    fun setItem(item: List<UserEntity>?) {
+        if (item == null) return
+        this.list.clear()
+        this.list.addAll(item)
+        this.listFilter = item as ArrayList<UserEntity>
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class UserItemHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var myPreferences: MySharedPreferences
 
-        fun bind(userItem: UserEntity) {
+        fun bind(item: UserEntity) {
             with(binding) {
                 myPreferences = MySharedPreferences(itemView.context)
 
-                val nama = userItem.nama.capitalizeWords()
-                val paket = userItem.paket
-                val alamat = userItem.alamat_pasang.capitalizeWords()
-                val user = userItem.user
-                val pass = userItem.password
+                val nama = item.nama.capitalizeWords()
+                val paket = item.paket
+                val alamat = item.alamat_pasang.capitalizeWords()
+                val user = item.user
+                val pass = item.password
                 val tokenAuth = itemView.context.getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
                 tvName.text = itemView.context.getString(R.string.user_name, nama, paket)
                 tvAddress.text = itemView.context.getString(R.string.user_address, alamat)
@@ -74,7 +74,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                         .setPositiveButton(itemView.context.getString(R.string.yes), R.drawable.ic_restart)
                         { dialogInterface, _ ->
                             val service = RetrofitClient().apiRequest().create(DataService::class.java)
-                            service.restartUser(user, pass, nama, paket, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+                            service.restartUser(user, pass, nama, paket, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                     if (response.isSuccessful) {
                                         if (response.body()!!.status == "success") {
@@ -114,17 +114,17 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemHolder {
-        val itemUserBinding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserItemHolder(itemUserBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val itemBinding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: UserItemHolder, position: Int) {
-        val vendorItem = listUser[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = listUser.size
+    override fun getItemCount(): Int = list.size
 
     override fun getFilter(): Filter {
         return object : Filter() {
@@ -133,14 +133,14 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                 val filterResults = FilterResults()
 
                 if (constraint == null || constraint.length < 0) {
-                    filterResults.count = listUserFilter.size
-                    filterResults.values = listUserFilter
+                    filterResults.count = listFilter.size
+                    filterResults.values = listFilter
                 } else {
                     val charSearch = constraint.toString()
 
                     val resultList = ArrayList<UserEntity>()
 
-                    for (row in listUserFilter) {
+                    for (row in listFilter) {
                         if (row.nama.lowercase().contains(charSearch.lowercase())
                             ||
                             row.alamat_pasang.lowercase().contains(charSearch.lowercase())
@@ -156,7 +156,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
 
             @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                listUser = results?.values as ArrayList<UserEntity>
+                list = results?.values as ArrayList<UserEntity>
                 notifyDataSetChanged()
             }
 

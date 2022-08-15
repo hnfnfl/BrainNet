@@ -37,9 +37,7 @@ class NotifikasiActivity : AppCompatActivity() {
 
         getNotification(tokenAuth)
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.btnBack.setOnClickListener { onBackPressed() }
 
     }
 
@@ -50,14 +48,14 @@ class NotifikasiActivity : AppCompatActivity() {
 
     private fun getNotification(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getNotification(tokenAuth).enqueue(object : Callback<NotifikasiResponse> {
+        service.getNotification(tokenAuth, "true").enqueue(object : Callback<NotifikasiResponse> {
             override fun onResponse(call: Call<NotifikasiResponse>, response: Response<NotifikasiResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listNotif = listData
-                        notifikasiAdapter.setNotifItem(listNotif)
+                        notifikasiAdapter.setItem(listNotif)
                         notifikasiAdapter.notifyItemRangeChanged(0, listNotif.size)
 
 
@@ -71,7 +69,7 @@ class NotifikasiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listNotif.clear()
-                        notifikasiAdapter.setNotifItem(listNotif)
+                        notifikasiAdapter.setItem(listNotif)
                         notifikasiAdapter.notifyItemRangeChanged(0, listNotif.size)
                     }
                 } else {

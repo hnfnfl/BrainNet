@@ -5,37 +5,37 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.indirisma.databinding.ItemHalBaikBinding
 
-class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.HalBaikItemHolder>() {
+class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.ItemHolder>() {
 
-    private var listHalBaik = ArrayList<HalBaikEntity>()
+    private var list = ArrayList<HalBaikEntity>()
 
-    fun setHalBaikItem(halBaikItem: List<HalBaikEntity>?) {
-        if (halBaikItem == null) return
-        this.listHalBaik.clear()
-        this.listHalBaik.addAll(halBaikItem)
-        notifyItemRangeChanged(0, listHalBaik.size)
+    fun setItem(item: List<HalBaikEntity>?) {
+        if (item == null) return
+        this.list.clear()
+        this.list.addAll(item)
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class HalBaikItemHolder(private val binding: ItemHalBaikBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(halBaikItem: HalBaikEntity) {
+    class ItemHolder(private val binding: ItemHalBaikBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: HalBaikEntity) {
             with(binding) {
-                tvDate.text = halBaikItem.tanggal
-                tvHalBaik.text = halBaikItem.hal_baik
+                tvDate.text = item.tanggal
+                tvHalBaik.text = item.hal_baik
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HalBaikItemHolder {
-        val itemHalBaikBinding = ItemHalBaikBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HalBaikItemHolder(itemHalBaikBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val itemBinding = ItemHalBaikBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: HalBaikItemHolder, position: Int) {
-        val vendorItem = listHalBaik[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = listHalBaik.size
+    override fun getItemCount(): Int = list.size
 }
 
 

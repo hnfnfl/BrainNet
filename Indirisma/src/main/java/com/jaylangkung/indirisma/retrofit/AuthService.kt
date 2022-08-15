@@ -4,10 +4,7 @@ import com.jaylangkung.indirisma.retrofit.response.DataSpinnerResponse
 import com.jaylangkung.indirisma.retrofit.response.DefaultResponse
 import com.jaylangkung.indirisma.retrofit.response.LoginResponse
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface AuthService {
     //login
@@ -17,6 +14,7 @@ interface AuthService {
         @Field("email") email: String,
         @Field("password") password: String,
         @Field("device_id") device_id: String,
+        @Header("indirisma") indirisma: String,
     ): Call<LoginResponse>
 
     @FormUrlEncoded
@@ -24,6 +22,7 @@ interface AuthService {
     fun addToken(
         @Field("idadmin") idadmin: String,
         @Field("device_token") device_token: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     //refresh auth token
@@ -32,7 +31,8 @@ interface AuthService {
     fun refreshAuthToken(
         @Field("email") email: String,
         @Field("idadmin") idadmin: String,
-        @Field("device_id") device_id: String
+        @Field("device_id") device_id: String,
+        @Header("indirisma") indirisma: String,
     ): Call<LoginResponse>
 
     //logout
@@ -40,10 +40,12 @@ interface AuthService {
     @POST("auth/logout")
     fun logout(
         @Field("idadmin") idadmin: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
 
     @GET("auth/getSpinnerData")
     fun getSpinnerData(
+        @Header("indirisma") indirisma: String,
     ): Call<DataSpinnerResponse>
 }

@@ -41,43 +41,43 @@ class MonitoringActivity : AppCompatActivity() {
         userDCAdapter = UserDCAdapter()
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
-
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
-
         getEthernet(tokenAuth)
         getUserDisconnected(tokenAuth)
 
-        binding.fabDisconnected.setOnClickListener {
-            binding.loadingAnim.visibility = View.VISIBLE
-            filterUserDC.clear()
-            Handler(Looper.getMainLooper()).postDelayed({
-                listUserDC.forEach { ListData ->
-                    if (ListData.paket != "isolir") {
-                        filterUserDC.add(ListData)
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
+
+            fabDisconnected.setOnClickListener {
+                binding.loadingAnim.visibility = View.VISIBLE
+                filterUserDC.clear()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    listUserDC.forEach { ListData ->
+                        if (ListData.paket != "isolir") {
+                            filterUserDC.add(ListData)
+                        }
                     }
-                }
-                userDCAdapter.setUserDCItem(filterUserDC)
-                userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
-                binding.loadingAnim.visibility = View.GONE
-            }, 500)
+                    userDCAdapter.setItem(filterUserDC)
+                    userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
+                    loadingAnim.visibility = View.GONE
+                }, 500)
+            }
+
+            fabIsolation.setOnClickListener {
+                loadingAnim.visibility = View.VISIBLE
+                filterUserDC.clear()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    listUserDC.forEach { ListData ->
+                        if (ListData.paket == "isolir") {
+                            filterUserDC.add(ListData)
+                        }
+                    }
+                    userDCAdapter.setItem(filterUserDC)
+                    userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
+                    loadingAnim.visibility = View.GONE
+                }, 500)
+            }
         }
 
-        binding.fabIsolation.setOnClickListener {
-            binding.loadingAnim.visibility = View.VISIBLE
-            filterUserDC.clear()
-            Handler(Looper.getMainLooper()).postDelayed({
-                listUserDC.forEach { ListData ->
-                    if (ListData.paket == "isolir") {
-                        filterUserDC.add(ListData)
-                    }
-                }
-                userDCAdapter.setUserDCItem(filterUserDC)
-                userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
-                binding.loadingAnim.visibility = View.GONE
-            }, 500)
-        }
     }
 
     override fun onBackPressed() {
@@ -87,13 +87,13 @@ class MonitoringActivity : AppCompatActivity() {
 
     private fun getEthernet(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getEthernet(tokenAuth).enqueue(object : Callback<EthernetResponse> {
+        service.getEthernet(tokenAuth, "true").enqueue(object : Callback<EthernetResponse> {
             override fun onResponse(call: Call<EthernetResponse>, response: Response<EthernetResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         val listData = response.body()!!.data
                         listEthernet = listData
-                        ethernetAdapter.setEthernetItem(listEthernet)
+                        ethernetAdapter.setItem(listEthernet)
                         ethernetAdapter.notifyItemRangeChanged(0, filterUserDC.size)
 
                         with(binding.rvEthernet) {
@@ -123,7 +123,7 @@ class MonitoringActivity : AppCompatActivity() {
 
     private fun getUserDisconnected(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getUserDisconnected(tokenAuth).enqueue(object : Callback<UserDCResponse> {
+        service.getUserDisconnected(tokenAuth, "true").enqueue(object : Callback<UserDCResponse> {
             override fun onResponse(call: Call<UserDCResponse>, response: Response<UserDCResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
@@ -135,7 +135,7 @@ class MonitoringActivity : AppCompatActivity() {
                                 filterUserDC.add(ListData)
                             }
                         }
-                        userDCAdapter.setUserDCItem(filterUserDC)
+                        userDCAdapter.setItem(filterUserDC)
                         userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
 
                         with(binding.rvUserDc) {
@@ -148,7 +148,7 @@ class MonitoringActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listUserDC.clear()
-                        userDCAdapter.setUserDCItem(listUserDC)
+                        userDCAdapter.setItem(listUserDC)
                         userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
                     }
                 } else {

@@ -20,9 +20,7 @@ class LoggerActivity : AppCompatActivity() {
         setContentView(binding.root)
         loggerDatabase = Room.databaseBuilder(this@LoggerActivity, LoggerDatabase::class.java, "logger.db").build()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.btnBack.setOnClickListener { onBackPressed() }
 
         GlobalScope.launch {
             displayData()

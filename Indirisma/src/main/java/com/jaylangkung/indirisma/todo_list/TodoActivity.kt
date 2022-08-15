@@ -43,41 +43,42 @@ class TodoActivity : AppCompatActivity() {
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
 
-        binding.fabAddTodo.setOnClickListener {
-            addTodoBinding = BottomSheetTodoBinding.inflate(layoutInflater)
+            fabAddTodo.setOnClickListener {
+                addTodoBinding = BottomSheetTodoBinding.inflate(layoutInflater)
 
-            val dialog = BottomSheetDialog(this@TodoActivity)
-            val btnSave = addTodoBinding.btnSaveTodo
+                val dialog = BottomSheetDialog(this@TodoActivity)
+                val btnSave = addTodoBinding.btnSaveTodo
 
-            btnSave.setOnClickListener {
-                binding.loadingAnim.visibility = View.VISIBLE
-                val todo = addTodoBinding.inputTodo.text.toString()
-                val service = RetrofitClient().apiRequest().create(DataService::class.java)
-                service.insertTodo(idadmin, todo, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                        if (response.isSuccessful) {
-                            if (response.body()!!.status == "success") {
-                                getTodo(tokenAuth)
-                                Toasty.success(this@TodoActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                btnSave.setOnClickListener {
+                    loadingAnim.visibility = View.VISIBLE
+                    val todo = addTodoBinding.inputTodo.text.toString()
+                    val service = RetrofitClient().apiRequest().create(DataService::class.java)
+                    service.insertTodo(idadmin, todo, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
+                        override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                            if (response.isSuccessful) {
+                                if (response.body()!!.status == "success") {
+                                    getTodo(tokenAuth)
+                                    Toasty.success(this@TodoActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                                }
                             }
                         }
-                    }
 
-                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                        binding.loadingAnim.visibility = View.GONE
-                        Toasty.error(this@TodoActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
-                    }
-                })
-                dialog.dismiss()
+                        override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                            loadingAnim.visibility = View.GONE
+                            Toasty.error(this@TodoActivity, t.message.toString(), Toasty.LENGTH_LONG).show()
+                        }
+                    })
+                    dialog.dismiss()
+                }
+                dialog.setCancelable(true)
+                dialog.setContentView(addTodoBinding.root)
+                dialog.show()
             }
-            dialog.setCancelable(true)
-            dialog.setContentView(addTodoBinding.root)
-            dialog.show()
         }
+
         getTodo(tokenAuth)
     }
 
@@ -88,7 +89,7 @@ class TodoActivity : AppCompatActivity() {
 
     private fun getTodo(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getTodo(tokenAuth).enqueue(object : Callback<TodoResponse> {
+        service.getTodo(tokenAuth, "true").enqueue(object : Callback<TodoResponse> {
             override fun onResponse(call: Call<TodoResponse>, response: Response<TodoResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
@@ -96,7 +97,7 @@ class TodoActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listTodo = listData
-                        todoAdapter.setTodoItem(listTodo)
+                        todoAdapter.setItem(listTodo)
                         todoAdapter.notifyItemRangeChanged(0, listTodo.size)
 
                         with(binding.rvTodoList) {
@@ -116,7 +117,7 @@ class TodoActivity : AppCompatActivity() {
                                     .setCancelable(true)
                                     .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked)
                                     { dialogInterface, _ ->
-                                        service.editTodo(idtodoList, idadmin, tokenAuth)
+                                        service.editTodo(idtodoList, idadmin, tokenAuth, "true")
                                             .enqueue(object : Callback<DefaultResponse> {
                                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                                     if (response.isSuccessful) {
@@ -128,7 +129,7 @@ class TodoActivity : AppCompatActivity() {
                                                                 binding.loadingAnim.visibility = View.GONE
                                                                 listTodo.clear()
                                                             }
-                                                            todoAdapter.setTodoItem(listTodo)
+                                                            todoAdapter.setItem(listTodo)
                                                             todoAdapter.notifyItemRangeChanged(0, listTodo.size)
                                                         }
                                                     } else {
@@ -164,7 +165,7 @@ class TodoActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listTodo.clear()
-                        todoAdapter.setTodoItem(listTodo)
+                        todoAdapter.setItem(listTodo)
                         todoAdapter.notifyItemRangeChanged(0, listTodo.size)
                     }
                 } else {

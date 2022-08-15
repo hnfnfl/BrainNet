@@ -5,38 +5,38 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.indirisma.databinding.ItemNotifikasiBinding
 
-class NotifikasiAdapter : RecyclerView.Adapter<NotifikasiAdapter.NotifItemHolder>() {
+class NotifikasiAdapter : RecyclerView.Adapter<NotifikasiAdapter.ItemHolder>() {
 
-    private var listNotifikasi = ArrayList<NotifikasiEntity>()
+    private var list = ArrayList<NotifikasiEntity>()
 
-    fun setNotifItem(notifItem: List<NotifikasiEntity>?) {
-        if (notifItem == null) return
-        this.listNotifikasi.clear()
-        this.listNotifikasi.addAll(notifItem)
-        notifyItemRangeChanged(0, listNotifikasi.size)
+    fun setItem(item: List<NotifikasiEntity>?) {
+        if (item == null) return
+        this.list.clear()
+        this.list.addAll(item)
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class NotifItemHolder(private val binding: ItemNotifikasiBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(notifItem: NotifikasiEntity) {
+    class ItemHolder(private val binding: ItemNotifikasiBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: NotifikasiEntity) {
             with(binding) {
-                tvJenis.text = notifItem.jenis
-                tvIsi.text = notifItem.isi
-                tvDate.text = notifItem.waktu
+                tvJenis.text = item.jenis
+                tvIsi.text = item.isi
+                tvDate.text = item.waktu
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotifItemHolder {
-        val itemNotifBinding = ItemNotifikasiBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotifItemHolder(itemNotifBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val itemBinding = ItemNotifikasiBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: NotifItemHolder, position: Int) {
-        val vendorItem = listNotifikasi[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = listNotifikasi.size
+    override fun getItemCount(): Int = list.size
 }
 
 

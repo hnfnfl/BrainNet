@@ -56,21 +56,20 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idtiang = intent.getStringExtra(idtiang).toString()
 
-
-
         client = LocationServices.getFusedLocationProviderClient(this@EditTiangActivity)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this@EditTiangActivity)
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
+
+            btnSave.setOnClickListener {
+                btnSave.startAnimation()
+                val keterangan = tvValueDesc.text.toString()
+                editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
+            }
         }
 
-        binding.btnSave.setOnClickListener {
-            binding.btnSave.startAnimation()
-            val keterangan = binding.tvValueDesc.text.toString()
-            editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
-        }
     }
 
     override fun onBackPressed() {
@@ -134,7 +133,7 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun editTiang(idtiang: String, lat: String, lng: String, keterangan: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.editTiang(idtiang, lat, lng, keterangan, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.editTiang(idtiang, lat, lng, keterangan, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

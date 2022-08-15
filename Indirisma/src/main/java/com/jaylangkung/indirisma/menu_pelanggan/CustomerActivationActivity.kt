@@ -55,40 +55,41 @@ class CustomerActivationActivity : AppCompatActivity() {
         val listTerminal = ArrayList<String>()
         listTerminal.add("Tidak")
         listTerminal.add("Ya")
-        binding.spinnerIsterminal.item = listTerminal as List<Any>?
-        binding.spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                isterminal = listTerminal[p2]
+
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
+            spinnerIsterminal.item = listTerminal as List<Any>?
+            spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    isterminal = listTerminal[p2]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-
-        }
-
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
-
-        binding.btnActivateCustomer.setOnClickListener {
-            if (validate()) {
-                val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
-                    .setTitle("Aktivasi Pelanggan Baru")
-                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
-                    { dialogInterface, _ ->
-                        insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+            btnActivateCustomer.setOnClickListener {
+                if (validate()) {
+                    val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
+                        .setTitle("Aktivasi Pelanggan Baru")
+                        .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
+                        { dialogInterface, _ ->
+                            insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
+                            dialogInterface.dismiss()
+                        }
+                        .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
+                        { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
+
     }
 
     override fun onBackPressed() {
@@ -98,7 +99,7 @@ class CustomerActivationActivity : AppCompatActivity() {
 
     private fun getSpinnerData() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
+        service.getSpinnerData("true").enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listBelumAktif.clear()
@@ -224,7 +225,7 @@ class CustomerActivationActivity : AppCompatActivity() {
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertAktivasi(
-            idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaket_instalasi, tokenAuth
+            idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaket_instalasi, tokenAuth, "true"
         ).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {

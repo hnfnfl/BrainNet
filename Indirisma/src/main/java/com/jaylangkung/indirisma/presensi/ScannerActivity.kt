@@ -39,28 +39,27 @@ class ScannerActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@ScannerActivity, binding.scannerView)
-        // Parameters (default values)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = false // Whether to enable flash or not
-        codeScanner.startPreview()
+        codeScanner = CodeScanner(this@ScannerActivity, binding.scannerView).apply {
+            // Parameters (default values)
+            camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
+            formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
+            autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
+            scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+            isAutoFocusEnabled = true // Whether to enable auto focus or not
+            isFlashEnabled = false // Whether to enable flash or not
+            startPreview()
 
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                binding.loadingAnim.visibility = View.VISIBLE
-                getAbsensi(it.text, idadmin, tokenAuth)
+            // Callbacks
+            decodeCallback = DecodeCallback {
+                runOnUiThread {
+                    binding.loadingAnim.visibility = View.VISIBLE
+                    getAbsensi(it.text, idadmin, tokenAuth)
+                }
             }
+            errorCallback = ErrorCallback.SUPPRESS
         }
-        codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.btnBack.setOnClickListener { onBackPressed() }
     }
 
     override fun onResume() {
@@ -89,7 +88,7 @@ class ScannerActivity : AppCompatActivity() {
 
     private fun getAbsensi(token: String, idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getAbsensi(token, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.getAbsensi(token, idadmin, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {

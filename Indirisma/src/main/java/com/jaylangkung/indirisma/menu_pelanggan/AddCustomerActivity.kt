@@ -57,57 +57,58 @@ class AddCustomerActivity : AppCompatActivity() {
         getProvinsi()
         getSpinnerData()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
 
-        binding.btnAddCustomer.setOnClickListener {
-            if (validate()) {
-                val noktp = binding.customerInputKtp.text.toString()
-                val namaPelanggan = binding.customerName.text.toString()
-                val alamatPelanggan = binding.customerAddress.text.toString()
-                val rt = binding.customerRt.text.toString()
-                val rw = binding.customerRw.text.toString()
-                val nohp = binding.customerPhone.text.toString()
-                val alamatPasang = binding.customerAddressInstall.text.toString()
-                val lokasi = binding.customerLocation.text.toString()
+            btnAddCustomer.setOnClickListener {
+                if (validate()) {
+                    val noktp = customerInputKtp.text.toString()
+                    val namaPelanggan = customerName.text.toString()
+                    val alamatPelanggan = customerAddress.text.toString()
+                    val rt = customerRt.text.toString()
+                    val rw = customerRw.text.toString()
+                    val nohp = customerPhone.text.toString()
+                    val alamatPasang = customerAddressInstall.text.toString()
+                    val lokasi = customerLocation.text.toString()
 
-                val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity)
-                    .setTitle("Tambahkan Pelanggan Baru")
-                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user)
-                    { dialogInterface, _ ->
-                        insertPelanggan(
-                            noktp,
-                            namaPelanggan,
-                            alamatPelanggan,
-                            rt,
-                            rw,
-                            kelurahan,
-                            kecamatan,
-                            kotaKab,
-                            provinsi,
-                            nohp,
-                            marketing,
-                            alamatPasang,
-                            paketInternet,
-                            rekanan,
-                            lokasi,
-                            penagih,
-                            tokenAuth
-                        )
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+                    val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity)
+                        .setTitle("Tambahkan Pelanggan Baru")
+                        .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user)
+                        { dialogInterface, _ ->
+                            insertPelanggan(
+                                noktp,
+                                namaPelanggan,
+                                alamatPelanggan,
+                                rt,
+                                rw,
+                                kelurahan,
+                                kecamatan,
+                                kotaKab,
+                                provinsi,
+                                nohp,
+                                marketing,
+                                alamatPasang,
+                                paketInternet,
+                                rekanan,
+                                lokasi,
+                                penagih,
+                                tokenAuth
+                            )
+                            dialogInterface.dismiss()
+                        }
+                        .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
+                        { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
+
 
     }
 
@@ -286,7 +287,7 @@ class AddCustomerActivity : AppCompatActivity() {
 
     private fun getSpinnerData() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
+        service.getSpinnerData("true").enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listPaketInternet.clear()
@@ -482,7 +483,8 @@ class AddCustomerActivity : AppCompatActivity() {
             idrekanan,
             lokasi,
             penagih,
-            tokenAuth
+            tokenAuth,
+            "true"
         ).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {

@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             insertToken(idadmin, deviceToken.toString())
         })
 
-        Firebase.messaging.subscribeToTopic("notifikasi")
+        Firebase.messaging.subscribeToTopic("notifikasi_indir")
 
         getGangguan(tokenAuth)
 
@@ -240,7 +240,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun insertToken(idadmin: String, device_token: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.addToken(idadmin, device_token).enqueue(object : Callback<DefaultResponse> {
+        service.addToken(idadmin, device_token, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getGangguan(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getGangguan(tokenAuth).enqueue(object : Callback<GangguanResponse> {
+        service.getGangguan(tokenAuth, "true").enqueue(object : Callback<GangguanResponse> {
             override fun onResponse(call: Call<GangguanResponse>, response: Response<GangguanResponse>) {
                 if (response.isSuccessful) {
                     binding.llBody.isRefreshing = false
@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
-                        gangguanAdapter.setListGangguanItem(listGangguanAdapter)
+                        gangguanAdapter.setItem(listGangguanAdapter)
                         gangguanAdapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
 
                         with(binding.rvGangguan) {
@@ -287,7 +287,7 @@ class MainActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listGangguanAdapter.clear()
-                        gangguanAdapter.setListGangguanItem(listGangguanAdapter)
+                        gangguanAdapter.setItem(listGangguanAdapter)
                         gangguanAdapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
                     }
                 } else {

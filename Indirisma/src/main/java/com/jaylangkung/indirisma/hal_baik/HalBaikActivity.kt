@@ -43,49 +43,50 @@ class HalBaikActivity : AppCompatActivity() {
 
         getHalBaik(idadmin, tokenAuth)
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
 
-        binding.fabAddGoodThings.setOnClickListener {
-            addHalBaikBinding = BottomSheetHalBaikBinding.inflate(layoutInflater)
+            fabAddGoodThings.setOnClickListener {
+                addHalBaikBinding = BottomSheetHalBaikBinding.inflate(layoutInflater)
 
-            val dialog = BottomSheetDialog(this@HalBaikActivity)
-            val btnSave = addHalBaikBinding.btnSaveHalBaik
+                val dialog = BottomSheetDialog(this@HalBaikActivity)
+                val btnSave = addHalBaikBinding.btnSaveHalBaik
 
-            btnSave.setOnClickListener {
-                binding.loadingAnim.visibility = View.VISIBLE
-                val halBaik = addHalBaikBinding.inputHalBaik.text.toString()
-                val service = RetrofitClient().apiRequest().create(DataService::class.java)
-                service.insertHalBaik(idadmin, halBaik, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                        if (response.isSuccessful) {
-                            if (response.body()!!.status == "success") {
-                                getHalBaik(idadmin, tokenAuth)
-                                Toasty.success(this@HalBaikActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                btnSave.setOnClickListener {
+                    loadingAnim.visibility = View.VISIBLE
+                    val halBaik = addHalBaikBinding.inputHalBaik.text.toString()
+                    val service = RetrofitClient().apiRequest().create(DataService::class.java)
+                    service.insertHalBaik(idadmin, halBaik, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
+                        override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                            if (response.isSuccessful) {
+                                if (response.body()!!.status == "success") {
+                                    getHalBaik(idadmin, tokenAuth)
+                                    Toasty.success(this@HalBaikActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                                }
+                            } else {
+                                ErrorHandler().responseHandler(
+                                    this@HalBaikActivity,
+                                    "insertHalBaik | onResponse", response.message()
+                                )
                             }
-                        } else {
+                        }
+
+                        override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                            loadingAnim.visibility = View.GONE
                             ErrorHandler().responseHandler(
                                 this@HalBaikActivity,
-                                "insertHalBaik | onResponse", response.message()
+                                "insertHalBaik | onFailure", t.message.toString()
                             )
                         }
-                    }
-
-                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                        binding.loadingAnim.visibility = View.GONE
-                        ErrorHandler().responseHandler(
-                            this@HalBaikActivity,
-                            "insertHalBaik | onFailure", t.message.toString()
-                        )
-                    }
-                })
-                dialog.dismiss()
+                    })
+                    dialog.dismiss()
+                }
+                dialog.setCancelable(true)
+                dialog.setContentView(addHalBaikBinding.root)
+                dialog.show()
             }
-            dialog.setCancelable(true)
-            dialog.setContentView(addHalBaikBinding.root)
-            dialog.show()
         }
+
     }
 
     override fun onBackPressed() {
@@ -95,14 +96,14 @@ class HalBaikActivity : AppCompatActivity() {
 
     private fun getHalBaik(idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getHalBaik(idadmin, tokenAuth).enqueue(object : Callback<HalBaikResponse> {
+        service.getHalBaik(idadmin, tokenAuth, "true").enqueue(object : Callback<HalBaikResponse> {
             override fun onResponse(call: Call<HalBaikResponse>, response: Response<HalBaikResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listHalBaik = listData
-                        halBaikAdapter.setHalBaikItem(listHalBaik)
+                        halBaikAdapter.setItem(listHalBaik)
                         halBaikAdapter.notifyItemRangeChanged(0, listHalBaik.size)
 
                         with(binding.rvHalBaik) {
@@ -115,7 +116,7 @@ class HalBaikActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listHalBaik.clear()
-                        halBaikAdapter.setHalBaikItem(listHalBaik)
+                        halBaikAdapter.setItem(listHalBaik)
                         halBaikAdapter.notifyItemRangeChanged(0, listHalBaik.size)
                     }
                 } else {

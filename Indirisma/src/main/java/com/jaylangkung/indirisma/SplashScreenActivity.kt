@@ -48,7 +48,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun refreshAuthToken(email: String, idadmin: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.refreshAuthToken(email, idadmin, deviceID).enqueue(object : Callback<LoginResponse> {
+        service.refreshAuthToken(email, idadmin, deviceID, "true").enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

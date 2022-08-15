@@ -54,7 +54,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
 
     private fun getBelumTerpasang(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getBelumTerpasang(tokenAuth).enqueue(object : Callback<BelumTerpasangResponse> {
+        service.getBelumTerpasang(tokenAuth, "true").enqueue(object : Callback<BelumTerpasangResponse> {
             override fun onResponse(call: Call<BelumTerpasangResponse>, response: Response<BelumTerpasangResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
@@ -62,7 +62,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listPemasangan = listData
-                        pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
+                        pemasanganSelesaiAdapter.setItem(listPemasangan)
                         pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
 
                         with(binding.rvPemasanganSelesai) {
@@ -82,7 +82,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                                     .setCancelable(true)
                                     .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked)
                                     { dialogInterface, _ ->
-                                        service.insertBayarTeknisi(idpelanggan, idadmin, tokenAuth)
+                                        service.insertBayarTeknisi(idpelanggan, idadmin, tokenAuth, "true")
                                             .enqueue(object : Callback<DefaultResponse> {
                                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                                     if (response.isSuccessful) {
@@ -98,7 +98,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                                                                 binding.loadingAnim.visibility = View.GONE
                                                                 listPemasangan.clear()
                                                             }
-                                                            pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
+                                                            pemasanganSelesaiAdapter.setItem(listPemasangan)
                                                             pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
                                                         }
                                                     } else {
@@ -134,7 +134,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listPemasangan.clear()
-                        pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
+                        pemasanganSelesaiAdapter.setItem(listPemasangan)
                         pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
                     }
                 } else {

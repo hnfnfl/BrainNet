@@ -13,12 +13,14 @@ interface DataService {
     fun getAbsensi(
         @Field("token") token: String,
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String
     ): Call<DefaultResponse>
 
     @POST("main/getGangguan")
     fun getGangguan(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<GangguanResponse>
 
     @FormUrlEncoded
@@ -27,12 +29,14 @@ interface DataService {
         @Field("idgangguan") idgangguan: String,
         @Field("penyelesaian") penyelesaian: String,
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @POST("main/getPelanggan")
     fun getPelanggan(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<UserResponse>
 
     @FormUrlEncoded
@@ -42,14 +46,16 @@ interface DataService {
         @Field("password") password: String,
         @Field("nama") nama: String,
         @Field("paket") paket: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
     @POST("main/getTiang")
     fun getTiang(
         @Field("serial_number") serial_number: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<TiangResponse>
 
     @FormUrlEncoded
@@ -59,14 +65,16 @@ interface DataService {
         @Field("lat") lat: String,
         @Field("lng") lng: String,
         @Field("keterangan") keterangan: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
     @POST("main/getHalBaik")
     fun getHalBaik(
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<HalBaikResponse>
 
     @FormUrlEncoded
@@ -74,7 +82,8 @@ interface DataService {
     fun insertHalBaik(
         @Field("idadmin") idadmin: String,
         @Field("hal_baik") hal_baik: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -85,7 +94,8 @@ interface DataService {
         @Field("nama") nama: String,
         @Field("alamat") alamat: String,
         @Field("telp") telp: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -93,12 +103,14 @@ interface DataService {
     fun insertWebApp(
         @Field("idadmin") idadmin: String,
         @Field("device_id") device_id: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @POST("main/getTodo")
     fun getTodo(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<TodoResponse>
 
     @FormUrlEncoded
@@ -106,7 +118,8 @@ interface DataService {
     fun insertTodo(
         @Field("idadmin") idadmin: String,
         @Field("todo") todo: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -114,22 +127,26 @@ interface DataService {
     fun editTodo(
         @Field("idtodo_list") idtodo_list: String,
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @POST("main/getUserDisconnected")
     fun getUserDisconnected(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<UserDCResponse>
 
     @POST("main/getEthernet")
     fun getEthernet(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<EthernetResponse>
 
     @POST("main/getNotification")
     fun getNotification(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<NotifikasiResponse>
 
     @FormUrlEncoded
@@ -151,7 +168,8 @@ interface DataService {
         @Field("idrekanan") idrekanan: String,
         @Field("lokasi") lokasi: String,
         @Field("penagih") penagih: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -164,7 +182,8 @@ interface DataService {
         @Field("idswitch") idswitch: String,
         @Field("idrekanan") idrekanan: String,
         @Field("idpaket_instalasi") idpaket_instalasi: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -175,12 +194,14 @@ interface DataService {
         @Field("prioritas") prioritas: String,
         @Field("isi") isi: String,
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @POST("main/getBelumTerpasang")
     fun getBelumTerpasang(
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<BelumTerpasangResponse>
 
     @FormUrlEncoded
@@ -188,7 +209,8 @@ interface DataService {
     fun insertBayarTeknisi(
         @Field("idpelanggan") idpelanggan: String,
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -197,7 +219,8 @@ interface DataService {
         @Field("idtagihan") idtagihan: String,
         @Field("jumlah_tagihan") jumlah_tagihan: String,
         @Field("idadmin") idadmin: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
@@ -205,6 +228,7 @@ interface DataService {
     fun insertDispensasi(
         @Field("idpelanggan") idpelanggan: String,
         @Field("tanggal_janji") tanggal_janji: String,
-        @Header("Authorization") tokenAuth: String
+        @Header("Authorization") tokenAuth: String,
+        @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
 }

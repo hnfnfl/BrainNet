@@ -81,7 +81,7 @@ class DispensasiActivity : AppCompatActivity() {
 
     private fun getSpinnerData() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.getSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
+        service.getSpinnerData("true").enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
                 if (response.isSuccessful) {
                     listPelanggan.clear()
@@ -141,7 +141,7 @@ class DispensasiActivity : AppCompatActivity() {
         tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.insertDispensasi(idpelanggan, tanggal_janji, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.insertDispensasi(idpelanggan, tanggal_janji, tokenAuth, "true").enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
