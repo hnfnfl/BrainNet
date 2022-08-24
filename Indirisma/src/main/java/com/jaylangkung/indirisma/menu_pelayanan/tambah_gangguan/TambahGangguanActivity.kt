@@ -193,7 +193,7 @@ class TambahGangguanActivity : AppCompatActivity() {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
                     this@TambahGangguanActivity,
-                    "insertGangguan | onResponse", t.message.toString()
+                    "insertGangguan | onFailure", t.message.toString()
                 )
             }
         })
