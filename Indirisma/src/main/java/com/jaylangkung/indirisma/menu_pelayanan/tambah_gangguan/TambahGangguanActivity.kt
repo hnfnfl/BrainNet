@@ -45,18 +45,10 @@ class TambahGangguanActivity : AppCompatActivity() {
         getSpinnerData()
 
         val listKepada = ArrayList<String>()
-        listKepada.add("Teknisi")
-        listKepada.add("Billing")
-        listKepada.add("Jaringan")
-        listKepada.add("Administrasi")
-        listKepada.add("Dispensasi")
-        listKepada.add("Lainnya")
+        listKepada.addAll(listOf("Teknisi", "Billing", "Jaringan", "Administrasi", "Dispensasi", "Lainnya"))
 
         val listPrioritas = ArrayList<String>()
-        listPrioritas.add("Low")
-        listPrioritas.add("Medium")
-        listPrioritas.add("High")
-        listPrioritas.add("Urgent")
+        listPrioritas.addAll(listOf("Low", "Medium", "High", "Urgent"))
 
         binding.apply {
             spinnerKepada.item = listKepada as List<Any>?

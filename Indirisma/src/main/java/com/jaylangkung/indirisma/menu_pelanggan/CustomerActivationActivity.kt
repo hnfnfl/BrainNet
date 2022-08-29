@@ -40,6 +40,7 @@ class CustomerActivationActivity : AppCompatActivity() {
     private var idswitch: String = ""
     private var idrekanan: String = ""
     private var idpaketinstalasi: String = ""
+    private var tipe: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,21 +53,9 @@ class CustomerActivationActivity : AppCompatActivity() {
 
         getSpinnerData()
 
-        val listTerminal = ArrayList<String>()
-        listTerminal.add("Tidak")
-        listTerminal.add("Ya")
-
         binding.apply {
             btnBack.setOnClickListener { onBackPressed() }
-            spinnerIsterminal.item = listTerminal as List<Any>?
-            spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    isterminal = listTerminal[p2]
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-
-            }
+            val panjangkabel = binding.tvValuePanjangKabel.text.toString()
 
             btnActivateCustomer.setOnClickListener {
                 if (validate()) {
@@ -76,7 +65,7 @@ class CustomerActivationActivity : AppCompatActivity() {
                         .setCancelable(true)
                         .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
                         { dialogInterface, _ ->
-                            insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
+                            insertAktivasi(idpelanggan, paket, isterminal, panjangkabel, idswitch, idrekanan, idpaketinstalasi, idadmin, tipe, tokenAuth)
                             dialogInterface.dismiss()
                         }
                         .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
@@ -112,63 +101,92 @@ class CustomerActivationActivity : AppCompatActivity() {
                     listRekanan = response.body()!!.rekanan
                     listPaketInstalasi = response.body()!!.paketInstalasi
 
-                    val listA = ArrayList<String>()
-                    val listB = ArrayList<String>()
-                    val listC = ArrayList<String>()
-                    val listD = ArrayList<String>()
+                    val listPelanggan = ArrayList<String>()
                     for (i in 0 until listBelumAktif.size) {
-                        listA.add("${i + 1}. ${response.body()!!.belumAktif[i].nama}")
+                        listPelanggan.add("${i + 1}. ${response.body()!!.belumAktif[i].nama}")
                     }
-                    for (i in 0 until listSwitch.size) {
-                        listB.add(response.body()!!.switch[i].nomer)
+
+                    val listTerminal = ArrayList<String>()
+                    listTerminal.addAll(listOf("Tidak", "Ya"))
+
+                    val listSwitch = ArrayList<String>()
+                    for (i in 0 until this@CustomerActivationActivity.listSwitch.size) {
+                        listSwitch.add(response.body()!!.switch[i].nomer)
                     }
-                    for (i in 0 until listRekanan.size) {
-                        listC.add(response.body()!!.rekanan[i].nama)
+
+                    val listRekanan = ArrayList<String>()
+                    for (i in 0 until this@CustomerActivationActivity.listRekanan.size) {
+                        listRekanan.add(response.body()!!.rekanan[i].nama)
                     }
+
+                    val listPaket = ArrayList<String>()
                     for (i in 0 until listPaketInstalasi.size) {
-                        listD.add(response.body()!!.paketInstalasi[i].paket_instalasi)
+                        listPaket.add(response.body()!!.paketInstalasi[i].paket_instalasi)
                     }
 
-                    binding.spinnerPelanggan.item = listA as List<Any>?
-                    binding.spinnerSwitch.item = listB as List<Any>?
-                    binding.spinnerRekanan.item = listC as List<Any>?
-                    binding.spinnerPaketInstalasi.item = listD as List<Any>?
+                    val listTipe = ArrayList<String>()
+                    listTipe.addAll(listOf("Pasca Bayar", "Pra Bayar"))
 
-                    binding.spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            idpelanggan = listBelumAktif[p2].idpelanggan
-                            paket = listBelumAktif[p2].paket
+                    binding.apply {
+                        spinnerPelanggan.item = listPelanggan as List<Any>?
+                        spinnerIsterminal.item = listTerminal as List<Any>?
+                        spinnerSwitch.item = listSwitch as List<Any>?
+                        spinnerRekanan.item = listRekanan as List<Any>?
+                        spinnerPaketInstalasi.item = listPaket as List<Any>?
+                        spinnerTipe.item = listTipe as List<Any>?
+
+                        spinnerPelanggan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                idpelanggan = listBelumAktif[p2].idpelanggan
+                                paket = listBelumAktif[p2].paket
+                            }
+
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                isterminal = listTerminal[p2]
+                            }
 
-                    }
-
-                    binding.spinnerSwitch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            idswitch = listSwitch[p2].idswitch
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        spinnerSwitch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                idswitch = this@CustomerActivationActivity.listSwitch[p2].idswitch
+                            }
 
-                    }
-
-                    binding.spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            idrekanan = listRekanan[p2].idrekanan
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        spinnerRekanan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                idrekanan = this@CustomerActivationActivity.listRekanan[p2].idrekanan
+                            }
 
-                    }
-
-                    binding.spinnerPaketInstalasi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            idpaketinstalasi = listPaketInstalasi[p2].idpaket_instalasi
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        spinnerPaketInstalasi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                idpaketinstalasi = listPaketInstalasi[p2].idpaket_instalasi
+                            }
 
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        }
+
+                        spinnerTipe.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                tipe = if (p2 == 0) {
+                                    "pasca_bayar"
+                                } else {
+                                    "pra_bayar"
+                                }
+                            }
+
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        }
                     }
                 } else {
                     ErrorHandler().responseHandler(
@@ -214,18 +232,13 @@ class CustomerActivationActivity : AppCompatActivity() {
     }
 
     private fun insertAktivasi(
-        idpelanggan: String,
-        paket: String,
-        idadmin: String,
-        isterminal: String,
-        idswitch: String,
-        idrekanan: String,
-        idpaket_instalasi: String,
-        tokenAuth: String
+        idpelanggan: String, paket: String, isterminal: String, panjangkabel: String,
+        idswitch: String, idrekanan: String, idpaket_instalasi: String, oleh: String,
+        tipe: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertAktivasi(
-            idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaket_instalasi, tokenAuth, "true"
+            idpelanggan, paket, isterminal, panjangkabel, idswitch, idrekanan, idpaket_instalasi, oleh, tipe, tokenAuth, "true"
         ).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {

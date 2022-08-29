@@ -45,31 +45,31 @@ class DispensasiActivity : AppCompatActivity() {
 
         getSpinnerData()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener { onBackPressed() }
 
-        binding.btnTglJanji.setOnClickListener {
-            val newCalendar: Calendar = Calendar.getInstance()
-            val datePickerDialog = DatePickerDialog(
-                this@DispensasiActivity,
-                { _, year, monthOfYear, dayOfMonth ->
-                    val newDate: Calendar = Calendar.getInstance()
-                    newDate.set(year, monthOfYear, dayOfMonth)
-                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                    tgl = dateFormatter.format(newDate.time)
-                    binding.tvTglJanji.text = tgl
-                },
-                newCalendar.get(Calendar.YEAR),
-                newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH)
-            )
-            datePickerDialog.show()
-        }
+            btnTglJanji.setOnClickListener {
+                val newCalendar: Calendar = Calendar.getInstance()
+                val datePickerDialog = DatePickerDialog(
+                    this@DispensasiActivity,
+                    { _, year, monthOfYear, dayOfMonth ->
+                        val newDate: Calendar = Calendar.getInstance()
+                        newDate.set(year, monthOfYear, dayOfMonth)
+                        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        tgl = dateFormatter.format(newDate.time)
+                        tvTglJanji.text = tgl
+                    },
+                    newCalendar.get(Calendar.YEAR),
+                    newCalendar.get(Calendar.MONTH),
+                    newCalendar.get(Calendar.DAY_OF_MONTH)
+                )
+                datePickerDialog.show()
+            }
 
-        binding.btnConfirmPayment.setOnClickListener {
-            if (validate()) {
-                insertDispensasi(idpelanggan, tgl, tokenAuth)
+            btnConfirmPayment.setOnClickListener {
+                if (validate()) {
+                    insertDispensasi(idpelanggan, tgl, tokenAuth)
+                }
             }
         }
     }

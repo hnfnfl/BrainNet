@@ -155,10 +155,54 @@
                     app:smsp_selectedItemListColor="@color/primaryDarkColor" />
 
                 <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                    android:id="@+id/spinner_paket_instalasi"
+                    android:id="@+id/spinner_tipe"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    app:smsp_floatingLabelColor="@color/primaryColor"
+                    app:smsp_floatingLabelText="Tipe"
+                    app:smsp_hint="Pilih Tipe"
+                    app:smsp_hintColor="@color/primaryColor"
+                    app:smsp_isOutlined="true"
+                    app:smsp_itemColor="@color/black"
+                    app:smsp_itemListColor="@color/black"
+                    app:smsp_itemListHintBackgroundColor="#808080"
+                    app:smsp_itemListHintColor="#FFFFFF"
+                    app:smsp_multilineError="false"
+                    app:smsp_outlinedBoxColor="@color/primaryColor"
+                    app:smsp_outlinedBoxRadius="4dp"
+                    app:smsp_outlinedStrokeWidth="1dp"
+                    app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tv_value_panjang_kabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/white"
+                        android:hint="@string/panjang_kabel"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_paket_instalasi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:spinnerMode="dropdown"
                     app:smsp_floatingLabelColor="@color/primaryColor"
                     app:smsp_floatingLabelText="Paket Instalasi"
@@ -174,7 +218,6 @@
                     app:smsp_outlinedBoxRadius="4dp"
                     app:smsp_outlinedStrokeWidth="1dp"
                     app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
             </LinearLayout>
 
             <com.chand.progressbutton.ProgressButton

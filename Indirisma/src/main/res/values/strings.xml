@@ -100,4 +100,5 @@
     <string name="password_modem">Password Modem</string>
     <string name="user_username">Username : %1$s</string>
     <string name="user_pass">Password : %1$s</string>
+    <string name="panjang_kabel">Panjang Kabel (m)</string>
 </resources>

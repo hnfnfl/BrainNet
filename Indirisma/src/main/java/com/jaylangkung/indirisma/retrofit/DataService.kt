@@ -168,6 +168,7 @@ interface DataService {
         @Field("idrekanan") idrekanan: String,
         @Field("lokasi") lokasi: String,
         @Field("penagih") penagih: String,
+        @Field("idadmin") idadmin: String,
         @Header("Authorization") tokenAuth: String,
         @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>
@@ -177,11 +178,13 @@ interface DataService {
     fun insertAktivasi(
         @Field("idpelanggan") idpelanggan: String,
         @Field("paket") paket: String,
-        @Field("idadmin") idadmin: String,
         @Field("isterminal") isterminal: String,
+        @Field("panjangkabel") panjangkabel: String,
         @Field("idswitch") idswitch: String,
         @Field("idrekanan") idrekanan: String,
         @Field("idpaket_instalasi") idpaket_instalasi: String,
+        @Field("oleh") oleh: String,
+        @Field("tipe") tipe: String,
         @Header("Authorization") tokenAuth: String,
         @Header("indirisma") indirisma: String,
     ): Call<DefaultResponse>

@@ -52,6 +52,7 @@ class AddCustomerActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@AddCustomerActivity)
 
+        val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getProvinsi()
@@ -78,23 +79,10 @@ class AddCustomerActivity : AppCompatActivity() {
                         .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user)
                         { dialogInterface, _ ->
                             insertPelanggan(
-                                noktp,
-                                namaPelanggan,
-                                alamatPelanggan,
-                                rt,
-                                rw,
-                                kelurahan,
-                                kecamatan,
-                                kotaKab,
-                                provinsi,
-                                nohp,
-                                marketing,
-                                alamatPasang,
-                                paketInternet,
-                                rekanan,
-                                lokasi,
-                                penagih,
-                                tokenAuth
+                                noktp, namaPelanggan, alamatPelanggan, rt, rw,
+                                kelurahan, kecamatan, kotaKab, provinsi, nohp,
+                                marketing, alamatPasang, paketInternet, rekanan,
+                                lokasi, penagih, idadmin, tokenAuth
                             )
                             dialogInterface.dismiss()
                         }
@@ -447,44 +435,16 @@ class AddCustomerActivity : AppCompatActivity() {
     }
 
     private fun insertPelanggan(
-        noktp: String,
-        nama: String,
-        alamat: String,
-        rt: String,
-        rw: String,
-        kelurahan: String,
-        kecamatan: String,
-        kota: String,
-        provinsi: String,
-        nohp: String,
-        idmarketing: String,
-        alamat_pasang: String,
-        paket: String,
-        idrekanan: String,
-        lokasi: String,
-        penagih: String,
-        tokenAuth: String
+        noktp: String, nama: String, alamat: String, rt: String, rw: String,
+        kelurahan: String, kecamatan: String, kota: String, provinsi: String,
+        nohp: String, idmarketing: String, alamat_pasang: String, paket: String,
+        idrekanan: String, lokasi: String, penagih: String, idadmin: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertPelanggan(
-            noktp,
-            nama,
-            alamat,
-            rt,
-            rw,
-            kelurahan,
-            kecamatan,
-            kota,
-            provinsi,
-            nohp,
-            idmarketing,
-            alamat_pasang,
-            paket,
-            idrekanan,
-            lokasi,
-            penagih,
-            tokenAuth,
-            "true"
+            noktp, nama, alamat, rt, rw, kelurahan, kecamatan, kota,
+            provinsi, nohp, idmarketing, alamat_pasang, paket, idrekanan,
+            lokasi, penagih, idadmin, tokenAuth, "true"
         ).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
