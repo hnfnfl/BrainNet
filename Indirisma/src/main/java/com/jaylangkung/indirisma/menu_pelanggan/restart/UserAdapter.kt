@@ -78,7 +78,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.ItemHolder>(), Filterable {
                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                     if (response.isSuccessful) {
                                         if (response.body()!!.status == "success") {
-                                            Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                                            Toasty.warning(itemView.context, "Router User sedang dalam proses restart", Toasty.LENGTH_LONG).show()
                                         }
                                     }
                                 }

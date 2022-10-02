@@ -24,7 +24,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterable {
 
@@ -79,7 +78,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                     if (response.isSuccessful) {
                                         if (response.body()!!.status == "success") {
-                                            Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                                            Toasty.warning(itemView.context, "Router User sedang dalam proses restart", Toasty.LENGTH_LONG).show()
                                         }
                                     }
                                 }
