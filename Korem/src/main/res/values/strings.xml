@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Korem</string>
+    <string name="token_auth">Bearer %1$s</string>
+
+    <string name="login_title">Masuk ke akun kamu</string>
+    <string name="email">Email</string>
+    <string name="password">Kata sandi</string>
+    <string name="btn_login">Masuk</string>
+    <string name="btn_back">tombol kembali</string>
+    <string name="presensi">Presensi</string>
+
+</resources>
