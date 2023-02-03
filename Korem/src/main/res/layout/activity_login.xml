@@ -32,11 +32,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tv_value_email_login"
+            android:id="@+id/tv_value_nrp_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/white"
-            android:hint="@string/email"
+            android:hint="@string/NRP"
             android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>

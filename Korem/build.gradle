@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -39,12 +40,18 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.google.firebase:firebase-messaging:23.1.1'
+
+    //room
+    implementation 'androidx.room:room-runtime:2.5.0'
+    kapt 'androidx.room:room-compiler:2.5.0'
+    implementation 'androidx.room:room-ktx:2.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:30.5.0')
@@ -74,4 +81,14 @@ dependencies {
     //qrcode reader
     implementation 'com.budiyev.android:code-scanner:2.1.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0@aar'
+
+    //Rounded image
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //for pict image
+    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
+    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
+
+    //image getter from internet
+    implementation 'com.github.bumptech.glide:glide:4.14.1'
 }

@@ -1,16 +1,18 @@
 package com.jaylangkung.korem.utils
 
 object Constants {
-    const val LOGIN = "signIn"
-    const val TokenAuth = "token"
+    const val LOGIN = "login"
+    const val TokenAuth = "token_auth"
     const val USER = "user"
-    const val USER_IDADMIN = "user_idadmin"
-    const val USER_EMAIL = "email_user"
-    const val USER_NAMA = "nama_user"
-    const val USER_ALAMAT = "alamat_user"
-    const val USER_TELP = "telp_user"
-    const val FOTO_PATH = "foto_path"
+    const val USERNAME = "username"
+    const val USER_IDAKTIVASI = "idaktivasi"
+    const val USER_NAMA = "name"
+    const val USER_TELP = "telp"
+    const val FOTO_PATH = "img"
     const val DEVICE_TOKEN = "device_token"
-    const val USER_IDLEVEL = "user_idlevel"
-    const val USER_JABATAN = "jabatan_user"
+    const val USER_PANGKAT = "pangkat"
+    const val USER_PANGKATJABATAN = "pangkatJabatan"
+    const val USER_JABATAN = "jabatan"
+    const val USER_CORPS = "corps"
+    const val USER_TGLLAHIR = "tglLahir"
 }

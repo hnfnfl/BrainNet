@@ -2,11 +2,26 @@
     <string name="app_name">Korem</string>
     <string name="token_auth">Bearer %1$s</string>
 
+    <!--    GlobalString-->
+    <string name="btn_back">tombol kembali</string>
+    <string name="try_again">Silahkan coba lagi</string>
+
+    <!--    LoginActivity-->
     <string name="login_title">Masuk ke akun kamu</string>
-    <string name="email">Email</string>
+    <string name="NRP">NRP</string>
     <string name="password">Kata sandi</string>
     <string name="btn_login">Masuk</string>
-    <string name="btn_back">tombol kembali</string>
+    <string name="nrp_cant_empty">NRP tidak boleh kosong</string>
+    <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
+
+    <!--    MainActivity-->
     <string name="presensi">Presensi</string>
+    <string name="icon_presensi">icon presensi</string>
+    <string name="greetings">%1$s, \n%2$s</string>
+    <string name="survei">Survei</string>
+    <string name="permohonan_cuti">Permohonan Cuti</string>
+    <string name="icon_survei">Icon Survei</string>
+    <string name="icon_permohonan_cuti">Icon Permohonan Cuti</string>
+    <string name="app_logo">logo app</string>
 
 </resources>

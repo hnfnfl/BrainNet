@@ -23,6 +23,13 @@ class MySharedPreferences(mContext: Context) {
         editor.apply()
     }
 
+//    fun getAll() {
+//        val allEntries: Map<String, *> = mSharedPreferences.all
+//        for (entry: Map.Entry<String, *> in allEntries) {
+//            Log.e("load sharedpref", "${entry.key} : ${entry.value}")
+//        }
+//    }
+
     fun getValue(key: String): String? {
         return mSharedPreferences.getString(key, "")
     }

@@ -12,7 +12,7 @@ class RetrofitClient {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
         return Retrofit.Builder()
-            .baseUrl("https://api.absensi.jaylangkung.co.id/")
+            .baseUrl("https://api.korem083bdj.id/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build()
