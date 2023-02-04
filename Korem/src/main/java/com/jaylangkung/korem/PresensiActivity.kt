@@ -59,8 +59,6 @@ class PresensiActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             onBackPress()
         }
-
-
     }
 
     override fun onResume() {

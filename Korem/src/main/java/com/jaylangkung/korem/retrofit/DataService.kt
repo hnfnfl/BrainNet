@@ -17,33 +17,14 @@ interface DataService {
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
-    @POST("main/editGangguan")
-    fun editGangguan(
-        @Field("idgangguan") idgangguan: String,
-        @Field("penyelesaian") penyelesaian: String,
+    @POST("main/insertCuti")
+    fun insertCuti(
         @Field("iduser_aktivasi") iduser_aktivasi: String,
-        @Header("Authorization") tokenAuth: String
-    ): Call<DefaultResponse>
-
-    @FormUrlEncoded
-    @POST("main/restartUser")
-    fun restartUser(
-        @Field("user") user: String,
-        @Field("password") password: String,
-        @Field("nama") nama: String,
-        @Field("paket") paket: String,
-        @Header("Authorization") tokenAuth: String
-    ): Call<DefaultResponse>
-
-
-    @FormUrlEncoded
-    @POST("main/editProfile")
-    fun editProfile(
-        @Field("iduser_aktivasi") iduser_aktivasi: String,
-        @Field("email") email: String,
-        @Field("nama") nama: String,
-        @Field("alamat") alamat: String,
-        @Field("telp") telp: String,
+        @Field("cuti") JudulCuti: String,
+        @Field("jenis") JenisCuti: String,
+        @Field("keterangan") KeteranganCuti: String,
+        @Field("mulai") tglMulai: String,
+        @Field("sampai") tglSelesai: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
 

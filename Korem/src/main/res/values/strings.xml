@@ -24,4 +24,15 @@
     <string name="icon_permohonan_cuti">Icon Permohonan Cuti</string>
     <string name="app_logo">logo app</string>
 
+    <!--    CutiActivity-->
+    <string name="form_cuti_title">Formulir Permohonan Cuti</string>
+    <string name="cuti_judul">Judul Cuti</string>
+    <string name="cuti_keterangan">Keterangan</string>
+    <string name="btn_ajukan_cuti">Ajukan Permohonan Cuti</string>
+    <string name="cuti_tgl_mulai">Pilih Tanggal Mulai</string>
+    <string name="cuti_tgl_selesai">Pilih Tanggal Selesai</string>
+    <string name="tv_tgl_mulai">"Mulai Cuti: %1$s"</string>
+    <string name="tv_tgl_selesai">"Selesai Cuti: %1$s"</string>
+    <string name="placeholder_date">%1$s-%2$s-%3$s</string>
+
 </resources>

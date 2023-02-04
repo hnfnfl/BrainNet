@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.jaylangkung.korem.cuti.CutiActivity
 import com.jaylangkung.korem.databinding.ActivityMainBinding
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.MySharedPreferences
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnCuti.setOnClickListener {
-                Toasty.info(this@MainActivity, "Menu akan segera tersedia", Toasty.LENGTH_LONG).show()
+                startActivity(Intent(this@MainActivity, CutiActivity::class.java))
+                finish()
             }
 
             btnSurvei.setOnClickListener {
