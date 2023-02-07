@@ -61,40 +61,41 @@ class LoginActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
         service.login(email, password, deviceID).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                if (response.isSuccessful) {
-                    when (response.body()!!.status) {
-                        "success" -> {
-                            val dataUser = response.body()!!.data[0]
-                            myPreferences.setValue(Constants.USER, Constants.LOGIN)
-                            myPreferences.setValue(Constants.USER_IDAKTIVASI, dataUser.iduser_aktivasi)
-                            myPreferences.setValue(Constants.USER_NAMA, dataUser.nama)
-                            myPreferences.setValue(Constants.USERNAME, dataUser.username)
-                            myPreferences.setValue(Constants.USER_TELP, dataUser.notelp)
-                            myPreferences.setValue(Constants.FOTO_PATH, dataUser.img)
-                            myPreferences.setValue(Constants.USER_PANGKAT, dataUser.pangkat)
-                            myPreferences.setValue(Constants.USER_PANGKATJABATAN, dataUser.pangkat_jabatan)
-                            myPreferences.setValue(Constants.USER_JABATAN, dataUser.jabatan)
-                            myPreferences.setValue(Constants.USER_CORPS, dataUser.corps)
-                            myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggal_lahir)
+                when (response.body()!!.status) {
+                    "success" -> {
+                        val dataUser = response.body()!!.data[0]
+                        myPreferences.setValue(Constants.USER, Constants.LOGIN)
+                        myPreferences.setValue(Constants.USER_IDAKTIVASI, dataUser.iduser_aktivasi)
+                        myPreferences.setValue(Constants.USER_NAMA, dataUser.nama)
+                        myPreferences.setValue(Constants.USERNAME, dataUser.username)
+                        myPreferences.setValue(Constants.USER_TELP, dataUser.notelp)
+                        myPreferences.setValue(Constants.FOTO_PATH, dataUser.img)
+                        myPreferences.setValue(Constants.USER_PANGKAT, dataUser.pangkat)
+                        myPreferences.setValue(Constants.USER_PANGKATJABATAN, dataUser.pangkat_jabatan)
+                        myPreferences.setValue(Constants.USER_JABATAN, dataUser.jabatan)
+                        myPreferences.setValue(Constants.USER_CORPS, dataUser.corps)
+                        myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggal_lahir)
 
-                            myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                            finish()
-                        }
-                        "not_exist" -> {
-                            binding.btnLogin.endAnimation()
-                            Toasty.warning(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                        }
-                        "unauthorized" -> {
-                            binding.btnLogin.endAnimation()
-                            Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                        }
+                        myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
                     }
-                } else {
-                    ErrorHandler().responseHandler(
-                        this@LoginActivity,
-                        "loginProcess | onResponse", response.message()
-                    )
+                    "not_exist" -> {
+                        binding.btnLogin.endAnimation()
+                        Toasty.warning(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                    }
+                    "forbidden" -> {
+                        binding.btnLogin.endAnimation()
+                        Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                    }
+                    else -> {
+                        binding.btnLogin.endAnimation()
+                        Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                        ErrorHandler().responseHandler(
+                            this@LoginActivity,
+                            "loginProcess | onResponse", response.body()!!.message
+                        )
+                    }
                 }
             }
 
