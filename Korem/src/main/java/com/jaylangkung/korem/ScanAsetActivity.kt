@@ -1,5 +1,6 @@
 package com.jaylangkung.korem
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -7,44 +8,44 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.budiyev.android.codescanner.*
-import com.jaylangkung.korem.dataClass.DefaultResponse
-import com.jaylangkung.korem.databinding.ActivityPresensiBinding
+import com.jaylangkung.korem.dataClass.ScanAsetResponse
+import com.jaylangkung.korem.databinding.ActivityScanAsetBinding
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
+import dev.shreyaspatil.MaterialDialog.MaterialDialog
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PresensiActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityPresensiBinding
+class ScanAsetActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityScanAsetBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var codeScanner: CodeScanner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPresensiBinding.inflate(layoutInflater)
+        binding = ActivityScanAsetBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        myPreferences = MySharedPreferences(this@PresensiActivity)
+        myPreferences = MySharedPreferences(this@ScanAsetActivity)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                startActivity(Intent(this@PresensiActivity, MainActivity::class.java))
+                startActivity(Intent(this@ScanAsetActivity, MainActivity::class.java))
                 finish()
             }
         })
 
-        val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@PresensiActivity, binding.scannerView)
+        codeScanner = CodeScanner(this@ScanAsetActivity, binding.scannerView)
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
@@ -58,7 +59,7 @@ class PresensiActivity : AppCompatActivity() {
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
                 binding.loadingAnim.visibility = View.VISIBLE
-                getAbsensi(it.text, iduser, tokenAuth)
+                getAset(it.text, tokenAuth)
             }
         }
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
@@ -91,43 +92,53 @@ class PresensiActivity : AppCompatActivity() {
         onBackPressedDispatcher.onBackPressed()
     }
 
-    private fun getAbsensi(token: String, idadmin: String, tokenAuth: String) {
+    private fun getAset(kode: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
-        service.getAbsensi(token, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+        service.getAset(kode, tokenAuth).enqueue(object : Callback<ScanAsetResponse> {
+            override fun onResponse(call: Call<ScanAsetResponse>, response: Response<ScanAsetResponse>) {
                 binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {
                     vibrate()
                     when (response.body()!!.status) {
                         "success" -> {
-                            Toasty.success(this@PresensiActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                            onBackPress()
-                        }
-                        "already" -> {
-                            Toasty.warning(this@PresensiActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                            onBackPress()
-                        }
-                        "not_match" -> {
-                            Toasty.error(this@PresensiActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                            onBackPress()
+                            val data = response.body()!!.data[0]
+                            val kodeAset = data.kode
+                            val nama = data.nama
+                            val jenis = data.jenis
+                            val dept = data.departemen
+                            val mDialog = MaterialDialog.Builder(this@ScanAsetActivity as Activity)
+                                .setTitle("Data Aset Kode: $kodeAset")
+                                .setMessage("Nama Aset: $nama Jenis: $jenis Departemen: $dept")
+                                .setCancelable(true)
+                                .setPositiveButton(getString(R.string.yes))
+                                { dialogInterface, _ ->
+                                    dialogInterface.dismiss()
+                                    codeScanner.startPreview()
+                                }
+                                .build()
+                            // Show Dialog
+                            mDialog.show()
                         }
                         else -> {
-                            Toasty.error(this@PresensiActivity, response.message(), Toasty.LENGTH_LONG).show()
+                            Toasty.error(this@ScanAsetActivity, response.message(), Toasty.LENGTH_LONG).show()
+                            codeScanner.startPreview()
                         }
                     }
                 } else {
+                    codeScanner.startPreview()
                     ErrorHandler().responseHandler(
-                        this@PresensiActivity,
-                        "getAbsensi | onResponse", response.message()
+                        this@ScanAsetActivity,
+                        "getAset | onResponse", response.message()
                     )
                 }
             }
 
-            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ScanAsetResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
+                codeScanner.startPreview()
                 ErrorHandler().responseHandler(
-                    this@PresensiActivity,
-                    "getAbsensi | onFailure", t.message.toString()
+                    this@ScanAsetActivity,
+                    "getAset | onFailure", t.message.toString()
                 )
             }
         })

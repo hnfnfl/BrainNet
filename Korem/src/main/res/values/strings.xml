@@ -18,7 +18,7 @@
     <string name="presensi">Presensi</string>
     <string name="icon_presensi">icon presensi</string>
     <string name="greetings">%1$s, \n%2$s</string>
-    <string name="survei">Survei</string>
+    <string name="survey">Survey</string>
     <string name="permohonan_cuti">Permohonan Cuti</string>
     <string name="icon_survei">Icon Survei</string>
     <string name="icon_permohonan_cuti">Icon Permohonan Cuti</string>
@@ -34,5 +34,10 @@
     <string name="tv_tgl_mulai">"Mulai Cuti: %1$s"</string>
     <string name="tv_tgl_selesai">"Selesai Cuti: %1$s"</string>
     <string name="placeholder_date">%1$s-%2$s-%3$s</string>
+    <string name="kirim_jawaban">Kirim Jawaban</string>
+    <string name="scan_aset">Scan Aset</string>
+    <string name="icon_scan_aset">icon scan aset</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
 
 </resources>

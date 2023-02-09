@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jaylangkung.korem.cuti.CutiActivity
 import com.jaylangkung.korem.databinding.ActivityMainBinding
+import com.jaylangkung.korem.survey.SurveyActivity
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
@@ -71,7 +72,14 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
 
+            btnScanAset.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScanAsetActivity::class.java))
+                finish()
+            }
+
             btnSurvei.setOnClickListener {
+//                startActivity(Intent(this@MainActivity, SurveyActivity::class.java))
+//                finish()
                 Toasty.info(this@MainActivity, "Menu akan segera tersedia", Toasty.LENGTH_LONG).show()
             }
         }

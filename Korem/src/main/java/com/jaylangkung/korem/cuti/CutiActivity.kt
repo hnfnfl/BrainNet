@@ -38,6 +38,13 @@ class CutiActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@CutiActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@CutiActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val listJenisCuti = ArrayList<String>()
         listJenisCuti.addAll(
             listOf(
@@ -122,13 +129,6 @@ class CutiActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                startActivity(Intent(this@CutiActivity, MainActivity::class.java))
-                finish()
-            }
-        })
-
         onBackPressedDispatcher.onBackPressed()
     }
 
