@@ -43,6 +43,14 @@ interface DataService {
     ): Call<ScanAsetResponse>
 
     @FormUrlEncoded
+    @POST("main/getCuti")
+    fun getCuti(
+        @Field("iduser_aktivasi") iduser_aktivasi: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<CutiResponse>
+
+
+    @FormUrlEncoded
     @POST("main/insertWebApp")
     fun insertWebApp(
         @Field("iduser_aktivasi") iduser_aktivasi: String,

@@ -11,13 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet">
         <activity
+            android:name=".cuti.CutiActivity"
+            android:exported="false" />
+        <activity
             android:name=".ScanAsetActivity"
             android:exported="false" />
         <activity
             android:name=".survey.SurveyActivity"
             android:exported="false" />
         <activity
-            android:name=".cuti.CutiActivity"
+            android:name=".cuti.TambahCutiActivity"
             android:exported="false" />
         <activity
             android:name=".SplashScreen"

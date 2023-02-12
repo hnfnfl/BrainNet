@@ -13,7 +13,7 @@
         android:layout_marginHorizontal="24dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/rv_cuti_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -33,150 +33,61 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/permohonan_cuti"
+            android:text="@string/list_permohonan_cuti"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cuti_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="70dp"
-        android:orientation="vertical"
+        android:layout_marginTop="60dp"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_cuti" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/form_cuti_title"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/loading_anim"
+        style="@style/SpinKitView.Large.ThreeBounce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/secondaryLightColor"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_cuti_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_cuti_list" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+    <ImageView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/icon_empty"
+        android:src="@drawable/ic_empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_cuti_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_cuti_list" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tv_value_cuti_judul"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:hint="@string/cuti_judul"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout2"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tv_value_cuti_keterangan"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
-                android:hint="@string/cuti_keterangan"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-            android:id="@+id/spinner_jenis_cuti"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dropdown"
-            app:smsp_floatingLabelColor="@color/primaryColor"
-            app:smsp_floatingLabelText="Pilih Jenis Cuti"
-            app:smsp_hint="Jenis Cuti"
-            app:smsp_hintColor="@color/primaryColor"
-            app:smsp_isOutlined="true"
-            app:smsp_itemColor="@color/black"
-            app:smsp_itemListColor="@color/black"
-            app:smsp_itemListHintBackgroundColor="#808080"
-            app:smsp_itemListHintColor="#FFFFFF"
-            app:smsp_multilineError="false"
-            app:smsp_outlinedBoxColor="@color/primaryColor"
-            app:smsp_outlinedBoxRadius="4dp"
-            app:smsp_outlinedStrokeWidth="1dp"
-            app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
-        <Button
-            android:id="@+id/btn_date_mulai"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:text="@string/cuti_tgl_mulai"
-            android:textAllCaps="false" />
-
-        <TextView
-            android:id="@+id/tv_tgl_mulai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/tv_tgl_mulai"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btn_date_sampai"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:text="@string/cuti_tgl_selesai"
-            android:textAllCaps="false" />
-
-        <TextView
-            android:id="@+id/tv_tgl_selesai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/tv_tgl_selesai"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <com.chand.progressbutton.ProgressButton
-            android:id="@+id/btn_ajukan_cuti"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="32dp"
-            app:p_arrowVisible="false"
-            app:p_backgroundTint="@color/primaryColor"
-            app:p_bgColor="@color/colorSecondary"
-            app:p_cornerRadius="5dp"
-            app:p_layoutDirection="ltr"
-            app:p_progressBGColor="@color/primaryColor"
-            app:p_progressColor="@color/primaryLightColor"
-            app:p_rippleColor="@color/primaryLightColor"
-            app:p_style="circleBar"
-            app:p_text="@string/btn_ajukan_cuti"
-            app:p_textColor="@color/white"
-            app:p_textSize="18sp" />
-
-    </LinearLayout>
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_add_cuti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:src="@drawable/ic_add"
+        app:fab_colorNormal="@color/secondaryColor"
+        app:fab_colorPressed="@color/secondaryDarkColor"
+        app:fab_colorRipple="@color/secondaryColor"
+        app:fab_label="@string/tambah_cuti"
+        app:fab_size="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

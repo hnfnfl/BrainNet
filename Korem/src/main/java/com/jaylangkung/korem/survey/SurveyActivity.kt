@@ -48,13 +48,9 @@ class SurveyActivity : AppCompatActivity() {
         getSurvey(iduser, tokenAuth)
         binding.apply {
             btnBack.setOnClickListener {
-                onBackPress()
+                onBackPressedDispatcher.onBackPressed()
             }
         }
-    }
-
-    private fun onBackPress() {
-        onBackPressedDispatcher.onBackPressed()
     }
 
     private fun getSurvey(iduser_aktivasi: String, tokenAuth: String) {

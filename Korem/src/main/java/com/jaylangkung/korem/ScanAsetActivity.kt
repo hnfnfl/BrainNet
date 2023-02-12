@@ -65,7 +65,7 @@ class ScanAsetActivity : AppCompatActivity() {
         codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
         binding.btnBack.setOnClickListener {
-            onBackPress()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -88,10 +88,6 @@ class ScanAsetActivity : AppCompatActivity() {
         }
     }
 
-    private fun onBackPress() {
-        onBackPressedDispatcher.onBackPressed()
-    }
-
     private fun getAset(kode: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getAset(kode, tokenAuth).enqueue(object : Callback<ScanAsetResponse> {
@@ -107,7 +103,7 @@ class ScanAsetActivity : AppCompatActivity() {
                             val jenis = data.jenis
                             val dept = data.departemen
                             val mDialog = MaterialDialog.Builder(this@ScanAsetActivity as Activity)
-                                .setTitle("Data Aset Kode: $kodeAset")
+                                .setTitle("CutiData Aset Kode: $kodeAset")
                                 .setMessage("Nama Aset: $nama Jenis: $jenis Departemen: $dept")
                                 .setCancelable(true)
                                 .setPositiveButton(getString(R.string.yes))
