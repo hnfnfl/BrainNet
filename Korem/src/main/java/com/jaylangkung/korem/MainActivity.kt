@@ -10,11 +10,21 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
 import com.jaylangkung.korem.cuti.CutiActivity
+import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
+import com.jaylangkung.korem.retrofit.DataService
+import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.utils.Constants
+import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -40,11 +50,12 @@ class MainActivity : AppCompatActivity() {
 
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
         val jabatan = myPreferences.getValue(Constants.USER_PANGKATJABATAN).toString()
-        val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
+//        val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
         val jabatanNama = "$jabatan $nama"
 
+        getPost(tokenAuth)
         binding.apply {
             Glide.with(this@MainActivity)
                 .load(foto)
@@ -96,5 +107,34 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getPost(tokenAuth: String) {
+        val service = RetrofitClient().apiRequest().create(DataService::class.java)
+        service.getPost(tokenAuth).enqueue(object : Callback<PostResponse> {
+            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
+                if (response.isSuccessful) {
 
+                    val datas = response.body()!!.data
+                    val imageList = ArrayList<SlideModel>() // Create image list
+                    for (data in datas) {
+                        imageList.add(SlideModel(data.img, data.judul))
+                    }
+
+                    val imageSlider = findViewById<ImageSlider>(R.id.image_slider)
+                    imageSlider.setImageList(imageList, ScaleTypes.FIT)
+                } else {
+                    ErrorHandler().responseHandler(
+                        this@MainActivity,
+                        "getPost | onResponse", response.message()
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@MainActivity,
+                    "getPost | onFailure", t.message.toString()
+                )
+            }
+        })
+    }
 }

@@ -2,10 +2,7 @@ package com.jaylangkung.korem.retrofit
 
 import com.jaylangkung.korem.dataClass.*
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface DataService {
     @FormUrlEncoded
@@ -49,6 +46,10 @@ interface DataService {
         @Header("Authorization") tokenAuth: String
     ): Call<CutiResponse>
 
+    @GET("main/getPost")
+    fun getPost(
+        @Header("Authorization") tokenAuth: String
+    ): Call<PostResponse>
 
     @FormUrlEncoded
     @POST("main/insertWebApp")
