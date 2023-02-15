@@ -55,26 +55,6 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/item_pertanyaan_survey" />
 
-        <com.chand.progressbutton.ProgressButton
-            android:id="@+id/btn_kirim_survey"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:p_arrowVisible="false"
-            app:p_backgroundTint="@color/primaryColor"
-            app:p_bgColor="@color/colorSecondary"
-            app:p_cornerRadius="5dp"
-            app:p_layoutDirection="ltr"
-            app:p_progressBGColor="@color/primaryColor"
-            app:p_progressColor="@color/primaryLightColor"
-            app:p_rippleColor="@color/primaryLightColor"
-            app:p_style="circleBar"
-            app:p_text="@string/kirim_jawaban"
-            app:p_textColor="@color/white"
-            app:p_textSize="18sp" />
-
     </LinearLayout>
 
     <com.github.ybq.android.spinkit.SpinKitView
@@ -88,5 +68,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/ll_list_item" />
+
+    <ImageView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/icon_empty"
+        android:src="@drawable/ic_empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ll_list_item" />
+
+    <com.chand.progressbutton.ProgressButton
+        android:id="@+id/btn_kirim_survei"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_list_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:p_arrowVisible="false"
+        app:p_backgroundTint="@color/primaryColor"
+        app:p_bgColor="@color/colorSecondary"
+        app:p_cornerRadius="5dp"
+        app:p_layoutDirection="ltr"
+        app:p_progressBGColor="@color/primaryColor"
+        app:p_progressColor="@color/primaryLightColor"
+        app:p_rippleColor="@color/primaryLightColor"
+        app:p_style="circleBar"
+        app:p_text="@string/btn_kirim_survei"
+        app:p_textColor="@color/white"
+        app:p_textSize="18sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

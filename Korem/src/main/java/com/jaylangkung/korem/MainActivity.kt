@@ -18,6 +18,7 @@ import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
+import com.jaylangkung.korem.survey.SurveyActivity
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
@@ -88,9 +89,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnSurvei.setOnClickListener {
-//                startActivity(Intent(this@MainActivity, SurveyActivity::class.java))
-//                finish()
-                Toasty.info(this@MainActivity, "Menu akan segera tersedia", Toasty.LENGTH_LONG).show()
+                startActivity(Intent(this@MainActivity, SurveyActivity::class.java))
+                finish()
+//                Toasty.info(this@MainActivity, "Menu akan segera tersedia", Toasty.LENGTH_LONG).show()
             }
         }
     }
@@ -120,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     val imageSlider = findViewById<ImageSlider>(R.id.image_slider)
-                    imageSlider.setImageList(imageList, ScaleTypes.FIT)
+                    imageSlider.setImageList(imageList, ScaleTypes.CENTER_INSIDE)
                 } else {
                     ErrorHandler().responseHandler(
                         this@MainActivity,

@@ -33,6 +33,14 @@ interface DataService {
     ): Call<SurveyResponse>
 
     @FormUrlEncoded
+    @POST("main/insertSurvey")
+    fun insertSurvey(
+        @Field("iduser_aktivasi") iduser_aktivasi: String,
+        @Field("jawaban") jawaban: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
     @POST("main/getAset")
     fun getAset(
         @Field("kode") kode: String,

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Korem</string>
+    <string name="app_name">Korem 083/BDJ</string>
     <string name="token_auth">Bearer %1$s</string>
 
     <!--    GlobalString-->
@@ -34,7 +34,6 @@
     <string name="tv_tgl_mulai">"Mulai Cuti: %1$s"</string>
     <string name="tv_tgl_selesai">"Selesai Cuti: %1$s"</string>
     <string name="placeholder_date">%1$s-%2$s-%3$s</string>
-    <string name="kirim_jawaban">Kirim Jawaban</string>
     <string name="scan_aset">Scan Aset</string>
     <string name="icon_scan_aset">icon scan aset</string>
     <string name="yes">Ya</string>
@@ -50,5 +49,6 @@
     <string name="list_permohonan_cuti">Daftar Permohonan Cuti</string>
     <string name="icon_empty">icon empty</string>
     <string name="tambah_cuti">tambah cuti</string>
+    <string name="btn_kirim_survei">Kirim Jawaban</string>
 
 </resources>
