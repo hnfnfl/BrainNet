@@ -22,7 +22,6 @@ import com.jaylangkung.korem.survey.SurveyActivity
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,10 +40,13 @@ class MainActivity : AppCompatActivity() {
 
         if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
+            &&
+            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this@MainActivity,
-                arrayOf(Manifest.permission.CAMERA),
+                arrayOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION),
                 100
             )
         }
