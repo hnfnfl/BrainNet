@@ -100,24 +100,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:text="@string/presensi"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:weightSum="2"
-            app:layout_constraintTop_toBottomOf="@+id/btn_presensi"
-            tools:layout_editor_absoluteX="32dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_presensi">
 
             <LinearLayout
                 android:id="@+id/btn_survei"
@@ -203,45 +204,98 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/btn_scan_aset"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/primaryColor"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
+            android:baselineAligned="false"
             android:orientation="horizontal"
+            android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:id="@+id/btn_scan_aset"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
                 android:background="@drawable/rounded_corner"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="6dp">
+                android:backgroundTint="@color/primaryColor"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/icon_scan_aset"
-                    android:src="@drawable/ic_scan_qr"
-                    app:tint="@color/primaryDarkColor" />
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="6dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/icon_scan_aset"
+                        android:src="@drawable/ic_scan_qr"
+                        app:tint="@color/primaryDarkColor" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/scan_aset"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+            <LinearLayout
+                android:id="@+id/btn_laporan_giat"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/primaryColor"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:text="@string/scan_aset"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="6dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/icon_laporan_giat"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/primaryDarkColor" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/laporan_giat"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

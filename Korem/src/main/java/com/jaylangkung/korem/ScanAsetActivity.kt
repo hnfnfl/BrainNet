@@ -104,7 +104,7 @@ class ScanAsetActivity : AppCompatActivity() {
                             val dept = data.departemen
                             val mDialog = MaterialDialog.Builder(this@ScanAsetActivity as Activity)
                                 .setTitle("CutiData Aset Kode: $kodeAset")
-                                .setMessage("Nama Aset: $nama Jenis: $jenis Departemen: $dept")
+                                .setMessage("Nama Aset: $nama Jenis: $jenis SpinnerDepartemenData: $dept")
                                 .setCancelable(true)
                                 .setPositiveButton(getString(R.string.yes))
                                 { dialogInterface, _ ->

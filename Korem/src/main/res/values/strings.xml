@@ -49,6 +49,19 @@
     <string name="list_permohonan_cuti">Daftar Permohonan Cuti</string>
     <string name="icon_empty">icon empty</string>
     <string name="tambah_cuti">tambah cuti</string>
+
+    <!--    SurveiActivity-->
     <string name="btn_kirim_survei">Kirim Jawaban</string>
+
+    <!--    TambahGiatActivity-->
+    <string name="tambah_giat">Tambah Laporan Giat</string>
+    <string name="giat_tujuan_text">Tujuan Giat</string>
+    <string name="giat_keterangan_text">Keterangan Giat</string>
+    <string name="giat_lokasi_text">Lokasi Giat</string>
+    <string name="giat_mulai_view">Mulai: %1$s</string>
+    <string name="giat_selesai_view">Selesai: %1$s</string>
+    <string name="btn_tambah_giat">Tambahkan Laporan Giat</string>
+    <string name="laporan_giat">Babinsa</string>
+    <string name="icon_laporan_giat">icon laporan giat</string>
 
 </resources>

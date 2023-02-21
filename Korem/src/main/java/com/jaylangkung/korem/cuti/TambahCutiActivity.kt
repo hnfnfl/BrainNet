@@ -61,7 +61,7 @@ class TambahCutiActivity : AppCompatActivity() {
 
         binding.apply {
             btnBack.setOnClickListener {
-                onBackPress()
+                onBackPressedDispatcher.onBackPressed()
             }
 
             tvTglMulai.text = getString(R.string.tv_tgl_mulai, "")
@@ -125,10 +125,6 @@ class TambahCutiActivity : AppCompatActivity() {
         }
     }
 
-    private fun onBackPress() {
-        onBackPressedDispatcher.onBackPressed()
-    }
-
     private fun validate(): Boolean {
         binding.apply {
             when {
@@ -160,7 +156,7 @@ class TambahCutiActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     Toasty.success(this@TambahCutiActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                    onBackPress()
+                    onBackPressedDispatcher.onBackPressed()
                 } else {
                     ErrorHandler().responseHandler(
                         this@TambahCutiActivity,

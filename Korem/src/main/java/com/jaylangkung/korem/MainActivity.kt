@@ -16,6 +16,7 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.jaylangkung.korem.cuti.CutiActivity
 import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
+import com.jaylangkung.korem.giat.TambahGiatActivity
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.survey.SurveyActivity
@@ -38,22 +39,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
 
+//        val a = arrayListOf<MutableMap<String, String>>()
+//        val tes = mutableMapOf<String, String>()
+//        tes["lat"] = "123123"
+//        tes["long"] = "asdfasdfas"
+//        a.add(tes)
+//        val gson = Gson()
+//        Log.e("tewts", gson.toJson(a).toString())
+
         if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
             &&
             ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
+            &&
+            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this@MainActivity,
-                arrayOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION),
-                100
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.LOCATION_HARDWARE
+                ), 100
             )
         }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
         val jabatan = myPreferences.getValue(Constants.USER_PANGKATJABATAN).toString()
-//        val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
         val jabatanNama = "$jabatan $nama"
@@ -93,7 +108,11 @@ class MainActivity : AppCompatActivity() {
             btnSurvei.setOnClickListener {
                 startActivity(Intent(this@MainActivity, SurveyActivity::class.java))
                 finish()
-//                Toasty.info(this@MainActivity, "Menu akan segera tersedia", Toasty.LENGTH_LONG).show()
+            }
+
+            btnLaporanGiat.setOnClickListener {
+                startActivity(Intent(this@MainActivity, TambahGiatActivity::class.java))
+                finish()
             }
         }
     }
@@ -101,10 +120,15 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this@MainActivity, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED
+                &&
+                grantResults[2] == PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(this@MainActivity, "All Permission Granted", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this@MainActivity, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "All Permission Denied", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }

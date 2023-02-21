@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet">
         <activity
+            android:name=".giat.TambahGiatActivity"
+            android:exported="false" />
+        <activity
             android:name=".cuti.CutiActivity"
             android:exported="false" />
         <activity
@@ -42,6 +45,10 @@
         <activity
             android:name=".auth.LoginActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
     </application>
 
 </manifest>

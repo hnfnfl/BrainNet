@@ -1,10 +1,12 @@
 package com.jaylangkung.korem.retrofit
 
+import com.jaylangkung.korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.korem.dataClass.DefaultResponse
 import com.jaylangkung.korem.dataClass.UserResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AuthService {
@@ -37,4 +39,8 @@ interface AuthService {
     fun logout(
         @Field("iduser_aktivasi") iduser_aktivasi: String,
     ): Call<DefaultResponse>
+
+    @GET("auth/getSpinnerData")
+    fun getSpinnerData(
+    ): Call<DataSpinnerResponse>
 }
