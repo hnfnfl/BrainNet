@@ -3,11 +3,12 @@ package com.jaylangkung.korem.giat
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -21,12 +22,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 import com.jaylangkung.korem.R
 import com.jaylangkung.korem.dataClass.DataSpinnerResponse
+import com.jaylangkung.korem.dataClass.DefaultResponse
 import com.jaylangkung.korem.dataClass.SpinnerDepartemenData
 import com.jaylangkung.korem.databinding.ActivityTambahGiatBinding
 import com.jaylangkung.korem.retrofit.AuthService
+import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
+import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
@@ -43,12 +48,14 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
     var currentMarker: Marker? = null
     private lateinit var client: FusedLocationProviderClient
     lateinit var newLatLng: LatLng
+    private var userLat: Double? = null
+    private var userLong: Double? = null
     private var giatLat: Double? = null
     private var giatLong: Double? = null
     private lateinit var mMap: GoogleMap
 
     private var listDepartemen: ArrayList<SpinnerDepartemenData> = arrayListOf()
-    private var departemen: String = ""
+    private var iddepartemen: String = ""
     private var jenisGiat: String = ""
     private var dateStart: String = ""
     private var dateEnd: String = ""
@@ -61,7 +68,7 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-//                startActivity(Intent(this@TambahGiatActivity, CutiActivity::class.java))
+                startActivity(Intent(this@TambahGiatActivity, GiatActivity::class.java))
                 finish()
             }
         })
@@ -129,6 +136,41 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+
+            btnTambahGiat.setOnClickListener {
+                if (validate()) {
+                    val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
+                    val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+
+                    val latUser = userLat.toString()
+                    val lngUser = userLong.toString()
+                    val latGiat = if (giatLat != null) giatLat.toString() else userLat.toString()
+                    val lngGiat = if (giatLong != null) giatLong.toString() else userLong.toString()
+                    val userPos = arrayListOf(mapOf("lat" to latUser, "lng" to lngUser))
+                    val giatPos = arrayListOf(mapOf("lat" to latGiat, "lng" to lngGiat))
+                    val gson = Gson()
+                    val userJson = gson.toJson(userPos).toString()
+                    val giatJson = gson.toJson(giatPos).toString()
+
+                    val tujuan = giatTujuanInput.text.toString()
+                    val keterangan = giatKeteranganInput.text.toString()
+                    val lokasi = giatLokasiInput.text.toString()
+
+                    tambahGiat(
+                        iduser,
+                        iddepartemen,
+                        jenisGiat,
+                        tujuan,
+                        keterangan,
+                        dateStart,
+                        dateEnd,
+                        lokasi,
+                        giatJson,
+                        userJson,
+                        tokenAuth
+                    )
+                }
+            }
         }
     }
 
@@ -146,14 +188,15 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             Toasty.error(this, "Mohon izinkan lokasi pada aplikasi", Toasty.LENGTH_LONG).show()
+            onBackPressedDispatcher.onBackPressed()
             return
         }
         client.lastLocation.addOnCompleteListener {
             Priority.PRIORITY_HIGH_ACCURACY
-            giatLat = it.result.latitude
-            giatLong = it.result.longitude
-            val pos = LatLng(giatLat!!, giatLong!!)
-            Log.e("posisi user", "$giatLat, $giatLong")
+            userLat = it.result.latitude
+            userLong = it.result.longitude
+            val pos = LatLng(userLat!!, userLong!!)
+//            Log.e("posisi user", "$userLat, $userLong")
             drawMarker(pos)
         }
         mMap.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
@@ -166,7 +209,7 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
                 newLatLng = p0.position
                 giatLat = newLatLng.latitude
                 giatLong = newLatLng.longitude
-                Log.e("posisi user setelah geser", "$giatLat, $giatLong")
+//                Log.e("posisi user setelah geser", "$giatLat, $giatLong")
                 drawMarker(newLatLng)
             }
 
@@ -204,7 +247,7 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         giatDepartemenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                                departemen = listDepartemen[p2].iddepartemen
+                                iddepartemen = listDepartemen[p2].iddepartemen
                             }
 
                             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -227,4 +270,95 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
     }
+
+    private fun validate(): Boolean {
+        binding.apply {
+            when {
+                giatTujuanInput.text.toString() == "" -> {
+                    giatTujuanInput.error = "Judul Giat tidak boleh kosong"
+                    giatTujuanInput.requestFocus()
+                    return false
+                }
+                giatKeteranganInput.text.toString() == "" -> {
+                    giatKeteranganInput.error = "Keterangan Giat tidak boleh kosong"
+                    giatKeteranganInput.requestFocus()
+                    return false
+                }
+                iddepartemen == "" -> {
+                    Toasty.warning(this@TambahGiatActivity, "Departemen tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                jenisGiat == "" -> {
+                    Toasty.warning(this@TambahGiatActivity, "Jenis Giat tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                dateStart == "" -> {
+                    Toasty.warning(this@TambahGiatActivity, "Tanggal mulai giat tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                dateEnd == "" -> {
+                    Toasty.warning(this@TambahGiatActivity, "Tanggal selesai giat tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                giatLokasiInput.text.toString() == "" -> {
+                    giatLokasiInput.error = "Lokasi Giat tidak boleh kosong"
+                    giatLokasiInput.requestFocus()
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private fun tambahGiat(
+        iduser: String,
+        iddepartemen: String,
+        jenis: String,
+        tujuan: String,
+        keterangan: String,
+        mulai: String,
+        sampai: String,
+        lokasi: String,
+        posisiGiat: String,
+        posisiAnggota: String,
+        tokenAuth: String
+    ) {
+        val service = RetrofitClient().apiRequest().create(DataService::class.java)
+        service.insertGiat(
+            iduser,
+            iddepartemen,
+            jenis, tujuan,
+            keterangan,
+            mulai,
+            sampai,
+            "belum",
+            lokasi,
+            posisiGiat,
+            posisiAnggota,
+            tokenAuth
+        )
+            .enqueue(object : Callback<DefaultResponse> {
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+                        Toasty.success(this@TambahGiatActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
+                        onBackPressedDispatcher.onBackPressed()
+                    } else {
+                        ErrorHandler().responseHandler(
+                            this@TambahGiatActivity,
+                            "tambahGiat | onResponse", response.message()
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    binding.btnTambahGiat.endAnimation()
+                    ErrorHandler().responseHandler(
+                        this@TambahGiatActivity,
+                        "tambahGiat | onFailure", t.message.toString()
+                    )
+                }
+
+            })
+    }
+
 }

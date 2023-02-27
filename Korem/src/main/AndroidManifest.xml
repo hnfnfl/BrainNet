@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet">
         <activity
+            android:name=".giat.GiatActivity"
+            android:exported="false" />
+        <activity
             android:name=".giat.TambahGiatActivity"
             android:exported="false" />
         <activity

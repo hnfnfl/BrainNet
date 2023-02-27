@@ -39,10 +39,10 @@
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="cuti_judul_view">Judul Cuti: %1$s</string>
-    <string name="cuti_keterangan_view">Keterangan: %1$s</string>
-    <string name="cuti_jenis_view">Jenis: %1$s</string>
-    <string name="cuti_mulai_view">Mulai: %1$s</string>
-    <string name="cuti_sampai_view">Sampai: %1$s</string>
+    <string name="keterangan_view">Keterangan: %1$s</string>
+    <string name="jenis_view">Jenis: %1$s</string>
+    <string name="mulai_view">Mulai: %1$s</string>
+    <string name="sampai_view">Sampai: %1$s</string>
     <string name="cuti_status_view">Status: %1$s</string>
     <string name="cuti_revisi_view">Revisi: %1$s</string>
     <string name="cuti_ditolak_view">Alasan Ditolak: %1$s</string>
@@ -63,5 +63,10 @@
     <string name="btn_tambah_giat">Tambahkan Laporan Giat</string>
     <string name="laporan_giat">Babinsa</string>
     <string name="icon_laporan_giat">icon laporan giat</string>
+    <string name="list_giat">Daftar Giat</string>
+    <string name="giat_tujuan_view">Tujuan: %1$s</string>
+    <string name="giat_proses_view">Proses: %1$s</string>
+    <string name="giat_departemen_view">Departemen: %1$s</string>
+    <string name="giat_lokasi_view">Lokasi: %1$s</string>
 
 </resources>

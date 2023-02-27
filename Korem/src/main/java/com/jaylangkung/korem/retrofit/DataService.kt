@@ -60,6 +60,30 @@ interface DataService {
     ): Call<PostResponse>
 
     @FormUrlEncoded
+    @POST("main/getGiat")
+    fun getGiat(
+        @Field("iduser_aktivasi") iduser_aktivasi: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<GiatResponse>
+
+    @FormUrlEncoded
+    @POST("main/insertGiat")
+    fun insertGiat(
+        @Field("iduser_aktivasi") iduser: String,
+        @Field("iddepartemen") iddepartemen: String,
+        @Field("jenis") jenis: String,
+        @Field("tujuan") tujuan: String,
+        @Field("keterangan") keterangan: String,
+        @Field("mulai") mulai: String,
+        @Field("sampai") sampai: String,
+        @Field("proses") proses: String,
+        @Field("lokasi") lokasi: String,
+        @Field("posisi_giat") posisiGiat: String,
+        @Field("posisi_anggota") posisiAnggota: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
     @POST("main/insertWebApp")
     fun insertWebApp(
         @Field("iduser_aktivasi") iduser_aktivasi: String,

@@ -16,7 +16,7 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.jaylangkung.korem.cuti.CutiActivity
 import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
-import com.jaylangkung.korem.giat.TambahGiatActivity
+import com.jaylangkung.korem.giat.GiatActivity
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.survey.SurveyActivity
@@ -38,14 +38,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
-
-//        val a = arrayListOf<MutableMap<String, String>>()
-//        val tes = mutableMapOf<String, String>()
-//        tes["lat"] = "123123"
-//        tes["long"] = "asdfasdfas"
-//        a.add(tes)
-//        val gson = Gson()
-//        Log.e("tewts", gson.toJson(a).toString())
 
         if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
@@ -111,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnLaporanGiat.setOnClickListener {
-                startActivity(Intent(this@MainActivity, TambahGiatActivity::class.java))
+                startActivity(Intent(this@MainActivity, GiatActivity::class.java))
                 finish()
             }
         }
