@@ -68,5 +68,7 @@
     <string name="giat_proses_view">Proses: %1$s</string>
     <string name="giat_departemen_view">Departemen: %1$s</string>
     <string name="giat_lokasi_view">Lokasi: %1$s</string>
+    <string name="btn_notification">tombol notifikasi</string>
+    <string name="notifikasi">Notifikasi</string>
 
 </resources>

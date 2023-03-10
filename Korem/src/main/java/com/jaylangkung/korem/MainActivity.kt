@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -13,10 +14,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.korem.cuti.CutiActivity
 import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
 import com.jaylangkung.korem.giat.GiatActivity
+import com.jaylangkung.korem.notifikasi.NotifikasiActivity
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.survey.SurveyActivity
@@ -59,6 +63,17 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        Firebase.messaging.subscribeToTopic("notifikasi_korem")
+            .addOnCompleteListener {
+                var msg = "Subscribed"
+                if (!it.isSuccessful) {
+                    msg = "Subscribe failed"
+                }
+                Log.e("testing FCM", msg)
+            }
+//        val test = Firebase.messaging.token.result.toString()
+//        Log.e("FCM Testing", test)
+
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
         val jabatan = myPreferences.getValue(Constants.USER_PANGKATJABATAN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
@@ -80,6 +95,11 @@ class MainActivity : AppCompatActivity() {
                 in 12..14 -> getString(R.string.greetings, "Selamat Siang", jabatanNama)
                 in 15..17 -> getString(R.string.greetings, "Selamat Sore", jabatanNama)
                 else -> getString(R.string.greetings, "Selamat Malam", jabatanNama)
+            }
+
+            btnNotification.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
+                finish()
             }
 
             btnPresensi.setOnClickListener {

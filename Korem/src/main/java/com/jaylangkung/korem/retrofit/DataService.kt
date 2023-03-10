@@ -84,6 +84,13 @@ interface DataService {
     ): Call<DefaultResponse>
 
     @FormUrlEncoded
+    @POST("main/getNotification")
+    fun getNotification(
+        @Field("iduser_aktivasi") iduser: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<NotifikasiResponse>
+
+    @FormUrlEncoded
     @POST("main/insertWebApp")
     fun insertWebApp(
         @Field("iduser_aktivasi") iduser_aktivasi: String,
