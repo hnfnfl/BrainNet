@@ -64,13 +64,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         Firebase.messaging.subscribeToTopic("notifikasi_korem")
-            .addOnCompleteListener {
-                var msg = "Subscribed"
-                if (!it.isSuccessful) {
-                    msg = "Subscribe failed"
-                }
-                Log.e("testing FCM", msg)
-            }
+//            .addOnCompleteListener {
+//                var msg = "Subscribed"
+//                if (!it.isSuccessful) {
+//                    msg = "Subscribe failed"
+//                }
+//                Log.e("testing FCM", msg)
+//            }
 //        val test = Firebase.messaging.token.result.toString()
 //        Log.e("FCM Testing", test)
 

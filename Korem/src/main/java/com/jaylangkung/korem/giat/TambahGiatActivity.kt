@@ -2,16 +2,20 @@ package com.jaylangkung.korem.giat
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -33,8 +37,14 @@ import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
+import com.jaylangkung.korem.utils.FileUtils
 import com.jaylangkung.korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,6 +63,8 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
     private var giatLat: Double? = null
     private var giatLong: Double? = null
     private lateinit var mMap: GoogleMap
+
+    private var photoUri: Uri? = null
 
     private var listDepartemen: ArrayList<SpinnerDepartemenData> = arrayListOf()
     private var iddepartemen: String = ""
@@ -137,6 +149,43 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
+            btnGiatFoto.setOnClickListener {
+                ImagePicker.with(this@TambahGiatActivity)
+                    .cropSquare() //Crop image(Optional), Check Customization for more option
+                    .compress(1024) //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080(Optional)
+                    .galleryMimeTypes( //Exclude gif images
+                        mimeTypes = arrayOf(
+                            "image/png",
+                            "image/jpg",
+                            "image/jpeg"
+                        )
+                    )
+                    .start { resultCode, data ->
+                        when (resultCode) {
+                            Activity.RESULT_OK -> {
+                                //Image Uri will not be null for RESULT_OK
+                                val fileUri = data?.data
+                                photoUri = fileUri
+                                giatImgView.setImageURI(fileUri)
+                                giatImgView.visibility = View.VISIBLE
+
+                                //You can get File object from intent
+                                ImagePicker.getFile(data)
+
+                                //You can also get File Path from intent
+                                ImagePicker.getFilePath(data).toString()
+                            }
+                            ImagePicker.RESULT_ERROR -> {
+                                Toasty.error(this@TambahGiatActivity, ImagePicker.getError(data), Toasty.LENGTH_SHORT).show()
+                            }
+                            else -> {
+                                Log.d("Cancel image picking", "Task Cancelled")
+                            }
+                        }
+                    }
+            }
+
             btnTambahGiat.setOnClickListener {
                 if (validate()) {
                     val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
@@ -152,21 +201,29 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
                     val userJson = gson.toJson(userPos).toString()
                     val giatJson = gson.toJson(giatPos).toString()
 
+                    var photo: MultipartBody.Part? = null
+                    photoUri?.let {
+                        val file = FileUtils.getFile(this@TambahGiatActivity, photoUri)
+                        val requestBodyPhoto = file?.asRequestBody(contentResolver.getType(it).toString().toMediaTypeOrNull())
+                        photo = requestBodyPhoto?.let { it1 -> MultipartBody.Part.createFormData("foto_giat", file.name, it1) }
+                    }
+
                     val tujuan = giatTujuanInput.text.toString()
                     val keterangan = giatKeteranganInput.text.toString()
                     val lokasi = giatLokasiInput.text.toString()
 
                     tambahGiat(
-                        iduser,
-                        iddepartemen,
-                        jenisGiat,
-                        tujuan,
-                        keterangan,
-                        dateStart,
-                        dateEnd,
-                        lokasi,
-                        giatJson,
-                        userJson,
+                        iduser.toRequestBody(MultipartBody.FORM),
+                        iddepartemen.toRequestBody(MultipartBody.FORM),
+                        jenisGiat.toRequestBody(MultipartBody.FORM),
+                        tujuan.toRequestBody(MultipartBody.FORM),
+                        keterangan.toRequestBody(MultipartBody.FORM),
+                        dateStart.toRequestBody(MultipartBody.FORM),
+                        dateEnd.toRequestBody(MultipartBody.FORM),
+                        lokasi.toRequestBody(MultipartBody.FORM),
+                        giatJson.toRequestBody(MultipartBody.FORM),
+                        userJson.toRequestBody(MultipartBody.FORM),
+                        photo,
                         tokenAuth
                     )
                 }
@@ -311,16 +368,17 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun tambahGiat(
-        iduser: String,
-        iddepartemen: String,
-        jenis: String,
-        tujuan: String,
-        keterangan: String,
-        mulai: String,
-        sampai: String,
-        lokasi: String,
-        posisiGiat: String,
-        posisiAnggota: String,
+        iduser: RequestBody,
+        iddepartemen: RequestBody,
+        jenis: RequestBody,
+        tujuan: RequestBody,
+        keterangan: RequestBody,
+        mulai: RequestBody,
+        sampai: RequestBody,
+        lokasi: RequestBody,
+        posisiGiat: RequestBody,
+        posisiAnggota: RequestBody,
+        photo: MultipartBody.Part?,
         tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
@@ -331,10 +389,11 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
             keterangan,
             mulai,
             sampai,
-            "belum",
+            "belum".toRequestBody(MultipartBody.FORM),
             lokasi,
             posisiGiat,
             posisiAnggota,
+            photo,
             tokenAuth
         )
             .enqueue(object : Callback<DefaultResponse> {

@@ -14,9 +14,8 @@ android {
         applicationId "com.jaylangkung.korem"
         minSdk 24
         targetSdk 33
-        //TODO: update version
-        versionCode 6
-        versionName "1.5"
+        versionCode 7
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -113,4 +112,8 @@ dependencies {
 
     //floating action button
     implementation 'com.github.clans:fab:1.6.4'
+
+    // image picker
+    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
+
 }

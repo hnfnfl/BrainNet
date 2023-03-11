@@ -1,6 +1,8 @@
 package com.jaylangkung.korem.retrofit
 
 import com.jaylangkung.korem.dataClass.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -66,20 +68,21 @@ interface DataService {
         @Header("Authorization") tokenAuth: String
     ): Call<GiatResponse>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("main/insertGiat")
     fun insertGiat(
-        @Field("iduser_aktivasi") iduser: String,
-        @Field("iddepartemen") iddepartemen: String,
-        @Field("jenis") jenis: String,
-        @Field("tujuan") tujuan: String,
-        @Field("keterangan") keterangan: String,
-        @Field("mulai") mulai: String,
-        @Field("sampai") sampai: String,
-        @Field("proses") proses: String,
-        @Field("lokasi") lokasi: String,
-        @Field("posisi_giat") posisiGiat: String,
-        @Field("posisi_anggota") posisiAnggota: String,
+        @Part("iduser_aktivasi") iduser:  RequestBody,
+        @Part("iddepartemen") iddepartemen:  RequestBody,
+        @Part("jenis") jenis:  RequestBody,
+        @Part("tujuan") tujuan:  RequestBody,
+        @Part("keterangan") keterangan: RequestBody,
+        @Part("mulai") mulai:  RequestBody,
+        @Part("sampai") sampai:  RequestBody,
+        @Part("proses") proses:  RequestBody,
+        @Part("lokasi") lokasi:  RequestBody,
+        @Part("posisi_giat") posisiGiat:  RequestBody,
+        @Part("posisi_anggota") posisiAnggota:  RequestBody,
+        @Part foto_giat: MultipartBody.Part? = null,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
 

@@ -70,5 +70,7 @@
     <string name="giat_lokasi_view">Lokasi: %1$s</string>
     <string name="btn_notification">tombol notifikasi</string>
     <string name="notifikasi">Notifikasi</string>
+    <string name="tambah_foto">Pilih Atau Ambil Foto</string>
+    <string name="image">gambar</string>
 
 </resources>
