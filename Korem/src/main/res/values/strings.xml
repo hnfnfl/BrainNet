@@ -15,8 +15,8 @@
     <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
 
     <!--    MainActivity-->
-    <string name="presensi">Presensi</string>
-    <string name="icon_presensi">icon presensi</string>
+    <string name="absensi">Absensi</string>
+    <string name="icon_absensi">icon absensi</string>
     <string name="greetings">%1$s, \n%2$s</string>
     <string name="survey">Survey</string>
     <string name="permohonan_cuti">Permohonan Cuti</string>

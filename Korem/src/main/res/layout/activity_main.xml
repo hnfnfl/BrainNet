@@ -106,7 +106,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/icon_presensi"
+                    android:contentDescription="@string/icon_absensi"
                     android:src="@drawable/ic_calendar"
                     app:tint="@color/secondaryDarkColor" />
 
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
-                android:text="@string/presensi"
+                android:text="@string/absensi"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
