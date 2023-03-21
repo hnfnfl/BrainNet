@@ -61,6 +61,11 @@ interface DataService {
         @Header("Authorization") tokenAuth: String
     ): Call<PostResponse>
 
+    @GET("main/getPostTerbaru")
+    fun getPostTerbaru(
+        @Header("Authorization") tokenAuth: String
+    ): Call<PostResponse>
+
     @FormUrlEncoded
     @POST("main/getGiat")
     fun getGiat(

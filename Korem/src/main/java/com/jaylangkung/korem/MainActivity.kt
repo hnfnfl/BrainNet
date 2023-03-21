@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.denzcoskun.imageslider.ImageSlider
@@ -19,10 +21,12 @@ import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.korem.WebviewActivity.Companion.webviewJudul
 import com.jaylangkung.korem.WebviewActivity.Companion.webviewUrlPost
 import com.jaylangkung.korem.cuti.CutiActivity
+import com.jaylangkung.korem.dataClass.PostData
 import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
 import com.jaylangkung.korem.giat.GiatActivity
 import com.jaylangkung.korem.notifikasi.NotifikasiActivity
+import com.jaylangkung.korem.post.PostTerbaruAdapter
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.survey.SurveyActivity
@@ -39,12 +43,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var myPreferences: MySharedPreferences
-
+    private lateinit var postTerbaruAdapter: PostTerbaruAdapter
+    private var postTerbaruList: ArrayList<PostData> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
+        postTerbaruAdapter = PostTerbaruAdapter()
 
         if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
                 this@MainActivity,
@@ -82,8 +88,15 @@ class MainActivity : AppCompatActivity() {
         val jabatanNama = "$jabatan $nama"
 
         getPost(tokenAuth)
+        getPostTerbaru(tokenAuth)
+
         binding.apply {
-            Glide.with(this@MainActivity).load(foto).apply(RequestOptions().override(120)).placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).into(imgPhoto)
+            Glide.with(this@MainActivity)
+                .load(foto)
+                .apply(RequestOptions().override(120))
+                .placeholder(R.drawable.ic_profile)
+                .error(R.drawable.ic_profile)
+                .into(imgPhoto)
 
             val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             tvGreetings.text = when (currentHour) {
@@ -91,10 +104,6 @@ class MainActivity : AppCompatActivity() {
                 in 12..14 -> getString(R.string.greetings, "Selamat Siang", jabatanNama)
                 in 15..17 -> getString(R.string.greetings, "Selamat Sore", jabatanNama)
                 else -> getString(R.string.greetings, "Selamat Malam", jabatanNama)
-            }
-
-            imageSlider.setOnClickListener {
-                Toasty.info(this@MainActivity, "asdfasdf", Toasty.LENGTH_SHORT).show()
             }
 
             btnNotification.setOnClickListener {
@@ -181,6 +190,38 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure(call: Call<PostResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
                     this@MainActivity, "getPost | onFailure", t.message.toString()
+                )
+            }
+        })
+    }
+
+    private fun getPostTerbaru(tokenAuth: String) {
+        val service = RetrofitClient().apiRequest().create(DataService::class.java)
+        service.getPostTerbaru(tokenAuth).enqueue(object : Callback<PostResponse> {
+            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        postTerbaruList = response.body()!!.data
+                        postTerbaruAdapter.setItem(postTerbaruList)
+                        postTerbaruAdapter.notifyItemChanged(0, postTerbaruList.size)
+
+                        with(binding.rvBeritaTerbaru) {
+                            layoutManager = LinearLayoutManager(this@MainActivity)
+                            itemAnimator = DefaultItemAnimator()
+                            setHasFixedSize(true)
+                            adapter = postTerbaruAdapter
+                        }
+                    }
+                } else {
+                    ErrorHandler().responseHandler(
+                        this@MainActivity, "getPostTerbaru | onResponse", response.message()
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@MainActivity, "getPostTerbaru | onFailure", t.message.toString()
                 )
             }
         })

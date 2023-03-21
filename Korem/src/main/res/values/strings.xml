@@ -76,5 +76,7 @@
     <string name="siap_ops_gerak">Siap Ops Gerak</string>
     <string name="icon_pengaduan">icon pengaduan</string>
     <string name="pengaduan">Pengaduan</string>
+    <string name="gambar_post">gambar_post</string>
+    <string name="berita_terbaru">Berita Terbaru</string>
 
 </resources>

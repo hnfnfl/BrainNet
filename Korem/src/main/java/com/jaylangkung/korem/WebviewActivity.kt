@@ -6,7 +6,6 @@ import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.korem.databinding.ActivityWebviewBinding
-import com.jaylangkung.korem.survey.SurveyActivity
 
 class WebviewActivity : AppCompatActivity() {
 
@@ -24,9 +23,12 @@ class WebviewActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                SurveyActivity.jawabanList.clear()
-                startActivity(Intent(this@WebviewActivity, MainActivity::class.java))
-                finish()
+                if (binding.webView.canGoBack()) {
+                    binding.webView.goBack()
+                } else {
+                    startActivity(Intent(this@WebviewActivity, MainActivity::class.java))
+                    finish()
+                }
             }
         })
 
