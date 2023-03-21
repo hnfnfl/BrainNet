@@ -71,17 +71,17 @@ interface DataService {
     @Multipart
     @POST("main/insertGiat")
     fun insertGiat(
-        @Part("iduser_aktivasi") iduser:  RequestBody,
-        @Part("iddepartemen") iddepartemen:  RequestBody,
-        @Part("jenis") jenis:  RequestBody,
-        @Part("tujuan") tujuan:  RequestBody,
+        @Part("iduser_aktivasi") iduser: RequestBody,
+        @Part("iddepartemen") iddepartemen: RequestBody,
+        @Part("jenis") jenis: RequestBody,
+        @Part("tujuan") tujuan: RequestBody,
         @Part("keterangan") keterangan: RequestBody,
-        @Part("mulai") mulai:  RequestBody,
-        @Part("sampai") sampai:  RequestBody,
-        @Part("proses") proses:  RequestBody,
-        @Part("lokasi") lokasi:  RequestBody,
-        @Part("posisi_giat") posisiGiat:  RequestBody,
-        @Part("posisi_anggota") posisiAnggota:  RequestBody,
+        @Part("mulai") mulai: RequestBody,
+        @Part("sampai") sampai: RequestBody,
+        @Part("proses") proses: RequestBody,
+        @Part("lokasi") lokasi: RequestBody,
+        @Part("posisi_giat") posisiGiat: RequestBody,
+        @Part("posisi_anggota") posisiAnggota: RequestBody,
         @Part foto_giat: MultipartBody.Part? = null,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
@@ -92,6 +92,13 @@ interface DataService {
         @Field("iduser_aktivasi") iduser: String,
         @Header("Authorization") tokenAuth: String
     ): Call<NotifikasiResponse>
+
+    @FormUrlEncoded
+    @POST("main/getSiapOpsGerak")
+    fun getSiapOpsGerak(
+        @Field("iddepartemen") iddepartemen: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<SiapOpsGerakResponse>
 
     @FormUrlEncoded
     @POST("main/insertWebApp")

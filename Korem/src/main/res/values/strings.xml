@@ -72,5 +72,9 @@
     <string name="notifikasi">Notifikasi</string>
     <string name="tambah_foto">Pilih Atau Ambil Foto</string>
     <string name="image">gambar</string>
+    <string name="icon_siap_ops_gerak">icon siap ops gerak</string>
+    <string name="siap_ops_gerak">Siap Ops Gerak</string>
+    <string name="icon_pengaduan">icon pengaduan</string>
+    <string name="pengaduan">Pengaduan</string>
 
 </resources>

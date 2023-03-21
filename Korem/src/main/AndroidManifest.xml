@@ -8,13 +8,18 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet">
+        <activity
+            android:name=".WebviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".siapOpsGerak.SiapOpsGerakActivity"
+            android:exported="false" />
         <activity
             android:name=".notifikasi.NotifikasiActivity"
             android:exported="false" />

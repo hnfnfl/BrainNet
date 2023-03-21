@@ -12,9 +12,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.jaylangkung.korem.WebviewActivity.Companion.webviewJudul
+import com.jaylangkung.korem.WebviewActivity.Companion.webviewUrlPost
 import com.jaylangkung.korem.cuti.CutiActivity
 import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
@@ -26,6 +29,7 @@ import com.jaylangkung.korem.survey.SurveyActivity
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
+import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,18 +46,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
 
-        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED
-            &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-            &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this@MainActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this@MainActivity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this@MainActivity,
-                arrayOf(
+                this@MainActivity, arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -81,12 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         getPost(tokenAuth)
         binding.apply {
-            Glide.with(this@MainActivity)
-                .load(foto)
-                .apply(RequestOptions().override(120))
-                .placeholder(R.drawable.ic_profile)
-                .error(R.drawable.ic_profile)
-                .into(imgPhoto)
+            Glide.with(this@MainActivity).load(foto).apply(RequestOptions().override(120)).placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).into(imgPhoto)
 
             val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
             tvGreetings.text = when (currentHour) {
@@ -94,6 +91,10 @@ class MainActivity : AppCompatActivity() {
                 in 12..14 -> getString(R.string.greetings, "Selamat Siang", jabatanNama)
                 in 15..17 -> getString(R.string.greetings, "Selamat Sore", jabatanNama)
                 else -> getString(R.string.greetings, "Selamat Malam", jabatanNama)
+            }
+
+            imageSlider.setOnClickListener {
+                Toasty.info(this@MainActivity, "asdfasdf", Toasty.LENGTH_SHORT).show()
             }
 
             btnNotification.setOnClickListener {
@@ -125,18 +126,21 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, GiatActivity::class.java))
                 finish()
             }
+
+            btnSiapOpsGerak.setOnClickListener {
+                //TODO: add intent
+            }
+
+            btnPengaduan.setOnClickListener {
+                //TODO: add intent
+            }
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                &&
-                grantResults[1] == PackageManager.PERMISSION_GRANTED
-                &&
-                grantResults[2] == PackageManager.PERMISSION_GRANTED
-            ) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this@MainActivity, "All Permission Granted", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainActivity, "All Permission Denied", Toast.LENGTH_SHORT).show()
@@ -159,18 +163,24 @@ class MainActivity : AppCompatActivity() {
 
                     val imageSlider = findViewById<ImageSlider>(R.id.image_slider)
                     imageSlider.setImageList(imageList, ScaleTypes.CENTER_INSIDE)
+                    imageSlider.setItemClickListener(object : ItemClickListener {
+                        override fun onItemSelected(position: Int) {
+                            webviewUrlPost = datas[position].url
+                            webviewJudul = datas[position].judul
+                            startActivity(Intent(this@MainActivity, WebviewActivity::class.java))
+                            finish()
+                        }
+                    })
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MainActivity,
-                        "getPost | onResponse", response.message()
+                        this@MainActivity, "getPost | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<PostResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MainActivity,
-                    "getPost | onFailure", t.message.toString()
+                    this@MainActivity, "getPost | onFailure", t.message.toString()
                 )
             }
         })
