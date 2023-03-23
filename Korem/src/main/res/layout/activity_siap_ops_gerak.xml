@@ -13,7 +13,7 @@
         android:layout_marginHorizontal="24dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/rv_cuti_list"
+        app:layout_constraintBottom_toTopOf="@+id/rv_siap_ops"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -39,9 +39,8 @@
 
     </LinearLayout>
 
-    <!--    TODO: change RV to siap ops gerak-->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_cuti_list"
+        android:id="@+id/rv_siap_ops"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
@@ -51,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_cuti" />
+        tools:listitem="@layout/item_siap_ops_gerak" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loading_anim"
@@ -60,10 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:SpinKit_Color="@color/secondaryLightColor"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_cuti_list"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_siap_ops"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_cuti_list" />
+        app:layout_constraintTop_toTopOf="@+id/rv_siap_ops" />
 
     <ImageView
         android:id="@+id/empty"
@@ -72,9 +71,9 @@
         android:contentDescription="@string/icon_empty"
         android:src="@drawable/ic_empty"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_cuti_list"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_siap_ops"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_cuti_list" />
+        app:layout_constraintTop_toTopOf="@+id/rv_siap_ops" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

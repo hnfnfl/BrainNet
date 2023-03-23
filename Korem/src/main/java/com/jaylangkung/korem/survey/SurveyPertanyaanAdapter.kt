@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.korem.dataClass.SurveyData
 import com.jaylangkung.korem.databinding.ItemPertanyaanSurveyBinding
 import com.jaylangkung.korem.survey.SurveyActivity.Companion.jawabanList
-import com.jaylangkung.korem.utils.MySharedPreferences
 
 
 class SurveyPertanyaanAdapter : RecyclerView.Adapter<SurveyPertanyaanAdapter.ItemHolder>() {
@@ -24,10 +23,7 @@ class SurveyPertanyaanAdapter : RecyclerView.Adapter<SurveyPertanyaanAdapter.Ite
     }
 
     class ItemHolder(private val binding: ItemPertanyaanSurveyBinding) : RecyclerView.ViewHolder(binding.root) {
-        private lateinit var myPreferences: MySharedPreferences
         fun bind(item: SurveyData) {
-            myPreferences = MySharedPreferences(itemView.context)
-
             binding.apply {
                 tvPertanyaan.text = item.pertanyaan
 

@@ -78,5 +78,9 @@
     <string name="pengaduan">Pengaduan</string>
     <string name="gambar_post">gambar_post</string>
     <string name="berita_terbaru">Berita Terbaru</string>
+    <string name="siap_keterangan_view">Keterangan: %1$s</string>
+    <string name="siap_ops_view">Siap Ops: %1$s</string>
+    <string name="siap_gerak_view">Siap Gerak: %1$s</string>
+    <string name="siap_kendaraan_text">Kendaraan</string>
 
 </resources>

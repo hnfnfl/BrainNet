@@ -98,10 +98,8 @@ interface DataService {
         @Header("Authorization") tokenAuth: String
     ): Call<NotifikasiResponse>
 
-    @FormUrlEncoded
-    @POST("main/getSiapOpsGerak")
+    @GET("main/getSiapOpsGerak")
     fun getSiapOpsGerak(
-        @Field("iddepartemen") iddepartemen: String,
         @Header("Authorization") tokenAuth: String
     ): Call<SiapOpsGerakResponse>
 
