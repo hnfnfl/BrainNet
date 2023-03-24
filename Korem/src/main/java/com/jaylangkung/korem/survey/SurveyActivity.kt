@@ -80,7 +80,7 @@ class SurveyActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
-                        pertanyaanList = listData as ArrayList<SurveyData>
+                        pertanyaanList = listData
                         surveyAdapter.setItem(pertanyaanList)
                         surveyAdapter.notifyItemRangeChanged(0, pertanyaanList.size)
 

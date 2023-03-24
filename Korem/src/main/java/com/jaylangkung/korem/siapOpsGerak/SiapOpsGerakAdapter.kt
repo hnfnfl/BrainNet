@@ -3,13 +3,11 @@ package com.jaylangkung.korem.siapOpsGerak
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.korem.R
 import com.jaylangkung.korem.dataClass.SiapOpsGerakData
 import com.jaylangkung.korem.databinding.ItemSiapOpsGerakBinding
-import com.jaylangkung.korem.survey.SurveyActivity.Companion.jawabanList
 
 
 class SiapOpsGerakAdapter : RecyclerView.Adapter<SiapOpsGerakAdapter.ItemHolder>() {
@@ -31,37 +29,20 @@ class SiapOpsGerakAdapter : RecyclerView.Adapter<SiapOpsGerakAdapter.ItemHolder>
                 tvSiapGerak.text = itemView.context.getString(R.string.siap_gerak_view, item.siap_gerak)
                 tvSiapCreateddate.text = item.createddate
 
-                val rgParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                )
-                rgParams.setMargins(0, 24, 0, 0)
-                RadioGroup(itemView.context).apply {
-                    layoutParams = rgParams
+                for (data in item.kendaraan) {
+                    val textView = TextView(itemView.context)
+                    textView.text = itemView.context.getString(R.string.siap_kendaraan_list, data.parameter, data.value)
+                    val params = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    params.setMargins(0, 6, 0, 0)
+                    textView.layoutParams = params
 
-                    for (data in item.kendaraan) {
-//                        val rbParams = LinearLayout.LayoutParams(
-//                            ViewGroup.LayoutParams.MATCH_PARENT,
-//                            ViewGroup.LayoutParams.WRAP_CONTENT,
-//                        )
-//                        rbParams.setMargins(0, 12, 0, 0)
-//                        RadioButton(itemView.context).apply {
-//                            layoutParams = rbParams
-//                            text = data.value
-//                            textSize = 18F
-//                            id = data.id
-//                            addView(this)
-//                        }
-                    }
-                    llPertanyaan.addView(this)
-
-                    setOnCheckedChangeListener { _, _ ->
-                        val selectedId: Int = this.checkedRadioButtonId
-                        val radioButton = findViewById<RadioButton>(selectedId)
-                        jawabanList[item.idsurvey.toInt()] = radioButton.text.toString()
-                    }
+                    linearLayout.addView(textView)
                 }
             }
+
         }
     }
 
