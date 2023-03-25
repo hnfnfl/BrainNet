@@ -25,6 +25,7 @@ import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
 import com.jaylangkung.korem.giat.GiatActivity
 import com.jaylangkung.korem.notifikasi.NotifikasiActivity
+import com.jaylangkung.korem.pengaduan.PengaduanActivity
 import com.jaylangkung.korem.post.PostTerbaruAdapter
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
@@ -140,7 +141,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnPengaduan.setOnClickListener {
-                //TODO: add intent
+                startActivity(Intent(this@MainActivity, PengaduanActivity::class.java))
+                finish()
             }
         }
     }

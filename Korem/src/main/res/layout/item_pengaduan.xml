@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_ethernet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/md_grey_200"
+    app:cardCornerRadius="8dp"
+    app:elevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tv_pengaduan_judul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/pengaduan_judul_view"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pengaduan_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/pengaduan_isi_view"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengaduan_judul" />
+
+        <ImageView
+            android:id="@+id/img_pengaduan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:contentDescription="@string/gambar_pengaduan"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengaduan_body" />
+
+        <View
+            android:id="@+id/separator1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#c0c0c0"
+            app:layout_constraintTop_toBottomOf="@+id/img_pengaduan"
+            tools:layout_editor_absoluteX="12dp" />
+
+        <TextView
+            android:id="@+id/tv_pengaduan_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/pengaduan_createddate_view"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator1" />
+
+        <TextView
+            android:id="@+id/tv_pengaduan_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/pengaduan_lastupdate_view"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator1" />
+
+        <View
+            android:id="@+id/separator2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#c0c0c0"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengaduan_create"
+            tools:layout_editor_absoluteX="12dp" />
+
+        <TextView
+            android:id="@+id/tv_pengaduan_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/cuti_status_view"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator2" />
+
+        <TextView
+            android:id="@+id/tv_pengaduan_oleh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/pengaduan_oleh_view"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengaduan_status" />
+
+        <TextView
+            android:id="@+id/tv_pengaduan_balasan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/pengaduan_balasan_view"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pengaduan_oleh" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

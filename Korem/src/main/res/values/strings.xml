@@ -83,5 +83,12 @@
     <string name="siap_gerak_view">Siap Gerak: %1$s</string>
     <string name="siap_kendaraan_text">Kendaraan</string>
     <string name="siap_kendaraan_list">%1$s: %2$s</string>
+    <string name="gambar_pengaduan">gambar pengaduan</string>
+    <string name="pengaduan_judul_view">Judul: %1$s</string>
+    <string name="pengaduan_isi_view">Isi: %1$s</string>
+    <string name="pengaduan_createddate_view">Dibuat: %1$s</string>
+    <string name="pengaduan_lastupdate_view">Update: %1$s</string>
+    <string name="pengaduan_oleh_view">Ditanggapi oleh: %1$s</string>
+    <string name="pengaduan_balasan_view">Balasan: %1$s</string>
 
 </resources>

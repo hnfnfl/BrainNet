@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet">
         <activity
+            android:name=".pengaduan.PengaduanActivity"
+            android:exported="false" />
+        <activity
             android:name=".WebviewActivity"
             android:exported="false" />
         <activity

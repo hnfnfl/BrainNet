@@ -104,6 +104,23 @@ interface DataService {
     ): Call<SiapOpsGerakResponse>
 
     @FormUrlEncoded
+    @POST("main/getPengaduan")
+    fun getPengaduan(
+        @Field("iduser_aktivasi") iduser: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<PengaduanResponse>
+
+    @Multipart
+    @POST("main/insertPengaduan")
+    fun insertPengaduan(
+        @Part("iduser_aktivasi") iduser: RequestBody,
+        @Part("judul") judul: RequestBody,
+        @Part("pengaduan") pengaduan: RequestBody,
+        @Part foto_pengaduan: MultipartBody.Part? = null,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @FormUrlEncoded
     @POST("main/insertWebApp")
     fun insertWebApp(
         @Field("iduser_aktivasi") iduser_aktivasi: String,
