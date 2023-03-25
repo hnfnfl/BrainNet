@@ -79,8 +79,7 @@ class SurveyActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
-                        val listData = response.body()!!.data
-                        pertanyaanList = listData
+                        pertanyaanList = response.body()!!.data
                         surveyAdapter.setItem(pertanyaanList)
                         surveyAdapter.notifyItemRangeChanged(0, pertanyaanList.size)
 

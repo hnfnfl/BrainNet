@@ -61,8 +61,7 @@ class NotifikasiActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
-                        val listData = response.body()!!.data
-                        listNotif = listData
+                        listNotif = response.body()!!.data
                         notifikasiAdapter.setNotifItem(listNotif)
                         notifikasiAdapter.notifyItemRangeChanged(0, listNotif.size)
 

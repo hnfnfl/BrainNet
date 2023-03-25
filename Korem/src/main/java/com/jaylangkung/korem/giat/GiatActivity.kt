@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.korem.MainActivity
 import com.jaylangkung.korem.R
-import com.jaylangkung.korem.dataClass.GiatData
 import com.jaylangkung.korem.dataClass.GiatResponse
 import com.jaylangkung.korem.databinding.ActivityGiatBinding
 import com.jaylangkung.korem.retrofit.DataService
@@ -26,7 +25,6 @@ class GiatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGiatBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var giatAdapter: GiatAdapter
-    private var giatList: ArrayList<GiatData> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +64,8 @@ class GiatActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
-                        giatList = listData as ArrayList<GiatData>
-                        giatAdapter.setItem(giatList)
-                        giatAdapter.notifyItemRangeChanged(0, giatList.size)
+                        giatAdapter.setItem(listData)
+                        giatAdapter.notifyItemRangeChanged(0, listData.size)
 
                         with(binding.rvGiatList) {
                             layoutManager = LinearLayoutManager(this@GiatActivity)

@@ -1,6 +1,6 @@
 package com.jaylangkung.korem.dataClass
 
 data class GiatResponse(
-    val data: List<GiatData>,
+    val data: ArrayList<GiatData>,
     val status: String
 )

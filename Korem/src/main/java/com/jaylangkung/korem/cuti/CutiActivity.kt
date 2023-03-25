@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.korem.MainActivity
 import com.jaylangkung.korem.R
-import com.jaylangkung.korem.dataClass.CutiData
 import com.jaylangkung.korem.dataClass.CutiResponse
 import com.jaylangkung.korem.databinding.ActivityCutiBinding
 import com.jaylangkung.korem.retrofit.DataService
@@ -26,7 +25,6 @@ class CutiActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCutiBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var cutiAdapter: CutiAdapter
-    private var cutiList: ArrayList<CutiData> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCutiBinding.inflate(layoutInflater)
@@ -65,9 +63,8 @@ class CutiActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
-                        cutiList = listData as ArrayList<CutiData>
-                        cutiAdapter.setItem(cutiList)
-                        cutiAdapter.notifyItemRangeChanged(0, cutiList.size)
+                        cutiAdapter.setItem(listData)
+                        cutiAdapter.notifyItemRangeChanged(0, listData.size)
 
                         with(binding.rvCutiList) {
                             layoutManager = LinearLayoutManager(this@CutiActivity)

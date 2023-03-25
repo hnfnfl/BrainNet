@@ -21,7 +21,6 @@ import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.korem.WebviewActivity.Companion.webviewJudul
 import com.jaylangkung.korem.WebviewActivity.Companion.webviewUrlPost
 import com.jaylangkung.korem.cuti.CutiActivity
-import com.jaylangkung.korem.dataClass.PostData
 import com.jaylangkung.korem.dataClass.PostResponse
 import com.jaylangkung.korem.databinding.ActivityMainBinding
 import com.jaylangkung.korem.giat.GiatActivity
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var postTerbaruAdapter: PostTerbaruAdapter
-    private var postTerbaruList: ArrayList<PostData> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -202,9 +200,9 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        postTerbaruList = response.body()!!.data
-                        postTerbaruAdapter.setItem(postTerbaruList)
-                        postTerbaruAdapter.notifyItemChanged(0, postTerbaruList.size)
+                        val listData = response.body()!!.data
+                        postTerbaruAdapter.setItem(listData)
+                        postTerbaruAdapter.notifyItemChanged(0, listData.size)
 
                         with(binding.rvBeritaTerbaru) {
                             layoutManager = LinearLayoutManager(this@MainActivity)
