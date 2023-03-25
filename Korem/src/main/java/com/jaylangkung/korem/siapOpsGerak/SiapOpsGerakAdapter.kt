@@ -30,13 +30,16 @@ class SiapOpsGerakAdapter : RecyclerView.Adapter<SiapOpsGerakAdapter.ItemHolder>
                 tvSiapCreateddate.text = item.createddate
 
                 for (data in item.kendaraan) {
-                    val textView = TextView(itemView.context)
-                    textView.text = itemView.context.getString(R.string.siap_kendaraan_list, data.parameter, data.value)
+                    val textView = TextView(itemView.context).apply {
+                        text = itemView.context.getString(R.string.siap_kendaraan_list, data.parameter, data.value)
+                        setTextColor(itemView.context.getColor(R.color.black))
+                        textSize = 16.0F
+                    }
                     val params = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     )
-                    params.setMargins(0, 6, 0, 0)
+                    params.setMargins(24, 4, 0, 0)
                     textView.layoutParams = params
 
                     linearLayout.addView(textView)

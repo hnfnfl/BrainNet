@@ -29,11 +29,11 @@ import com.jaylangkung.korem.notifikasi.NotifikasiActivity
 import com.jaylangkung.korem.post.PostTerbaruAdapter
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
+import com.jaylangkung.korem.siapOpsGerak.SiapOpsGerakActivity
 import com.jaylangkung.korem.survey.SurveyActivity
 import com.jaylangkung.korem.utils.Constants
 import com.jaylangkung.korem.utils.ErrorHandler
 import com.jaylangkung.korem.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -137,7 +137,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnSiapOpsGerak.setOnClickListener {
-                //TODO: add intent
+                startActivity(Intent(this@MainActivity, SiapOpsGerakActivity::class.java))
+                finish()
             }
 
             btnPengaduan.setOnClickListener {
