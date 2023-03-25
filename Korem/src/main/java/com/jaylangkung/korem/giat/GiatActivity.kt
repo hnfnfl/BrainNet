@@ -24,14 +24,14 @@ class GiatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityGiatBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var giatAdapter: GiatAdapter
+    private lateinit var adapter: GiatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGiatBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@GiatActivity)
-        giatAdapter = GiatAdapter()
+        adapter = GiatAdapter()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -64,14 +64,14 @@ class GiatActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
-                        giatAdapter.setItem(listData)
-                        giatAdapter.notifyItemRangeChanged(0, listData.size)
+                        adapter.setItem(listData)
+                        adapter.notifyItemRangeChanged(0, listData.size)
 
                         with(binding.rvGiatList) {
                             layoutManager = LinearLayoutManager(this@GiatActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = giatAdapter
+                            adapter = this@GiatActivity.adapter
                         }
                     }
                 } else {

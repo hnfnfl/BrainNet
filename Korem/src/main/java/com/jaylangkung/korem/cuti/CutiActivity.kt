@@ -24,13 +24,13 @@ class CutiActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCutiBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var cutiAdapter: CutiAdapter
+    private lateinit var adapter: CutiAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCutiBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@CutiActivity)
-        cutiAdapter = CutiAdapter()
+        adapter = CutiAdapter()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -63,15 +63,20 @@ class CutiActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
-                        cutiAdapter.setItem(listData)
-                        cutiAdapter.notifyItemRangeChanged(0, listData.size)
+                        adapter.setItem(listData)
+                        adapter.notifyItemRangeChanged(0, listData.size)
 
                         with(binding.rvCutiList) {
                             layoutManager = LinearLayoutManager(this@CutiActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = cutiAdapter
+                            adapter = this@CutiActivity.adapter
                         }
+                    } else if (response.body()!!.status == "empty") {
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
+                        adapter.setItem(emptyList())
+                        adapter.notifyItemRangeChanged(0, 0)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

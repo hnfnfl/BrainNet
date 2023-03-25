@@ -68,6 +68,11 @@ class PengaduanActivity : AppCompatActivity() {
                             setHasFixedSize(true)
                             adapter = this@PengaduanActivity.adapter
                         }
+                    } else if (response.body()!!.status == "empty") {
+                        binding.empty.visibility = View.VISIBLE
+                        binding.loadingAnim.visibility = View.GONE
+                        adapter.setItem(emptyList())
+                        adapter.notifyItemRangeChanged(0, 0)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

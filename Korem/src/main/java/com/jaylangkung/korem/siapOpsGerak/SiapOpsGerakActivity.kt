@@ -24,14 +24,14 @@ class SiapOpsGerakActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySiapOpsGerakBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var siapOpsGerakAdapter: SiapOpsGerakAdapter
+    private lateinit var adapter: SiapOpsGerakAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySiapOpsGerakBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@SiapOpsGerakActivity)
-        siapOpsGerakAdapter = SiapOpsGerakAdapter()
+        adapter = SiapOpsGerakAdapter()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -59,14 +59,14 @@ class SiapOpsGerakActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
-                        siapOpsGerakAdapter.setItem(listData)
-                        siapOpsGerakAdapter.notifyItemRangeChanged(0, listData.size)
+                        adapter.setItem(listData)
+                        adapter.notifyItemRangeChanged(0, listData.size)
 
                         with(binding.rvSiapOps) {
                             layoutManager = LinearLayoutManager(this@SiapOpsGerakActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = siapOpsGerakAdapter
+                            adapter = this@SiapOpsGerakActivity.adapter
                         }
                     }
                 } else {
