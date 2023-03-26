@@ -48,6 +48,11 @@ class PengaduanActivity : AppCompatActivity() {
             btnBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
+
+            fabAddPengaduan.setOnClickListener {
+                startActivity(Intent(this@PengaduanActivity, TambahPengaduanActivity::class.java))
+                finish()
+            }
         }
     }
 

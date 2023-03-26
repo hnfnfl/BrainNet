@@ -90,5 +90,8 @@
     <string name="pengaduan_lastupdate_view">Update: %1$s</string>
     <string name="pengaduan_oleh_view">Ditanggapi oleh: %1$s</string>
     <string name="pengaduan_balasan_view">Balasan: %1$s</string>
+    <string name="tambah_pengaduan">Tambah Pengaduan</string>
+    <string name="pengaduan_judul_text">Judul Pengaduan</string>
+    <string name="pengaduan_isi_text">Isi Aduan</string>
 
 </resources>

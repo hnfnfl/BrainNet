@@ -115,7 +115,7 @@ interface DataService {
     fun insertPengaduan(
         @Part("iduser_aktivasi") iduser: RequestBody,
         @Part("judul") judul: RequestBody,
-        @Part("pengaduan") pengaduan: RequestBody,
+        @Part("pengaduan") isi: RequestBody,
         @Part foto_pengaduan: MultipartBody.Part? = null,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
