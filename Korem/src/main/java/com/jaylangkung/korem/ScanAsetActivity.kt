@@ -103,7 +103,7 @@ class ScanAsetActivity : AppCompatActivity() {
                             val jenis = data.jenis
                             val dept = data.departemen
                             val mDialog = MaterialDialog.Builder(this@ScanAsetActivity as Activity)
-                                .setTitle("CutiData Aset Kode: $kodeAset")
+                                .setTitle("Data Aset Kode: $kodeAset")
                                 .setMessage("Nama Aset: $nama Jenis: $jenis SpinnerDepartemenData: $dept")
                                 .setCancelable(true)
                                 .setPositiveButton(getString(R.string.yes))
@@ -114,6 +114,10 @@ class ScanAsetActivity : AppCompatActivity() {
                                 .build()
                             // Show Dialog
                             mDialog.show()
+                        }
+                        "empty" -> {
+                            Toasty.error(this@ScanAsetActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                            codeScanner.startPreview()
                         }
                         else -> {
                             Toasty.error(this@ScanAsetActivity, response.message(), Toasty.LENGTH_LONG).show()
