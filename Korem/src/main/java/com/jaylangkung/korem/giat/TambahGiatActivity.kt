@@ -235,25 +235,27 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        //permission access fine & coarse location
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        //check permission access fine & coarse location
+        val fineLocationPermission = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        val coarseLocationPermission = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!fineLocationPermission || !coarseLocationPermission) {
             Toasty.error(this, "Mohon izinkan lokasi pada aplikasi", Toasty.LENGTH_LONG).show()
             onBackPressedDispatcher.onBackPressed()
             return
         }
+
         client.lastLocation.addOnCompleteListener {
             Priority.PRIORITY_HIGH_ACCURACY
             userLat = it.result.latitude
             userLong = it.result.longitude
             val pos = LatLng(userLat!!, userLong!!)
-//            Log.e("posisi user", "$userLat, $userLong")
             drawMarker(pos)
         }
         mMap.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
@@ -266,7 +268,6 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
                 newLatLng = p0.position
                 giatLat = newLatLng.latitude
                 giatLong = newLatLng.longitude
-//                Log.e("posisi user setelah geser", "$giatLat, $giatLong")
                 drawMarker(newLatLng)
             }
 
@@ -279,10 +280,13 @@ class TambahGiatActivity : AppCompatActivity(), OnMapReadyCallback {
             .position(pos)
             .title("Posisi Giat")
             .draggable(true)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 18f))
-        mMap.uiSettings.isScrollGesturesEnabled = true
-        mMap.uiSettings.isZoomGesturesEnabled = true
-        mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+
+        with(mMap) {
+            moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 18f))
+            uiSettings.isScrollGesturesEnabled = true
+            uiSettings.isZoomGesturesEnabled = true
+            mapType = GoogleMap.MAP_TYPE_SATELLITE
+        }
         currentMarker = mMap.addMarker(markerOptions)
         currentMarker?.showInfoWindow()
     }
