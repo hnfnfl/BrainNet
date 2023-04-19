@@ -8,3 +8,9 @@ data class SiapOpsGerakData(
     val siap_gerak: String,
     val siap_ops: String
 )
+
+data class SiapOpsGerakKendaraan(
+    val id: Int,
+    val parameter: String,
+    val value: String
+)

@@ -85,7 +85,6 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("PotentialBehaviorOverride")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -105,28 +104,41 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
+        with(mMap) {
+            uiSettings.apply {
+                isScrollGesturesEnabled = true
+                isZoomGesturesEnabled = true
+            }
+            mapType = GoogleMap.MAP_TYPE_NORMAL
+        }
+        bottomSheetDialog()
+    }
+
+    @SuppressLint("PotentialBehaviorOverride")
+    private fun bottomSheetDialog() {
         val bottomSheetGiatDetailBinding = BottomSheetGiatDetailBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(this@GiatActivity).apply {
             setCancelable(true)
             setContentView(bottomSheetGiatDetailBinding.root)
         }
-        mMap.setOnMarkerClickListener { marker ->
-            val idx = marker.title?.toIntOrNull() ?: return@setOnMarkerClickListener false
-            val giat = listGiat[idx]
-            bottomSheetGiatDetailBinding.apply {
-                tvGiatTujuan.text = getString(R.string.giat_tujuan_view, giat.tujuan)
-                tvGiatKeterangan.text = getString(R.string.keterangan_view, giat.keterangan)
-                tvGiatJenis.text = getString(R.string.jenis_view, giat.jenis)
-                tvGiatDepartemen.text = getString(R.string.giat_departemen_view, giat.departemen)
-                tvGiatLokasi.text = getString(R.string.giat_lokasi_view, giat.lokasi)
-                tvMulaiCuti.text = getString(R.string.mulai_view, giat.mulai)
-                tvSampaiCuti.text = getString(R.string.sampai_view, giat.sampai)
-                tvStatusGiat.text = getString(R.string.giat_proses_view, giat.proses)
+        with(mMap){
+            setOnMarkerClickListener { marker ->
+                val idx = marker.title?.toIntOrNull() ?: return@setOnMarkerClickListener false
+                val giat = listGiat[idx]
+                bottomSheetGiatDetailBinding.apply {
+                    tvGiatTujuan.text = getString(R.string.giat_tujuan_view, giat.tujuan)
+                    tvGiatKeterangan.text = getString(R.string.keterangan_view, giat.keterangan)
+                    tvGiatJenis.text = getString(R.string.jenis_view, giat.jenis)
+                    tvGiatDepartemen.text = getString(R.string.giat_departemen_view, giat.departemen)
+                    tvGiatLokasi.text = getString(R.string.giat_lokasi_view, giat.lokasi)
+                    tvMulaiCuti.text = getString(R.string.mulai_view, giat.mulai)
+                    tvSampaiCuti.text = getString(R.string.sampai_view, giat.sampai)
+                    tvStatusGiat.text = getString(R.string.giat_proses_view, giat.proses)
+                }
+                dialog.show()
+                true
             }
-            dialog.show()
-            true
         }
-
     }
 
     private fun getGiat(tokenAuth: String) {
@@ -171,14 +183,7 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
 
         with(mMap) {
             moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
-            uiSettings.apply {
-                isScrollGesturesEnabled = true
-                isZoomGesturesEnabled = true
-            }
-            mapType = GoogleMap.MAP_TYPE_NORMAL
             addMarker(markerOptions)
-
         }
     }
-
 }
