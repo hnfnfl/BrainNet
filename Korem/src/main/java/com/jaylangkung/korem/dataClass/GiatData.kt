@@ -2,7 +2,7 @@ package com.jaylangkung.korem.dataClass
 
 data class GiatData(
     val departemen: String,
-    val giatImg: ArrayList<GiatImg>,
+    val img: ArrayList<GiatImg>?,
     val jenis: String,
     val keterangan: String,
     val lokasi: String,

@@ -136,6 +136,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator2" />
 
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/imgslider_giat"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:iss_auto_cycle="true"
+            android:layout_marginTop="12dp"
+            app:iss_corner_radius="20"
+            app:iss_delay="0"
+            app:iss_period="5000"
+            app:iss_placeholder="@drawable/ic_empty"
+            app:iss_title_background="@drawable/gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_status_giat" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

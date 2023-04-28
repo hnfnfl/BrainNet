@@ -5,10 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.denzcoskun.imageslider.ImageSlider
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -49,6 +53,9 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityGiatBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@GiatActivity)
+        client = LocationServices.getFusedLocationProviderClient(this@GiatActivity)
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.giat_all_map) as SupportMapFragment
+        mapFragment.getMapAsync(this@GiatActivity)
 
         val permissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -68,10 +75,6 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         getGiat(getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString()))
-
-        client = LocationServices.getFusedLocationProviderClient(this@GiatActivity)
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.giat_all_map) as SupportMapFragment
-        mapFragment.getMapAsync(this@GiatActivity)
 
         binding.apply {
             btnBack.setOnClickListener {
@@ -121,11 +124,12 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
             setCancelable(true)
             setContentView(bottomSheetGiatDetailBinding.root)
         }
-        with(mMap){
+        with(mMap) {
             setOnMarkerClickListener { marker ->
                 val idx = marker.title?.toIntOrNull() ?: return@setOnMarkerClickListener false
                 val giat = listGiat[idx]
-                bottomSheetGiatDetailBinding.apply {
+
+                with(bottomSheetGiatDetailBinding) {
                     tvGiatTujuan.text = getString(R.string.giat_tujuan_view, giat.tujuan)
                     tvGiatKeterangan.text = getString(R.string.keterangan_view, giat.keterangan)
                     tvGiatJenis.text = getString(R.string.jenis_view, giat.jenis)
@@ -134,6 +138,16 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
                     tvMulaiCuti.text = getString(R.string.mulai_view, giat.mulai)
                     tvSampaiCuti.text = getString(R.string.sampai_view, giat.sampai)
                     tvStatusGiat.text = getString(R.string.giat_proses_view, giat.proses)
+                    if (giat.img?.isNotEmpty() == true) {
+                        imgsliderGiat.visibility = View.VISIBLE
+                        val imageList = java.util.ArrayList<SlideModel>()
+                        for (img in giat.img) {
+                            imageList.add(SlideModel(img.img))
+                        }
+                        imgsliderGiat.setImageList(imageList, ScaleTypes.CENTER_INSIDE)
+                    } else {
+                        imgsliderGiat.visibility = View.GONE
+                    }
                 }
                 dialog.show()
                 true
@@ -182,7 +196,7 @@ class GiatActivity : AppCompatActivity(), OnMapReadyCallback {
             .draggable(false)
 
         with(mMap) {
-            moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 12f))
             addMarker(markerOptions)
         }
     }

@@ -93,5 +93,6 @@
     <string name="tambah_pengaduan">Tambah Pengaduan</string>
     <string name="pengaduan_judul_text">Judul Pengaduan</string>
     <string name="pengaduan_isi_text">Isi Aduan</string>
+    <string name="gambar_giat">gambar giat</string>
 
 </resources>
