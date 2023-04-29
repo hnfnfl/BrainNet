@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Korem 083/BDJ</string>
+    <string name="app_version">App Version: %1$s</string>
     <string name="token_auth">Bearer %1$s</string>
 
     <!--    GlobalString-->

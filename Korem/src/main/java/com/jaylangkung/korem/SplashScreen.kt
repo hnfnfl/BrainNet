@@ -31,6 +31,9 @@ class SplashScreen : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@SplashScreen)
 
+        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+        binding.tvAppVersion.text = getString(R.string.app_version, versionName)
+
         Handler(Looper.getMainLooper()).postDelayed({
             //Ketika user sudah login tidak perlu ke halaman login lagi
             if (myPreferences.getValue(Constants.USER).equals(Constants.LOGIN)) {
