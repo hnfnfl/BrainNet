@@ -15,4 +15,6 @@ object Constants {
     const val USER_JABATAN = "jabatan"
     const val USER_CORPS = "corps"
     const val USER_TGLLAHIR = "tglLahir"
+    const val USER_AKSES_SURAT = "aksesSurat"
+    const val USER_IDAKSES_SURAT = "idaksesSurat"
 }

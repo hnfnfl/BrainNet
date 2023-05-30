@@ -53,8 +53,14 @@ class SplashScreen : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-                        startActivity(Intent(this@SplashScreen, MainActivity::class.java))
-                        finish()
+                        val aksesSurat = myPreferences.getValueBool(Constants.USER_AKSES_SURAT)
+                        if (aksesSurat) {
+                            startActivity(Intent(this@SplashScreen, MainActivity2::class.java))
+                            finish()
+                        } else {
+                            startActivity(Intent(this@SplashScreen, MainActivity::class.java))
+                            finish()
+                        }
                     }
                 } else {
                     ErrorHandler().responseHandler(

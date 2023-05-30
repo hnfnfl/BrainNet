@@ -17,6 +17,12 @@ class MySharedPreferences(mContext: Context) {
         editor.apply()
     }
 
+    fun setValueBool(key: String, value: Boolean) {
+        val editor: SharedPreferences.Editor = mSharedPreferences.edit()
+        editor.putBoolean(key, value)
+        editor.apply()
+    }
+
     fun setValueInteger(key: String, value: Int) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
         editor.putInt(key, value)
@@ -32,6 +38,10 @@ class MySharedPreferences(mContext: Context) {
 
     fun getValue(key: String): String? {
         return mSharedPreferences.getString(key, "")
+    }
+
+    fun getValueBool(key: String): Boolean {
+        return mSharedPreferences.getBoolean(key, false)
     }
 
     fun getValueInteger(key: String): Int {

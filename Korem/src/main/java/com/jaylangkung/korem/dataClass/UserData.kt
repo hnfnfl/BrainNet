@@ -1,8 +1,10 @@
 package com.jaylangkung.korem.dataClass
 
 data class UserData(
+    val akses_surat: Boolean,
     val corps: String,
     val iduser_aktivasi: String,
+    val iduser_surat: String,
     val img: String,
     val jabatan: String,
     val nama: String,

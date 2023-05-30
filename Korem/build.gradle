@@ -116,5 +116,4 @@ dependencies {
 
     // image picker
     implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
-
 }

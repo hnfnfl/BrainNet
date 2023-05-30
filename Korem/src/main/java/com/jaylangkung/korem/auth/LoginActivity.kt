@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.korem.MainActivity
+import com.jaylangkung.korem.MainActivity2
 import com.jaylangkung.korem.R
 import com.jaylangkung.korem.dataClass.UserResponse
 import com.jaylangkung.korem.databinding.ActivityLoginBinding
@@ -75,10 +76,18 @@ class LoginActivity : AppCompatActivity() {
                         myPreferences.setValue(Constants.USER_JABATAN, dataUser.jabatan)
                         myPreferences.setValue(Constants.USER_CORPS, dataUser.corps)
                         myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggal_lahir)
-
                         myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        finish()
+
+                        if (dataUser.akses_surat) {
+                            myPreferences.setValueBool(Constants.USER_AKSES_SURAT, true)
+                            myPreferences.setValue(Constants.USER_IDAKSES_SURAT, dataUser.iduser_surat)
+                            startActivity(Intent(this@LoginActivity, MainActivity2::class.java))
+                            finish()
+                        } else {
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            finish()
+                        }
+
                     }
                     "not_exist" -> {
                         binding.btnLogin.endAnimation()

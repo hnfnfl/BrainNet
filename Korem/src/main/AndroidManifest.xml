@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_korem">
         <activity
+            android:name=".surat.masuk.SuratMasukActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".pengaduan.TambahPengaduanActivity"
             android:exported="false" />
         <activity
