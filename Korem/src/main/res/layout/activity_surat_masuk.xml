@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rv_surat_masuk_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -39,68 +41,11 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_header">
-
-        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-            android:id="@+id/filter_sumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown"
-            app:smsp_arrowColor="@color/primaryColor"
-            app:smsp_floatingLabelColor="@color/primaryColor"
-            app:smsp_floatingLabelText="Marketing"
-            app:smsp_hint="Pilih Departemen"
-            app:smsp_hintColor="@color/primaryColor"
-            app:smsp_isOutlined="true"
-            app:smsp_itemColor="@color/black"
-            app:smsp_itemListColor="@color/black"
-            app:smsp_itemListHintBackgroundColor="#808080"
-            app:smsp_itemListHintColor="#FFFFFF"
-            app:smsp_multilineError="false"
-            app:smsp_outlinedBoxColor="@color/primaryColor"
-            app:smsp_outlinedBoxRadius="4dp"
-            app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
-        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-            android:id="@+id/filter_bentuk"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown"
-            app:smsp_arrowColor="@color/primaryColor"
-            app:smsp_floatingLabelColor="@color/primaryColor"
-            app:smsp_floatingLabelText="Paket Internet"
-            app:smsp_hint="Pilih Jenis Giat"
-            app:smsp_hintColor="@color/primaryColor"
-            app:smsp_isOutlined="true"
-            app:smsp_itemColor="@color/black"
-            app:smsp_itemListColor="@color/black"
-            app:smsp_itemListHintBackgroundColor="#808080"
-            app:smsp_itemListHintColor="#FFFFFF"
-            app:smsp_multilineError="false"
-            app:smsp_outlinedBoxColor="@color/primaryColor"
-            app:smsp_outlinedBoxRadius="4dp"
-            app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_surat_masuk_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="60dp"
         android:paddingHorizontal="24dp"
         android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"

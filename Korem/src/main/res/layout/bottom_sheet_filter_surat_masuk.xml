@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:elevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <View
+            android:id="@+id/separator1"
+            android:layout_width="100dp"
+            android:layout_height="5dp"
+            android:background="@drawable/rounded_box"
+            android:backgroundTint="@color/md_grey_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator1">
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/bentuk_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                app:smsp_arrowColor="@color/primaryColor"
+                app:smsp_hint="Filter Bentuk Surat"
+                app:smsp_hintColor="@color/primaryColor"
+                app:smsp_isOutlined="true"
+                app:smsp_itemColor="@color/black"
+                app:smsp_itemListColor="@color/black"
+                app:smsp_itemListHintBackgroundColor="#808080"
+                app:smsp_itemListHintColor="#FFFFFF"
+                app:smsp_multilineError="false"
+                app:smsp_outlinedBoxColor="@color/primaryColor"
+                app:smsp_outlinedBoxRadius="4dp"
+                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/disposisi_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                app:smsp_arrowColor="@color/primaryColor"
+                app:smsp_hint="Filter Disposisi Surat"
+                app:smsp_hintColor="@color/primaryColor"
+                app:smsp_isOutlined="true"
+                app:smsp_itemColor="@color/black"
+                app:smsp_itemListColor="@color/black"
+                app:smsp_itemListHintBackgroundColor="#808080"
+                app:smsp_itemListHintColor="#FFFFFF"
+                app:smsp_multilineError="false"
+                app:smsp_outlinedBoxColor="@color/primaryColor"
+                app:smsp_outlinedBoxRadius="4dp"
+                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/sumber_surat1_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                app:smsp_arrowColor="@color/primaryColor"
+                app:smsp_hint="Filter Sumber Surat 1"
+                app:smsp_hintColor="@color/primaryColor"
+                app:smsp_isOutlined="true"
+                app:smsp_itemColor="@color/black"
+                app:smsp_itemListColor="@color/black"
+                app:smsp_itemListHintBackgroundColor="#808080"
+                app:smsp_itemListHintColor="#FFFFFF"
+                app:smsp_multilineError="false"
+                app:smsp_outlinedBoxColor="@color/primaryColor"
+                app:smsp_outlinedBoxRadius="4dp"
+                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                android:id="@+id/sumber_surat2_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                app:smsp_arrowColor="@color/primaryColor"
+                app:smsp_hint="Filter Sumber Surat 2"
+                app:smsp_hintColor="@color/primaryColor"
+                app:smsp_isOutlined="true"
+                app:smsp_itemColor="@color/black"
+                app:smsp_itemListColor="@color/black"
+                app:smsp_itemListHintBackgroundColor="#808080"
+                app:smsp_itemListHintColor="#FFFFFF"
+                app:smsp_multilineError="false"
+                app:smsp_outlinedBoxColor="@color/primaryColor"
+                app:smsp_outlinedBoxRadius="4dp"
+                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+
+        </LinearLayout>
+
+        <com.chand.progressbutton.ProgressButton
+            android:id="@+id/btn_apply_filter"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:p_arrowVisible="false"
+            app:p_backgroundTint="@color/primaryColor"
+            app:p_bgColor="@color/colorSecondary"
+            app:p_cornerRadius="5dp"
+            app:p_layoutDirection="ltr"
+            app:p_progressBGColor="@color/primaryColor"
+            app:p_progressColor="@color/primaryLightColor"
+            app:p_rippleColor="@color/primaryLightColor"
+            app:p_style="circleBar"
+            app:p_text="Terapkan Filter"
+            app:p_textColor="@color/white"
+            app:p_textSize="18sp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
