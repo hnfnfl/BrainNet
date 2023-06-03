@@ -41,6 +41,8 @@ interface AuthService {
     ): Call<DefaultResponse>
 
     @GET("auth/getSpinnerData")
-    fun getSpinnerData(
-    ): Call<DataSpinnerResponse>
+    fun getSpinnerData(): Call<DataSpinnerResponse>
+
+    @GET("auth/getSpinnerSurat")
+    fun getSuratSpinnerData(): Call<DataSpinnerResponse>
 }

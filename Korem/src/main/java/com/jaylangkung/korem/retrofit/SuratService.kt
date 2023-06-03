@@ -1,16 +1,16 @@
 package com.jaylangkung.korem.retrofit
 
+import com.jaylangkung.korem.dataClass.DefaultResponse
 import com.jaylangkung.korem.dataClass.SuratKeluarResponse
 import com.jaylangkung.korem.dataClass.SuratMasukResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface SuratService {
     @GET("surat/getSuratMasuk")
     fun getSuratMasuk(
         @Query("sumber_surat") sumber: String,
+        @Query("sumber_surat_next") sumberNext: String,
         @Query("bentuk") bentuk: String,
         @Query("disposisi") disposisi: String,
         @Header("Authorization") tokenAuth: String
@@ -22,4 +22,16 @@ interface SuratService {
         @Query("disposisi") disposisi: String,
         @Header("Authorization") tokenAuth: String
     ): Call<SuratKeluarResponse>
+
+    @FormUrlEncoded
+    @POST("surat/insertSuratDisposisi")
+    fun insertSuratDisposisi(
+        @Field("iduser") iduser: String,
+        @Field("idsurat") idsurat: String,
+        @Field("tipe_surat") tipe_surat: String,
+        @Field("jenis") jenis: String,
+        @Field("catatan") catatan: String,
+        @Field("penerima") penerima: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

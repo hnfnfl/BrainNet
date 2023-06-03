@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.korem.MainActivity2
 import com.jaylangkung.korem.R
+import com.jaylangkung.korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.korem.dataClass.SuratMasukResponse
+import com.jaylangkung.korem.dataClass.UserSuratSpinnerData
 import com.jaylangkung.korem.databinding.ActivitySuratMasukBinding
+import com.jaylangkung.korem.retrofit.AuthService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.retrofit.SuratService
 import com.jaylangkung.korem.utils.Constants
@@ -30,6 +33,10 @@ class SuratMasukActivity : AppCompatActivity() {
     private var bentuk: String = ""
     private var disposisi: String = ""
 
+    companion object {
+        var listPenerimaDisposisi = ArrayList<UserSuratSpinnerData>()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySuratMasukBinding.inflate(layoutInflater)
@@ -47,15 +54,40 @@ class SuratMasukActivity : AppCompatActivity() {
         val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        getSuratMasuk("", "", "", tokenAuth)
+        getSuratMasuk("", "", "", "", tokenAuth)
+        getSpinnerData()
         binding.apply {
 
         }
     }
 
-    private fun getSuratMasuk(sumber: String, bentuk: String, disposisi: String, tokenAuth: String) {
+    private fun getSpinnerData() {
+        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
+        service.getSuratSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
+            override fun onResponse(call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>) {
+                if (response.isSuccessful) {
+                    listPenerimaDisposisi.clear()
+                    listPenerimaDisposisi = response.body()!!.user_surat
+                } else {
+                    ErrorHandler().responseHandler(
+                        this@SuratMasukActivity,
+                        "getSuratSpinnerData | onResponse", response.message()
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@SuratMasukActivity,
+                    "getSuratSpinnerData | onFailure", t.message.toString()
+                )
+            }
+        })
+    }
+
+    private fun getSuratMasuk(sumber: String, sumberNext: String, bentuk: String, disposisi: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.getSuratMasuk(sumber, bentuk, disposisi, tokenAuth).enqueue(object : Callback<SuratMasukResponse> {
+        service.getSuratMasuk(sumber, sumberNext, bentuk, disposisi, tokenAuth).enqueue(object : Callback<SuratMasukResponse> {
             override fun onResponse(call: Call<SuratMasukResponse>, response: Response<SuratMasukResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

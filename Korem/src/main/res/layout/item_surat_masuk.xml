@@ -68,7 +68,7 @@
             android:id="@+id/separator1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:background="#c0c0c0"
             app:layout_constraintTop_toBottomOf="@+id/tv_sm_sumber"
             tools:layout_editor_absoluteX="12dp" />
@@ -77,7 +77,7 @@
             android:id="@+id/tv_sm_dibuat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="sans-serif"
             android:text="@string/pengaduan_createddate_view"
             android:textColor="@color/black"
@@ -89,7 +89,7 @@
             android:id="@+id/separator2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:background="#c0c0c0"
             app:layout_constraintTop_toBottomOf="@+id/tv_sm_dibuat"
             tools:layout_editor_absoluteX="12dp" />
