@@ -108,5 +108,15 @@
     <string name="sm_aksi">Aksi: %1$s</string>
     <string name="surat_masuk">Surat Masuk</string>
     <string name="disposisi_catatan">Catatan</string>
+    <string name="tambah_surat_masuk">Tambah Surat Masuk</string>
+    <string name="tgl_sm">Tanggal Surat Dipilih: %1$s</string>
+    <string name="sm_tgl_view">Tanggal Surat</string>
+    <string name="sm_pengirim_input">Nama Pengirim</string>
+    <string name="sm_surat_next_input">Sumber Surat</string>
+    <string name="surat_keluar">Surat Keluar</string>
+    <string name="sk_perihal">Perihal: %1$s</string>
+    <string name="ajukan_surat">Ajukan</string>
+    <string name="tambah_surat_keluar">Tambah Surat Keluar</string>
+    <string name="kepada">Kepada</string>
 
 </resources>

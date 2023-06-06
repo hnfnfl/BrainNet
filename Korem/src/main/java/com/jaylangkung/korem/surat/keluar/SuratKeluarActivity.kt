@@ -1,4 +1,4 @@
-package com.jaylangkung.korem.surat.masuk
+package com.jaylangkung.korem.surat.keluar
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.korem.MainActivity2
 import com.jaylangkung.korem.R
-import com.jaylangkung.korem.dataClass.SuratMasukResponse
-import com.jaylangkung.korem.databinding.ActivitySuratMasukBinding
+import com.jaylangkung.korem.dataClass.SuratKeluarResponse
+import com.jaylangkung.korem.databinding.ActivitySuratKeluarBinding
 import com.jaylangkung.korem.databinding.BottomSheetFilterSuratMasukBinding
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.retrofit.SuratService
@@ -22,42 +22,37 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SuratMasukActivity : AppCompatActivity() {
+class SuratKeluarActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySuratMasukBinding
+    private lateinit var binding: ActivitySuratKeluarBinding
     private lateinit var bottomSheetFilterSuratMasukBinding: BottomSheetFilterSuratMasukBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var adapter: SuratMasukAdapter
-
-    private var sumber: String = ""
-    private var bentuk: String = ""
-    private var disposisi: String = ""
+    private lateinit var adapter: SuratKeluarAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySuratMasukBinding.inflate(layoutInflater)
+        binding = ActivitySuratKeluarBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        myPreferences = MySharedPreferences(this@SuratMasukActivity)
-        adapter = SuratMasukAdapter()
+        myPreferences = MySharedPreferences(this@SuratKeluarActivity)
+        adapter = SuratKeluarAdapter()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                startActivity(Intent(this@SuratMasukActivity, MainActivity2::class.java))
+                startActivity(Intent(this@SuratKeluarActivity, MainActivity2::class.java))
                 finish()
             }
         })
 
-        val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        getSuratMasuk("", "", "", "", tokenAuth)
+        getSuratKeluar("", "", tokenAuth)
         binding.apply {
             btnBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
 
             fabFilter.setOnClickListener {
-                Toasty.info(this@SuratMasukActivity, "Fitur ini akan segera hadir", Toasty.LENGTH_SHORT).show()
+                Toasty.info(this@SuratKeluarActivity, "Fitur ini akan segera hadir", Toasty.LENGTH_SHORT).show()
 //                bottomSheetFilterSuratMasukBinding = BottomSheetFilterSuratMasukBinding.inflate(layoutInflater)
 //                val dialog = BottomSheetDialog(this@SuratMasukActivity).apply {
 //                    setCancelable(true)
@@ -67,30 +62,34 @@ class SuratMasukActivity : AppCompatActivity() {
 //                dialog.show()
             }
 
-            fabAddSuratMasuk.setOnClickListener {
-                startActivity(Intent(this@SuratMasukActivity, TambahSuratMasukActivity::class.java))
+            fabAddSuratKeluar.setOnClickListener {
+                startActivity(Intent(this@SuratKeluarActivity, TambahSuratKeluarActivity::class.java))
                 finish()
             }
         }
+
+
     }
 
-
-    private fun getSuratMasuk(sumber: String, sumberNext: String, bentuk: String, disposisi: String, tokenAuth: String) {
+    private fun getSuratKeluar(bentuk: String, disposisi: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.getSuratMasuk(sumber, sumberNext, bentuk, disposisi, tokenAuth).enqueue(object : Callback<SuratMasukResponse> {
-            override fun onResponse(call: Call<SuratMasukResponse>, response: Response<SuratMasukResponse>) {
+        service.getSuratKeluar(bentuk, disposisi, tokenAuth).enqueue(object : Callback<SuratKeluarResponse> {
+            override fun onResponse(call: Call<SuratKeluarResponse>, response: Response<SuratKeluarResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        binding.loadingAnim.visibility = View.GONE
-                        val listData = response.body()!!.data
-                        adapter.setItem(listData)
-                        adapter.notifyItemRangeChanged(0, listData.size)
+                        val data = response.body()?.data
+                        if (data != null) {
+                            binding.loadingAnim.visibility = View.GONE
+                            val listData = response.body()!!.data
+                            adapter.setItem(listData)
+                            adapter.notifyItemRangeChanged(0, listData.size)
 
-                        with(binding.rvSuratMasukList) {
-                            layoutManager = LinearLayoutManager(this@SuratMasukActivity)
-                            itemAnimator = DefaultItemAnimator()
-                            setHasFixedSize(true)
-                            adapter = this@SuratMasukActivity.adapter
+                            with(binding.rvSuratKeluarList) {
+                                layoutManager = LinearLayoutManager(this@SuratKeluarActivity)
+                                itemAnimator = DefaultItemAnimator()
+                                setHasFixedSize(true)
+                                adapter = this@SuratKeluarActivity.adapter
+                            }
                         }
                     } else if (response.body()!!.status == "empty") {
                         binding.apply {
@@ -105,17 +104,17 @@ class SuratMasukActivity : AppCompatActivity() {
                 } else {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@SuratMasukActivity,
-                        "getSuratMasuk | onResponse", response.message()
+                        this@SuratKeluarActivity,
+                        "getSuratKeluar | onResponse", response.message()
                     )
                 }
             }
 
-            override fun onFailure(call: Call<SuratMasukResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SuratKeluarResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@SuratMasukActivity,
-                    "getSuratMasuk | onFailure", t.message.toString()
+                    this@SuratKeluarActivity,
+                    "getSuratKeluar | onFailure", t.message.toString()
                 )
             }
         })

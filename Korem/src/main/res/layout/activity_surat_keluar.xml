@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".surat.masuk.SuratMasukActivity">
+    tools:context=".surat.keluar.SuratKeluarActivity">
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -15,7 +15,7 @@
         android:layout_marginBottom="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/rv_surat_masuk_list"
+        app:layout_constraintBottom_toTopOf="@+id/rv_surat_keluar_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -35,14 +35,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/surat_masuk"
+            android:text="@string/surat_keluar"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_surat_masuk_list"
+        android:id="@+id/rv_surat_keluar_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
@@ -52,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_surat_masuk" />
+        tools:listitem="@layout/item_surat_keluar" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loading_anim"
@@ -61,10 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:SpinKit_Color="@color/secondaryLightColor"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_surat_masuk_list"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_surat_keluar_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_surat_masuk_list" />
+        app:layout_constraintTop_toTopOf="@+id/rv_surat_keluar_list" />
 
     <ImageView
         android:id="@+id/empty"
@@ -73,10 +73,10 @@
         android:contentDescription="@string/icon_empty"
         android:src="@drawable/ic_empty"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_surat_masuk_list"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_surat_keluar_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rv_surat_masuk_list" />
+        app:layout_constraintTop_toTopOf="@+id/rv_surat_keluar_list" />
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_filter"
@@ -89,11 +89,11 @@
         app:fab_colorRipple="@color/primaryColor"
         app:fab_label="Tambah Pengaduan"
         app:fab_size="normal"
-        app:layout_constraintBottom_toTopOf="@+id/fab_add_surat_masuk"
+        app:layout_constraintBottom_toTopOf="@+id/fab_add_surat_keluar"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fab_add_surat_masuk"
+        android:id="@+id/fab_add_surat_keluar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
