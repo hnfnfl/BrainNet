@@ -27,6 +27,7 @@ import com.jaylangkung.korem.giat.GiatActivity
 import com.jaylangkung.korem.notifikasi.NotifikasiActivity
 import com.jaylangkung.korem.pengaduan.PengaduanActivity
 import com.jaylangkung.korem.post.PostTerbaruAdapter
+import com.jaylangkung.korem.profile.ProfileActivity
 import com.jaylangkung.korem.retrofit.DataService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.siapOpsGerak.SiapOpsGerakActivity
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var postTerbaruAdapter: PostTerbaruAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -99,6 +101,14 @@ class MainActivity : AppCompatActivity() {
                 in 12..14 -> getString(R.string.greetings, "Selamat Siang", jabatanNama)
                 in 15..17 -> getString(R.string.greetings, "Selamat Sore", jabatanNama)
                 else -> getString(R.string.greetings, "Selamat Malam", jabatanNama)
+            }
+
+            imgPhoto.setOnClickListener {
+                startActivity(
+                    Intent(this@MainActivity, ProfileActivity::class.java)
+                        .putExtra("caller", "MainActivity")
+                )
+                finish()
             }
 
             btnNotification.setOnClickListener {

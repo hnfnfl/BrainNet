@@ -118,5 +118,11 @@
     <string name="ajukan_surat">Ajukan</string>
     <string name="tambah_surat_keluar">Tambah Surat Keluar</string>
     <string name="kepada">Kepada</string>
+    <string name="profile">Profil Pengguna</string>
+    <string name="nama">Nama</string>
+    <string name="pangkat">Pangkat</string>
+    <string name="jabatan">Jabatan</string>
+    <string name="btn_logout">Keluar</string>
+    <string name="notelp">Nomor Telp</string>
 
 </resources>

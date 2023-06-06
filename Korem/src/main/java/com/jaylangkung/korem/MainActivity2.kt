@@ -8,6 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.jaylangkung.korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.korem.dataClass.UserSuratSpinnerData
 import com.jaylangkung.korem.databinding.ActivityMain2Binding
+import com.jaylangkung.korem.profile.ProfileActivity
 import com.jaylangkung.korem.retrofit.AuthService
 import com.jaylangkung.korem.retrofit.RetrofitClient
 import com.jaylangkung.korem.surat.keluar.SuratKeluarActivity
@@ -37,7 +38,6 @@ class MainActivity2 : AppCompatActivity() {
 
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
         val jabatan = myPreferences.getValue(Constants.USER_PANGKATJABATAN).toString()
-        val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val foto = myPreferences.getValue(Constants.FOTO_PATH).toString()
         val jabatanNama = "$jabatan $nama"
 
@@ -56,6 +56,14 @@ class MainActivity2 : AppCompatActivity() {
                 in 12..14 -> getString(R.string.greetings, "Selamat Siang", jabatanNama)
                 in 15..17 -> getString(R.string.greetings, "Selamat Sore", jabatanNama)
                 else -> getString(R.string.greetings, "Selamat Malam", jabatanNama)
+            }
+
+            imgPhoto.setOnClickListener {
+                startActivity(
+                    Intent(this@MainActivity2, ProfileActivity::class.java)
+                        .putExtra("caller", "MainActivity2")
+                )
+                finish()
             }
 
             btnSuratMasuk.setOnClickListener {
