@@ -18,21 +18,6 @@
             android:name=".profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".surat.keluar.TambahSuratKeluarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".surat.keluar.SuratKeluarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".surat.masuk.TambahSuratMasukActivity"
-            android:exported="false" />
-        <activity
-            android:name=".surat.masuk.SuratMasukActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".pengaduan.TambahPengaduanActivity"
             android:exported="false" />
         <activity

@@ -11,3 +11,4 @@ rootProject.name = "BrainNet"
 include ':Staff'
 include ':Indirisma'
 include ':Korem'
+include ':eoffice_korem'

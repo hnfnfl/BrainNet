@@ -1,19 +1,18 @@
-package com.jaylangkung.korem.auth
+package com.example.eoffice_korem.auth
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
-import com.jaylangkung.korem.MainActivity
-import com.jaylangkung.korem.R
-import com.jaylangkung.korem.dataClass.UserResponse
-import com.jaylangkung.korem.databinding.ActivityLoginBinding
-import com.jaylangkung.korem.retrofit.AuthService
-import com.jaylangkung.korem.retrofit.RetrofitClient
-import com.jaylangkung.korem.utils.Constants
-import com.jaylangkung.korem.utils.ErrorHandler
-import com.jaylangkung.korem.utils.MySharedPreferences
+import com.example.eoffice_korem.R
+import com.example.eoffice_korem.dataClass.UserResponse
+import com.example.eoffice_korem.databinding.ActivityLoginBinding
+import com.example.eoffice_korem.retrofit.AuthService
+import com.example.eoffice_korem.retrofit.RetrofitClient
+import com.example.eoffice_korem.utils.Constants
+import com.example.eoffice_korem.utils.ErrorHandler
+import com.example.eoffice_korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,26 +63,26 @@ class LoginActivity : AppCompatActivity() {
                 when (response.body()!!.status) {
                     "success" -> {
                         val dataUser = response.body()!!.data[0]
-                        myPreferences.setValue(Constants.USER, Constants.LOGIN)
-                        myPreferences.setValue(Constants.USER_IDAKTIVASI, dataUser.iduser_aktivasi)
-                        myPreferences.setValue(Constants.USER_NAMA, dataUser.nama)
-                        myPreferences.setValue(Constants.USERNAME, dataUser.username)
-                        myPreferences.setValue(Constants.USER_TELP, dataUser.notelp)
-                        myPreferences.setValue(Constants.FOTO_PATH, dataUser.img)
-                        myPreferences.setValue(Constants.USER_PANGKAT, dataUser.pangkat)
-                        myPreferences.setValue(Constants.USER_PANGKATJABATAN, dataUser.pangkat_jabatan)
-                        myPreferences.setValue(Constants.USER_JABATAN, dataUser.jabatan)
-                        myPreferences.setValue(Constants.USER_CORPS, dataUser.corps)
-                        myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggal_lahir)
-                        myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-
                         if (dataUser.akses_surat) {
-                            myPreferences.clear()
-                            binding.btnLogin.endAnimation()
-                            Toasty.warning(this@LoginActivity, "Silahkan gunakan aplikasi e-office", Toasty.LENGTH_LONG).show()
-                        } else {
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            myPreferences.setValue(Constants.USER, Constants.LOGIN)
+                            myPreferences.setValue(Constants.USER_IDAKTIVASI, dataUser.iduser_aktivasi)
+                            myPreferences.setValue(Constants.USER_NAMA, dataUser.nama)
+                            myPreferences.setValue(Constants.USERNAME, dataUser.username)
+                            myPreferences.setValue(Constants.USER_TELP, dataUser.notelp)
+                            myPreferences.setValue(Constants.FOTO_PATH, dataUser.img)
+                            myPreferences.setValue(Constants.USER_PANGKAT, dataUser.pangkat)
+                            myPreferences.setValue(Constants.USER_PANGKATJABATAN, dataUser.pangkat_jabatan)
+                            myPreferences.setValue(Constants.USER_JABATAN, dataUser.jabatan)
+                            myPreferences.setValue(Constants.USER_CORPS, dataUser.corps)
+                            myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggal_lahir)
+                            myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
+                            myPreferences.setValueBool(Constants.USER_AKSES_SURAT, true)
+                            myPreferences.setValue(Constants.USER_IDAKSES_SURAT, dataUser.iduser_surat)
+                            startActivity(Intent(this@LoginActivity, com.example.eoffice_korem.MainActivity2::class.java))
                             finish()
+                        } else {
+                            binding.btnLogin.endAnimation()
+                            Toasty.warning(this@LoginActivity, "Maaf, Anda tidak punya akses", Toasty.LENGTH_LONG).show()
                         }
 
                     }

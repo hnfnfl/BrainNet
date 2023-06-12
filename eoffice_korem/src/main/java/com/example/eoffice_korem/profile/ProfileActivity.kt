@@ -1,14 +1,14 @@
-package com.jaylangkung.korem.profile
+package com.example.eoffice_korem.profile
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.jaylangkung.korem.MainActivity
-import com.jaylangkung.korem.auth.LoginActivity
-import com.jaylangkung.korem.databinding.ActivityProfileBinding
-import com.jaylangkung.korem.utils.Constants
-import com.jaylangkung.korem.utils.MySharedPreferences
+import com.example.eoffice_korem.MainActivity2
+import com.example.eoffice_korem.databinding.ActivityProfileBinding
+import com.example.eoffice_korem.utils.Constants
+import com.example.eoffice_korem.utils.MySharedPreferences
+import com.example.eoffice_korem.auth.LoginActivity
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class ProfileActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+                startActivity(Intent(this@ProfileActivity, MainActivity2::class.java))
                 finish()
             }
         })

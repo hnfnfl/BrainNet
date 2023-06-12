@@ -1,0 +1,128 @@
+<resources>
+    <string name="app_name">e-Office Korem 083/BDJ</string>
+    <string name="app_version">App Version: %1$s</string>
+    <string name="token_auth">Bearer %1$s</string>
+
+    <!--    GlobalString-->
+    <string name="btn_back">tombol kembali</string>
+    <string name="try_again">Silahkan coba lagi</string>
+
+    <!--    LoginActivity-->
+    <string name="login_title">Masuk ke akun kamu</string>
+    <string name="NRP">NRP</string>
+    <string name="password">Kata sandi</string>
+    <string name="btn_login">Masuk</string>
+    <string name="nrp_cant_empty">NRP tidak boleh kosong</string>
+    <string name="password_cant_empty">Kata sandi tidak boleh kosong</string>
+
+    <!--    MainActivity-->
+    <string name="absensi">Absensi</string>
+    <string name="icon_absensi">icon absensi</string>
+    <string name="greetings">%1$s, \n%2$s</string>
+    <string name="survey">Survey</string>
+    <string name="permohonan_cuti">Permohonan Cuti</string>
+    <string name="icon_survei">Icon Survei</string>
+    <string name="icon_permohonan_cuti">Icon Permohonan Cuti</string>
+    <string name="app_logo">logo app</string>
+
+    <!--    TambahCutiActivity-->
+    <string name="form_cuti_title">Formulir Permohonan Cuti</string>
+    <string name="cuti_judul">Judul Cuti</string>
+    <string name="cuti_keterangan">Keterangan</string>
+    <string name="btn_ajukan_cuti">Ajukan Permohonan Cuti</string>
+    <string name="cuti_tgl_mulai">Pilih Tanggal Mulai</string>
+    <string name="cuti_tgl_selesai">Pilih Tanggal Selesai</string>
+    <string name="tv_tgl_mulai">"Mulai Cuti: %1$s"</string>
+    <string name="tv_tgl_selesai">"Selesai Cuti: %1$s"</string>
+    <string name="placeholder_date">%1$s-%2$s-%3$s</string>
+    <string name="scan_aset">Scan Aset</string>
+    <string name="icon_scan_aset">icon scan aset</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="cuti_judul_view">Judul Cuti: %1$s</string>
+    <string name="keterangan_view">Keterangan: %1$s</string>
+    <string name="jenis_view">Jenis: %1$s</string>
+    <string name="mulai_view">Mulai: %1$s</string>
+    <string name="sampai_view">Sampai: %1$s</string>
+    <string name="cuti_status_view">Status: %1$s</string>
+    <string name="cuti_revisi_view">Revisi: %1$s</string>
+    <string name="cuti_ditolak_view">Alasan Ditolak: %1$s</string>
+    <string name="list_permohonan_cuti">Daftar Permohonan Cuti</string>
+    <string name="icon_empty">icon empty</string>
+    <string name="tambah_cuti">tambah cuti</string>
+
+    <!--    SurveiActivity-->
+    <string name="btn_kirim_survei">Kirim Jawaban</string>
+
+    <!--    TambahGiatActivity-->
+    <string name="tambah_giat">Tambah Laporan Giat</string>
+    <string name="giat_tujuan_text">Tujuan Giat</string>
+    <string name="giat_keterangan_text">Keterangan Giat</string>
+    <string name="giat_lokasi_text">Lokasi Giat</string>
+    <string name="giat_mulai_view">Mulai: %1$s</string>
+    <string name="giat_selesai_view">Selesai: %1$s</string>
+    <string name="btn_tambah_giat">Tambahkan Laporan Giat</string>
+    <string name="laporan_giat">Babinsa</string>
+    <string name="icon_laporan_giat">icon laporan giat</string>
+    <string name="list_giat">Daftar Giat</string>
+    <string name="giat_tujuan_view">Tujuan: %1$s</string>
+    <string name="giat_proses_view">Proses: %1$s</string>
+    <string name="giat_departemen_view">Departemen: %1$s</string>
+    <string name="giat_lokasi_view">Lokasi: %1$s</string>
+    <string name="btn_notification">tombol notifikasi</string>
+    <string name="notifikasi">Notifikasi</string>
+    <string name="tambah_foto">Pilih Atau Ambil Foto</string>
+    <string name="image">gambar</string>
+    <string name="icon_siap_ops_gerak">icon siap ops gerak</string>
+    <string name="siap_ops_gerak">Siap Ops Gerak</string>
+    <string name="icon_pengaduan">icon pengaduan</string>
+    <string name="pengaduan">Pengaduan</string>
+    <string name="gambar_post">gambar_post</string>
+    <string name="berita_terbaru">Berita Terbaru</string>
+    <string name="siap_keterangan_view">Keterangan: %1$s</string>
+    <string name="siap_ops_view">Siap Ops: %1$s</string>
+    <string name="siap_gerak_view">Siap Gerak: %1$s</string>
+    <string name="siap_kendaraan_text">Kendaraan</string>
+    <string name="siap_kendaraan_list">%1$s: %2$s</string>
+    <string name="gambar_pengaduan">gambar pengaduan</string>
+    <string name="pengaduan_judul_view">Judul: %1$s</string>
+    <string name="pengaduan_isi_view">Isi: %1$s</string>
+    <string name="pengaduan_createddate_view">Dibuat: %1$s</string>
+    <string name="pengaduan_lastupdate_view">Update: %1$s</string>
+    <string name="pengaduan_oleh_view">Ditanggapi oleh: %1$s</string>
+    <string name="pengaduan_balasan_view">Balasan: %1$s</string>
+    <string name="tambah_pengaduan">Tambah Pengaduan</string>
+    <string name="pengaduan_judul_text">Judul Pengaduan</string>
+    <string name="pengaduan_isi_text">Isi Aduan</string>
+    <string name="gambar_giat">gambar giat</string>
+    <string name="icon_riwayat_disposisi">icon_riwayat_disposisi</string>
+    <string name="riwayat_disposisi">Riwayat Disposisi</string>
+    <string name="icon_teruskan_surat">icon teruskan surat</string>
+    <string name="teruskan_surat">Teruskan Surat</string>
+    <string name="disposisikan">Disposisikan</string>
+    <string name="icon_disposisi_surat">icon disposisi surat</string>
+    <string name="sm_penerima">Penerima: %1$s</string>
+    <string name="sm_pengirim">Pengirim: %1$s</string>
+    <string name="sm_bentuk">Bentuk: %1$s</string>
+    <string name="sm_sumber">Sumber: %1$s</string>
+    <string name="sm_aksi">Aksi: %1$s</string>
+    <string name="surat_masuk">Surat Masuk</string>
+    <string name="disposisi_catatan">Catatan</string>
+    <string name="tambah_surat_masuk">Tambah Surat Masuk</string>
+    <string name="tgl_sm">Tanggal Surat Dipilih: %1$s</string>
+    <string name="sm_tgl_view">Tanggal Surat</string>
+    <string name="sm_pengirim_input">Nama Pengirim</string>
+    <string name="sm_surat_next_input">Sumber Surat</string>
+    <string name="surat_keluar">Surat Keluar</string>
+    <string name="sk_perihal">Perihal: %1$s</string>
+    <string name="ajukan_surat">Ajukan</string>
+    <string name="tambah_surat_keluar">Tambah Surat Keluar</string>
+    <string name="kepada">Kepada</string>
+    <string name="profile">Profil Pengguna</string>
+    <string name="nama">Nama</string>
+    <string name="pangkat">Pangkat</string>
+    <string name="jabatan">Jabatan</string>
+    <string name="btn_logout">Keluar</string>
+    <string name="notelp">Nomor Telp</string>
+
+</resources>
