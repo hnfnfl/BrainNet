@@ -11,11 +11,11 @@ import com.example.eoffice_korem.R
 import com.example.eoffice_korem.dataClass.SuratKeluarResponse
 import com.example.eoffice_korem.databinding.ActivitySuratKeluarBinding
 import com.example.eoffice_korem.databinding.BottomSheetFilterSuratMasukBinding
-import com.example.eoffice_korem.utils.Constants
-import com.example.eoffice_korem.utils.MySharedPreferences
 import com.example.eoffice_korem.retrofit.RetrofitClient
 import com.example.eoffice_korem.retrofit.SuratService
+import com.example.eoffice_korem.utils.Constants
 import com.example.eoffice_korem.utils.ErrorHandler
+import com.example.eoffice_korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
@@ -94,20 +94,17 @@ class SuratKeluarActivity : AppCompatActivity() {
                     response: Response<SuratKeluarResponse>
                 ) {
                     if (response.isSuccessful) {
+                        val listData = response.body()!!.data
                         if (response.body()!!.status == "success") {
-                            val data = response.body()?.data
-                            if (data != null) {
-                                binding.loadingAnim.visibility = View.GONE
-                                val listData = response.body()!!.data
-                                adapter.setItem(listData)
-                                adapter.notifyItemRangeChanged(0, listData.size)
+                            binding.loadingAnim.visibility = View.GONE
+                            adapter.setItem(listData)
+                            adapter.notifyItemRangeChanged(0, listData.size)
 
-                                with(binding.rvSuratKeluarList) {
-                                    layoutManager = LinearLayoutManager(this@SuratKeluarActivity)
-                                    itemAnimator = DefaultItemAnimator()
-                                    setHasFixedSize(true)
-                                    adapter = this@SuratKeluarActivity.adapter
-                                }
+                            with(binding.rvSuratKeluarList) {
+                                layoutManager = LinearLayoutManager(this@SuratKeluarActivity)
+                                itemAnimator = DefaultItemAnimator()
+                                setHasFixedSize(true)
+                                adapter = this@SuratKeluarActivity.adapter
                             }
                         } else if (response.body()!!.status == "empty") {
                             binding.apply {
@@ -115,8 +112,9 @@ class SuratKeluarActivity : AppCompatActivity() {
                                 loadingAnim.visibility = View.GONE
                             }
                             adapter.apply {
-                                setItem(emptyList())
-                                notifyItemRangeChanged(0, 0)
+                                listData.clear()
+                                setItem(listData)
+                                notifyItemRangeChanged(0, listData.size)
                             }
                         }
                     } else {

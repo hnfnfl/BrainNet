@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eoffice_korem.MainActivity2.Companion.listUserSurat
 import com.example.eoffice_korem.R
 import com.example.eoffice_korem.dataClass.DefaultResponse
 import com.example.eoffice_korem.databinding.ActivityTambahSuratMasukBinding
@@ -59,28 +60,42 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             val listUser = ArrayList<String>()
             val listJenisSurat = ArrayList<String>()
             val listPerihalSurat = ArrayList<String>()
-            for (i in 0 until com.example.eoffice_korem.MainActivity2.listUserSurat.size) {
-                listUser.add(com.example.eoffice_korem.MainActivity2.listUserSurat[i].nama)
+            for (i in 0 until listUserSurat.size) {
+                listUser.add(listUserSurat[i].nama)
             }
             listJenisSurat.addAll(
                 listOf("Militer", "Non Militer")
             )
             listPerihalSurat.addAll(
                 listOf(
-                    "Biasa", "Brafak", "Bratel", "DILMIL", "Direktif", "Hibah", "KEP/SKEP", "NHV",
-                    "Nota Dinas", "SPRIN", "ST", "STR", "Surat Cuti", "Surat Edaran", "Telegram", "Undangan"
+                    "Biasa",
+                    "Brafak",
+                    "Bratel",
+                    "DILMIL",
+                    "Direktif",
+                    "Hibah",
+                    "KEP/SKEP",
+                    "NHV",
+                    "Nota Dinas",
+                    "SPRIN",
+                    "ST",
+                    "STR",
+                    "Surat Cuti",
+                    "Surat Edaran",
+                    "Telegram",
+                    "Undangan"
                 )
             )
 
-            penerimaSpinner.item = listUser as List<Any>?
+            penerimaSpinner.item = listUser as List<*>?
             penerimaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    idPenerima = com.example.eoffice_korem.MainActivity2.listUserSurat[p2].idsurat_user_aktivasi
+                    idPenerima = listUserSurat[p2].idsurat_user_aktivasi
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-            sumberSuratSpinner.item = listJenisSurat as List<Any>?
+            sumberSuratSpinner.item = listJenisSurat as List<*>?
             sumberSuratSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     sumber = if (listJenisSurat[position] == "Non Militer") "non_militer" else "militer"
@@ -88,7 +103,7 @@ class TambahSuratMasukActivity : AppCompatActivity() {
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-            perihalSpinner.item = listPerihalSurat as List<Any>?
+            perihalSpinner.item = listPerihalSurat as List<*>?
             perihalSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     perihal = listPerihalSurat[position]
@@ -102,18 +117,11 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             }
 
             btnSuratMasukFoto.setOnClickListener {
-                ImagePicker.with(this@TambahSuratMasukActivity)
-                    .cropSquare()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .galleryMimeTypes(
+                ImagePicker.with(this@TambahSuratMasukActivity).cropSquare().compress(1024).maxResultSize(1080, 1080).galleryMimeTypes(
                         arrayOf(
-                            "image/png",
-                            "image/jpg",
-                            "image/jpeg"
+                            "image/png", "image/jpg", "image/jpeg"
                         )
-                    )
-                    .start { resultCode, data ->
+                    ).start { resultCode, data ->
                         when (resultCode) {
                             Activity.RESULT_OK -> {
                                 //Image Uri will not be null for RESULT_OK
@@ -220,8 +228,7 @@ class TambahSuratMasukActivity : AppCompatActivity() {
         tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.insertSuratMasuk(iduser, sumber, sumberNext, pengirim, perihal, tglSurat, file, tokenAuth)
-            .enqueue(object : Callback<DefaultResponse> {
+        service.insertSuratMasuk(iduser, sumber, sumberNext, pengirim, perihal, tglSurat, file, tokenAuth).enqueue(object : Callback<DefaultResponse> {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {
                         val message = response.body()!!.message
@@ -230,16 +237,14 @@ class TambahSuratMasukActivity : AppCompatActivity() {
                         finish()
                     } else {
                         ErrorHandler().responseHandler(
-                            this@TambahSuratMasukActivity,
-                            "insertSuratMasuk | onResponse", response.message()
+                            this@TambahSuratMasukActivity, "insertSuratMasuk | onResponse", response.message()
                         )
                     }
                 }
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     ErrorHandler().responseHandler(
-                        this@TambahSuratMasukActivity,
-                        "insertSuratMasuk | onFailure", t.message.toString()
+                        this@TambahSuratMasukActivity, "insertSuratMasuk | onFailure", t.message.toString()
                     )
                 }
             })

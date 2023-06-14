@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eoffice_korem.MainActivity2.Companion.listUserSurat
 import com.example.eoffice_korem.R
 import com.example.eoffice_korem.dataClass.DefaultResponse
 import com.example.eoffice_korem.databinding.ActivityTambahSuratKeluarBinding
@@ -54,8 +55,8 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
         binding.apply {
             val listUser = ArrayList<String>()
             val listPerihalSurat = ArrayList<String>()
-            for (i in 0 until com.example.eoffice_korem.MainActivity2.listUserSurat.size) {
-                listUser.add(com.example.eoffice_korem.MainActivity2.listUserSurat[i].nama)
+            for (i in 0 until listUserSurat.size) {
+                listUser.add(listUserSurat[i].nama)
             }
             listPerihalSurat.addAll(
                 listOf(
@@ -67,7 +68,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             penerimaSpinner.item = listUser as List<Any>?
             penerimaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    idPenerima = com.example.eoffice_korem.MainActivity2.listUserSurat[p2].idsurat_user_aktivasi
+                    idPenerima = listUserSurat[p2].idsurat_user_aktivasi
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}

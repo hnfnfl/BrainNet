@@ -36,7 +36,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         if (item == null) return
         this.list.clear()
         this.list.addAll(item)
-        notifyItemChanged(0, list.size)
+        notifyItemRangeChanged(0, list.size)
     }
 
     class ItemHolder(private val binding: ItemSuratKeluarBinding) : RecyclerView.ViewHolder(binding.root) {

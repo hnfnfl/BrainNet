@@ -1,5 +1,6 @@
 package com.example.eoffice_korem.surat.masuk
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -36,7 +37,13 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
         if (item == null) return
         this.list.clear()
         this.list.addAll(item)
-        notifyItemChanged(0, list.size)
+        notifyItemRangeChanged(0, list.size)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearItem() {
+        this.list.clear()
+        notifyDataSetChanged()
     }
 
     class ItemHolder(private val binding: ItemSuratMasukBinding) : RecyclerView.ViewHolder(binding.root) {
