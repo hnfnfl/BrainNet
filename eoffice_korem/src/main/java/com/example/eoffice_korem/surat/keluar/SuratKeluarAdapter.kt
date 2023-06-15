@@ -1,5 +1,6 @@
 package com.example.eoffice_korem.surat.keluar
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -37,6 +38,12 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         this.list.clear()
         this.list.addAll(item)
         notifyItemRangeChanged(0, list.size)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearItem() {
+        this.list.clear()
+        notifyDataSetChanged()
     }
 
     class ItemHolder(private val binding: ItemSuratKeluarBinding) : RecyclerView.ViewHolder(binding.root) {

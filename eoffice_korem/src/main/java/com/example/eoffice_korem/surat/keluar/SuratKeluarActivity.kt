@@ -3,10 +3,12 @@ package com.example.eoffice_korem.surat.keluar
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.eoffice_korem.MainActivity2
 import com.example.eoffice_korem.R
 import com.example.eoffice_korem.dataClass.SuratKeluarResponse
 import com.example.eoffice_korem.databinding.ActivitySuratKeluarBinding
@@ -16,7 +18,7 @@ import com.example.eoffice_korem.retrofit.SuratService
 import com.example.eoffice_korem.utils.Constants
 import com.example.eoffice_korem.utils.ErrorHandler
 import com.example.eoffice_korem.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +29,9 @@ class SuratKeluarActivity : AppCompatActivity() {
     private lateinit var bottomSheetFilterSuratMasukBinding: BottomSheetFilterSuratMasukBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: SuratKeluarAdapter
+
+    private var bentuk: String = ""
+    private var disposisi: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,18 +62,80 @@ class SuratKeluarActivity : AppCompatActivity() {
             }
 
             fabFilter.setOnClickListener {
-                Toasty.info(
-                    this@SuratKeluarActivity,
-                    "Fitur ini akan segera hadir",
-                    Toasty.LENGTH_SHORT
-                ).show()
-//                bottomSheetFilterSuratMasukBinding = BottomSheetFilterSuratMasukBinding.inflate(layoutInflater)
-//                val dialog = BottomSheetDialog(this@SuratMasukActivity).apply {
-//                    setCancelable(true)
-//                    setContentView(bottomSheetFilterSuratMasukBinding.root)
-//                }
-//
-//                dialog.show()
+                bottomSheetFilterSuratMasukBinding = BottomSheetFilterSuratMasukBinding.inflate(layoutInflater)
+                val dialog = BottomSheetDialog(this@SuratKeluarActivity).apply {
+                    setCancelable(true)
+                    setContentView(bottomSheetFilterSuratMasukBinding.root)
+                }
+
+                bottomSheetFilterSuratMasukBinding.apply {
+                    sumberSurat1Spinner.visibility = View.GONE
+                    sumberSurat2Spinner.visibility = View.GONE
+
+                    val listBentukSurat = ArrayList<String>()
+                    val listDisposisSurat = ArrayList<String>()
+
+                    listBentukSurat.addAll(
+                        listOf(
+                            "All",
+                            "Biasa",
+                            "Brafak",
+                            "Bratel",
+                            "DILMIL",
+                            "Direktif",
+                            "Hibah",
+                            "KEP/SKEP",
+                            "NHV",
+                            "Nota Dinas",
+                            "SPRIN",
+                            "ST",
+                            "STR",
+                            "Surat Cuti",
+                            "Surat Edaran",
+                            "Telegram",
+                            "Undangan"
+                        )
+                    )
+                    bentukSpinner.item = listBentukSurat as ArrayList<*>?
+                    listDisposisSurat.add("All")
+                    for (i in 0 until MainActivity2.listUserSurat.size) {
+                        val rawName = MainActivity2.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
+                        val name = rawName.substringBefore("korem 083/bdj").trim()
+                        listDisposisSurat.add(name)
+                    }
+                    disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
+
+                    bentukSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                            bentuk = if (listBentukSurat[p2] == "All" || listBentukSurat[p2] == "") {
+                                ""
+                            } else {
+                                listBentukSurat[p2]
+                            }
+                        }
+
+                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                    }
+
+                    disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                            disposisi = if (listDisposisSurat[p2] == "All" || listDisposisSurat[p2] == "") {
+                                ""
+                            } else {
+                                listDisposisSurat[p2]
+                            }
+                        }
+
+                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                    }
+
+                    btnApplyFilter.setOnClickListener {
+                        getSuratKeluar(bentuk, disposisi, tokenAuth)
+                        dialog.dismiss()
+                    }
+                }
+
+                dialog.show()
             }
 
             fabAddSuratKeluar.setOnClickListener {
@@ -111,11 +178,7 @@ class SuratKeluarActivity : AppCompatActivity() {
                                 empty.visibility = View.VISIBLE
                                 loadingAnim.visibility = View.GONE
                             }
-                            adapter.apply {
-                                listData.clear()
-                                setItem(listData)
-                                notifyItemRangeChanged(0, listData.size)
-                            }
+                            adapter.clearItem()
                         }
                     } else {
                         binding.loadingAnim.visibility = View.GONE
