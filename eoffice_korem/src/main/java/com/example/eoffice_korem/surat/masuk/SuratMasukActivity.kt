@@ -32,10 +32,6 @@ class SuratMasukActivity : AppCompatActivity() {
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: SuratMasukAdapter
 
-    private var bentuk: String = ""
-    private var disposisi: String = ""
-    private var sumber: String = ""
-    private var sumberNext: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +47,6 @@ class SuratMasukActivity : AppCompatActivity() {
             }
         })
 
-        val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSuratMasuk("", "", "", "", tokenAuth)
@@ -72,6 +67,11 @@ class SuratMasukActivity : AppCompatActivity() {
                     val listDisposisSurat = ArrayList<String>()
                     val listSumberSurat = ArrayList<String>()
                     val listSumberSuratNext = ArrayList<String>()
+
+                    var bentuk = ""
+                    var disposisi = ""
+                    var sumber = ""
+                    var sumberNext = ""
 
                     listBentukSurat.addAll(
                         listOf(
@@ -98,7 +98,7 @@ class SuratMasukActivity : AppCompatActivity() {
                     listDisposisSurat.add("All")
                     for (i in 0 until listUserSurat.size) {
                         val rawName = listUserSurat[i].nama.substringAfter("(").substringBefore(")")
-                        val name = rawName.substringBefore("korem 083/bdj").trim()
+                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
                         listDisposisSurat.add(name)
                     }
                     disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
@@ -122,7 +122,9 @@ class SuratMasukActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            bentuk = ""
+                        }
                     }
 
                     disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -134,7 +136,9 @@ class SuratMasukActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            disposisi = ""
+                        }
                     }
 
                     sumberSurat1Spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -146,7 +150,9 @@ class SuratMasukActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            sumber = ""
+                        }
                     }
 
                     sumberSurat2Spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -158,7 +164,9 @@ class SuratMasukActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            sumberNext = ""
+                        }
                     }
 
                     btnApplyFilter.setOnClickListener {
@@ -179,6 +187,7 @@ class SuratMasukActivity : AppCompatActivity() {
 
 
     private fun getSuratMasuk(sumber: String, sumberNext: String, bentuk: String, disposisi: String, tokenAuth: String) {
+        binding.loadingAnim.visibility = View.VISIBLE
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.getSuratMasuk(sumber, sumberNext, bentuk, disposisi, tokenAuth).enqueue(object : Callback<SuratMasukResponse> {
             override fun onResponse(call: Call<SuratMasukResponse>, response: Response<SuratMasukResponse>) {
@@ -186,6 +195,7 @@ class SuratMasukActivity : AppCompatActivity() {
                     val listData = response.body()!!.data
                     if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
+                        binding.empty.visibility = View.GONE
                         adapter.setItem(listData)
                         adapter.notifyItemRangeChanged(0, listData.size)
 

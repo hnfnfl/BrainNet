@@ -30,8 +30,6 @@ class SuratKeluarActivity : AppCompatActivity() {
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: SuratKeluarAdapter
 
-    private var bentuk: String = ""
-    private var disposisi: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +50,7 @@ class SuratKeluarActivity : AppCompatActivity() {
             }
         })
 
-        val tokenAuth =
-            getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+        val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSuratKeluar("", "", tokenAuth)
         binding.apply {
@@ -74,6 +71,9 @@ class SuratKeluarActivity : AppCompatActivity() {
 
                     val listBentukSurat = ArrayList<String>()
                     val listDisposisSurat = ArrayList<String>()
+
+                    var bentuk = ""
+                    var disposisi = ""
 
                     listBentukSurat.addAll(
                         listOf(
@@ -100,7 +100,7 @@ class SuratKeluarActivity : AppCompatActivity() {
                     listDisposisSurat.add("All")
                     for (i in 0 until MainActivity2.listUserSurat.size) {
                         val rawName = MainActivity2.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
-                        val name = rawName.substringBefore("korem 083/bdj").trim()
+                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
                         listDisposisSurat.add(name)
                     }
                     disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
@@ -114,7 +114,9 @@ class SuratKeluarActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            bentuk = ""
+                        }
                     }
 
                     disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -126,7 +128,9 @@ class SuratKeluarActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        override fun onNothingSelected(p0: AdapterView<*>?) {
+                            disposisi = ""
+                        }
                     }
 
                     btnApplyFilter.setOnClickListener {
@@ -139,12 +143,7 @@ class SuratKeluarActivity : AppCompatActivity() {
             }
 
             fabAddSuratKeluar.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@SuratKeluarActivity,
-                        TambahSuratKeluarActivity::class.java
-                    )
-                )
+                startActivity(Intent(this@SuratKeluarActivity, TambahSuratKeluarActivity::class.java))
                 finish()
             }
         }
@@ -153,6 +152,7 @@ class SuratKeluarActivity : AppCompatActivity() {
     }
 
     private fun getSuratKeluar(bentuk: String, disposisi: String, tokenAuth: String) {
+        binding.loadingAnim.visibility = View.VISIBLE
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.getSuratKeluar(bentuk, disposisi, tokenAuth)
             .enqueue(object : Callback<SuratKeluarResponse> {
@@ -164,6 +164,7 @@ class SuratKeluarActivity : AppCompatActivity() {
                         val listData = response.body()!!.data
                         if (response.body()!!.status == "success") {
                             binding.loadingAnim.visibility = View.GONE
+                            binding.empty.visibility = View.GONE
                             adapter.setItem(listData)
                             adapter.notifyItemRangeChanged(0, listData.size)
 
