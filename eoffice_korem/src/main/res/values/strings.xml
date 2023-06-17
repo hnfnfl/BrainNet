@@ -132,5 +132,6 @@
     <string name="militer">Militer</string>
     <string name="icon_nonmiliter">icon non militer</string>
     <string name="non_militer">Non Militer</string>
+    <string name="error_logger">Error Log</string>
 
 </resources>

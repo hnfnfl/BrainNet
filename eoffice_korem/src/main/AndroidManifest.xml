@@ -3,8 +3,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -45,6 +43,10 @@
         <activity
             android:name=".MainActivity2"
             android:exported="false" />
+        <activity
+            android:name=".utils.room.LoggerActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

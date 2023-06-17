@@ -9,6 +9,7 @@ import com.example.eoffice_korem.databinding.ActivityProfileBinding
 import com.example.eoffice_korem.utils.Constants
 import com.example.eoffice_korem.utils.MySharedPreferences
 import com.example.eoffice_korem.auth.LoginActivity
+import com.example.eoffice_korem.utils.room.LoggerActivity
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -47,6 +48,11 @@ class ProfileActivity : AppCompatActivity() {
             btnLogout.setOnClickListener {
                 myPreferences.clear()
                 startActivity(Intent(this@ProfileActivity, LoginActivity::class.java))
+                finish()
+            }
+
+            tvProfile.setOnClickListener {
+                startActivity(Intent(this@ProfileActivity, LoggerActivity::class.java))
                 finish()
             }
         }

@@ -1,8 +1,12 @@
 package com.example.eoffice_korem
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eoffice_korem.dataClass.DataSpinnerResponse
@@ -35,6 +39,19 @@ class MainActivity2 : AppCompatActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity2)
+
+        if (ContextCompat.checkSelfPermission(this@MainActivity2, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this@MainActivity2, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this@MainActivity2, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity2, arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), 100
+            )
+        }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
         val jabatan = myPreferences.getValue(Constants.USER_PANGKATJABATAN).toString()
