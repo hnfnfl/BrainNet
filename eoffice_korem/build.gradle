@@ -57,7 +57,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
     implementation 'com.google.maps.android:android-maps-utils:2.4.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
-
     //room
     implementation 'androidx.room:room-runtime:2.5.0'
     kapt 'androidx.room:room-compiler:2.5.0'
@@ -97,7 +96,6 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //for pict image
-    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
     implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
 
     //image getter from internet
@@ -114,5 +112,5 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
 
     // image picker
-    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 }

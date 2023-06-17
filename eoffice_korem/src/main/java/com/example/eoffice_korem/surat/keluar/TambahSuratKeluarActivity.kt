@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eoffice_korem.MainActivity2.Companion.listUserSurat
 import com.example.eoffice_korem.R
@@ -39,6 +42,26 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
     private var tglSurat: String = ""
     private var photoUri: Uri? = null
 
+    private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                //Image Uri will not be null for RESULT_OK
+                val fileUri = data?.data!!
+                photoUri = fileUri
+                binding.suratKeluarImgView.visibility = View.VISIBLE
+                binding.suratKeluarImgView.setImageURI(fileUri)
+            }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this@TambahSuratKeluarActivity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Log.d("Cancel image picking", "Task Cancelled")
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTambahSuratKeluarBinding.inflate(layoutInflater)
@@ -60,8 +83,22 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             }
             listPerihalSurat.addAll(
                 listOf(
-                    "Biasa", "Brafak", "Bratel", "DILMIL", "Direktif", "Hibah", "KEP/SKEP", "NHV",
-                    "Nota Dinas", "SPRIN", "ST", "STR", "Surat Cuti", "Surat Edaran", "Telegram", "Undangan"
+                    "Biasa",
+                    "Brafak",
+                    "Bratel",
+                    "DILMIL",
+                    "Direktif",
+                    "Hibah",
+                    "KEP/SKEP",
+                    "NHV",
+                    "Nota Dinas",
+                    "SPRIN",
+                    "ST",
+                    "STR",
+                    "Surat Cuti",
+                    "Surat Edaran",
+                    "Telegram",
+                    "Undangan"
                 )
             )
 
@@ -87,40 +124,11 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             }
 
             btnSuratKeluarFoto.setOnClickListener {
-                ImagePicker.with(this@TambahSuratKeluarActivity)
-                    .cropSquare()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .galleryMimeTypes(
-                        arrayOf(
-                            "image/png",
-                            "image/jpg",
-                            "image/jpeg"
-                        )
-                    )
-                    .start { resultCode, data ->
-                        when (resultCode) {
-                            Activity.RESULT_OK -> {
-                                //Image Uri will not be null for RESULT_OK
-                                val fileUri = data?.data
-                                photoUri = fileUri
-                                suratKeluarImgView.setImageURI(fileUri)
-                                suratKeluarImgView.visibility = View.VISIBLE
-
-                                //You can get File object from intent
-                                ImagePicker.getFile(data)
-
-                                //You can also get File Path from intent
-                                ImagePicker.getFilePath(data).toString()
-                            }
-                            ImagePicker.RESULT_ERROR -> {
-                                Toasty.error(this@TambahSuratKeluarActivity, ImagePicker.getError(data)).show()
-                            }
-                            else -> {
-                                Log.d("Cancel image picking", "Task Cancelled")
-                            }
-                        }
-                    }
+                ImagePicker.with(this@TambahSuratKeluarActivity).compress(1024).maxResultSize(1080, 1080).galleryMimeTypes(
+                    arrayOf("image/png", "image/jpg", "image/jpeg")
+                ).createIntent {
+                    startForProfileImageResult.launch(it)
+                }
             }
 
             btnTanggalSurat.setOnClickListener {
@@ -128,10 +136,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
                     this@TambahSuratKeluarActivity, { _, yearSelected, monthOfYear, dayOfMonth ->
                         tglSurat = getString(R.string.placeholder_date, yearSelected.toString(), (monthOfYear + 1).toString(), dayOfMonth.toString())
                         tvTglSuratKeluar.text = getString(R.string.tgl_sm, tglSurat)
-                    },
-                    Calendar.getInstance().get(Calendar.YEAR),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                    }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
                 )
                 datePickerDialog.show()
             }
@@ -184,37 +189,28 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
     }
 
     private fun insertSuratKeluar(
-        iduser: RequestBody,
-        perihal: RequestBody,
-        kepada: RequestBody,
-        persetujuan: RequestBody,
-        tglSurat: RequestBody,
-        file: MultipartBody.Part?,
-        tokenAuth: String
+        iduser: RequestBody, perihal: RequestBody, kepada: RequestBody, persetujuan: RequestBody, tglSurat: RequestBody, file: MultipartBody.Part?, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.insertSuratKeluar(iduser, perihal, kepada, persetujuan, tglSurat, file, tokenAuth)
-            .enqueue(object : retrofit2.Callback<DefaultResponse> {
-                override fun onResponse(call: retrofit2.Call<DefaultResponse>, response: retrofit2.Response<DefaultResponse>) {
-                    if (response.isSuccessful) {
-                        val message = response.body()!!.message
-                        Toasty.success(this@TambahSuratKeluarActivity, message, Toasty.LENGTH_SHORT).show()
-                        startActivity(Intent(this@TambahSuratKeluarActivity, SuratKeluarActivity::class.java))
-                        finish()
-                    } else {
-                        ErrorHandler().responseHandler(
-                            this@TambahSuratKeluarActivity,
-                            "insertSuratKeluar | onResponse", response.message()
-                        )
-                    }
-                }
-
-                override fun onFailure(call: retrofit2.Call<DefaultResponse>, t: Throwable) {
+        service.insertSuratKeluar(iduser, perihal, kepada, persetujuan, tglSurat, file, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
+            override fun onResponse(call: retrofit2.Call<DefaultResponse>, response: retrofit2.Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    val message = response.body()!!.message
+                    Toasty.success(this@TambahSuratKeluarActivity, message, Toasty.LENGTH_SHORT).show()
+                    startActivity(Intent(this@TambahSuratKeluarActivity, SuratKeluarActivity::class.java))
+                    finish()
+                } else {
                     ErrorHandler().responseHandler(
-                        this@TambahSuratKeluarActivity,
-                        "insertSuratKeluar | onFailure", t.message.toString()
+                        this@TambahSuratKeluarActivity, "insertSuratKeluar | onResponse", response.message()
                     )
                 }
-            })
+            }
+
+            override fun onFailure(call: retrofit2.Call<DefaultResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@TambahSuratKeluarActivity, "insertSuratKeluar | onFailure", t.message.toString()
+                )
+            }
+        })
     }
 }

@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eoffice_korem.MainActivity2.Companion.listUserSurat
 import com.example.eoffice_korem.R
@@ -42,6 +45,26 @@ class TambahSuratMasukActivity : AppCompatActivity() {
     private var perihal: String = ""
     private var tglSurat: String = ""
     private var photoUri: Uri? = null
+
+    private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                //Image Uri will not be null for RESULT_OK
+                val fileUri = data?.data!!
+                photoUri = fileUri
+                binding.suratMasukImgView.visibility = View.VISIBLE
+                binding.suratMasukImgView.setImageURI(fileUri)
+            }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this@TambahSuratMasukActivity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Log.d("Cancel image picking", "Task Cancelled")
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,33 +140,11 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             }
 
             btnSuratMasukFoto.setOnClickListener {
-                ImagePicker.with(this@TambahSuratMasukActivity).cropSquare().compress(1024).maxResultSize(1080, 1080).galleryMimeTypes(
-                        arrayOf(
-                            "image/png", "image/jpg", "image/jpeg"
-                        )
-                    ).start { resultCode, data ->
-                        when (resultCode) {
-                            Activity.RESULT_OK -> {
-                                //Image Uri will not be null for RESULT_OK
-                                val fileUri = data?.data
-                                photoUri = fileUri
-                                suratMasukImgView.setImageURI(fileUri)
-                                suratMasukImgView.visibility = View.VISIBLE
-
-                                //You can get File object from intent
-                                ImagePicker.getFile(data)
-
-                                //You can also get File Path from intent
-                                ImagePicker.getFilePath(data).toString()
-                            }
-                            ImagePicker.RESULT_ERROR -> {
-                                Toasty.error(this@TambahSuratMasukActivity, ImagePicker.getError(data)).show()
-                            }
-                            else -> {
-                                Log.d("Cancel image picking", "Task Cancelled")
-                            }
-                        }
-                    }
+                ImagePicker.with(this@TambahSuratMasukActivity).compress(1024).maxResultSize(1080, 1080).galleryMimeTypes(
+                    arrayOf("image/png", "image/jpg", "image/jpeg")
+                ).createIntent {
+                    startForProfileImageResult.launch(it)
+                }
             }
 
             btnTanggalSurat.setOnClickListener {
@@ -229,24 +230,24 @@ class TambahSuratMasukActivity : AppCompatActivity() {
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.insertSuratMasuk(iduser, sumber, sumberNext, pengirim, perihal, tglSurat, file, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                    if (response.isSuccessful) {
-                        val message = response.body()!!.message
-                        Toasty.success(this@TambahSuratMasukActivity, message, Toasty.LENGTH_SHORT).show()
-                        startActivity(Intent(this@TambahSuratMasukActivity, SuratMasukActivity::class.java))
-                        finish()
-                    } else {
-                        ErrorHandler().responseHandler(
-                            this@TambahSuratMasukActivity, "insertSuratMasuk | onResponse", response.message()
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    val message = response.body()!!.message
+                    Toasty.success(this@TambahSuratMasukActivity, message, Toasty.LENGTH_SHORT).show()
+                    startActivity(Intent(this@TambahSuratMasukActivity, SuratMasukActivity::class.java))
+                    finish()
+                } else {
                     ErrorHandler().responseHandler(
-                        this@TambahSuratMasukActivity, "insertSuratMasuk | onFailure", t.message.toString()
+                        this@TambahSuratMasukActivity, "insertSuratMasuk | onResponse", response.message()
                     )
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@TambahSuratMasukActivity, "insertSuratMasuk | onFailure", t.message.toString()
+                )
+            }
+        })
     }
 }
