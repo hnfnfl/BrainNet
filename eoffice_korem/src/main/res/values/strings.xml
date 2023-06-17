@@ -124,5 +124,13 @@
     <string name="jabatan">Jabatan</string>
     <string name="btn_logout">Keluar</string>
     <string name="notelp">Nomor Telp</string>
+    <string name="icon_danrem">icon danrem</string>
+    <string name="danrem">Danrem</string>
+    <string name="icon_kasrem">icon kasrem</string>
+    <string name="kasrem">Kasrem</string>
+    <string name="icon_militer">icon militer</string>
+    <string name="militer">Militer</string>
+    <string name="icon_nonmiliter">icon non militer</string>
+    <string name="non_militer">Non Militer</string>
 
 </resources>

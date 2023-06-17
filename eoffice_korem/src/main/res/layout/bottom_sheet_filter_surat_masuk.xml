@@ -53,65 +53,13 @@
                 app:smsp_selectedItemListColor="@color/primaryDarkColor" />
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                android:id="@+id/disposisi_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown"
-                app:smsp_arrowColor="@color/primaryColor"
-                app:smsp_hint="Filter Disposisi Surat"
-                app:smsp_hintColor="@color/primaryColor"
-                app:smsp_isOutlined="true"
-                app:smsp_itemColor="@color/black"
-                app:smsp_itemListColor="@color/black"
-                app:smsp_itemListHintBackgroundColor="#808080"
-                app:smsp_itemListHintColor="#FFFFFF"
-                app:smsp_multilineError="false"
-                app:smsp_outlinedBoxColor="@color/primaryColor"
-                app:smsp_outlinedBoxRadius="4dp"
-                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
-
-            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-                android:id="@+id/sumber_surat1_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown"
-                app:smsp_arrowColor="@color/primaryColor"
-                app:smsp_hint="Filter Sumber Surat 1"
-                app:smsp_hintColor="@color/primaryColor"
-                app:smsp_isOutlined="true"
-                app:smsp_itemColor="@color/black"
-                app:smsp_itemListColor="@color/black"
-                app:smsp_itemListHintBackgroundColor="#808080"
-                app:smsp_itemListHintColor="#FFFFFF"
-                app:smsp_multilineError="false"
-                app:smsp_outlinedBoxColor="@color/primaryColor"
-                app:smsp_outlinedBoxRadius="4dp"
-                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
-
-            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                 android:id="@+id/sumber_surat2_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:spinnerMode="dropdown"
                 app:smsp_arrowColor="@color/primaryColor"
-                app:smsp_hint="Filter Sumber Surat 2"
+                app:smsp_hint="Filter Sumber Surat"
                 app:smsp_hintColor="@color/primaryColor"
                 app:smsp_isOutlined="true"
                 app:smsp_itemColor="@color/black"
@@ -124,6 +72,58 @@
                 app:smsp_selectedItemListColor="@color/primaryDarkColor" />
 
         </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linearLayout2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="2"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">-->
+
+<!--            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner-->
+<!--                android:id="@+id/sumber_surat1_spinner"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:spinnerMode="dropdown"-->
+<!--                app:smsp_arrowColor="@color/primaryColor"-->
+<!--                app:smsp_hint="Filter Sumber Surat 1"-->
+<!--                app:smsp_hintColor="@color/primaryColor"-->
+<!--                app:smsp_isOutlined="true"-->
+<!--                app:smsp_itemColor="@color/black"-->
+<!--                app:smsp_itemListColor="@color/black"-->
+<!--                app:smsp_itemListHintBackgroundColor="#808080"-->
+<!--                app:smsp_itemListHintColor="#FFFFFF"-->
+<!--                app:smsp_multilineError="false"-->
+<!--                app:smsp_outlinedBoxColor="@color/primaryColor"-->
+<!--                app:smsp_outlinedBoxRadius="4dp"-->
+<!--                app:smsp_selectedItemListColor="@color/primaryDarkColor" />-->
+
+<!--            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner-->
+<!--                android:id="@+id/sumber_surat2_spinner"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:spinnerMode="dropdown"-->
+<!--                app:smsp_arrowColor="@color/primaryColor"-->
+<!--                app:smsp_hint="Filter Sumber Surat 2"-->
+<!--                app:smsp_hintColor="@color/primaryColor"-->
+<!--                app:smsp_isOutlined="true"-->
+<!--                app:smsp_itemColor="@color/black"-->
+<!--                app:smsp_itemListColor="@color/black"-->
+<!--                app:smsp_itemListHintBackgroundColor="#808080"-->
+<!--                app:smsp_itemListHintColor="#FFFFFF"-->
+<!--                app:smsp_multilineError="false"-->
+<!--                app:smsp_outlinedBoxColor="@color/primaryColor"-->
+<!--                app:smsp_outlinedBoxRadius="4dp"-->
+<!--                app:smsp_selectedItemListColor="@color/primaryDarkColor" />-->
+
+<!--        </LinearLayout>-->
 
         <com.chand.progressbutton.ProgressButton
             android:id="@+id/btn_apply_filter"
@@ -132,7 +132,7 @@
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
             app:p_arrowVisible="false"
             app:p_backgroundTint="@color/primaryColor"
             app:p_bgColor="@color/colorSecondary"

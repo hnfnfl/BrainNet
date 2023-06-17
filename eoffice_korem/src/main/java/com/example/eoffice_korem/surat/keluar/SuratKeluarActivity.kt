@@ -51,11 +51,31 @@ class SuratKeluarActivity : AppCompatActivity() {
         })
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+        var disposisi = ""
 
-        getSuratKeluar("", "", tokenAuth)
         binding.apply {
             btnBack.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
+                empty.visibility = View.GONE
+                if (disposisi != "") {
+                    llFilter.visibility = View.VISIBLE
+                    llDanremKasrem.visibility = View.VISIBLE
+                    rvSuratKeluarList.visibility = View.INVISIBLE
+                    disposisi = ""
+                } else {
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+
+            btnDanrem.setOnClickListener {
+                llDanremKasrem.visibility = View.GONE
+                disposisi = "danrem"
+                getSuratKeluar("", disposisi, tokenAuth)
+            }
+
+            btnKasrem.setOnClickListener {
+                llDanremKasrem.visibility = View.GONE
+                disposisi = "kasrem"
+                getSuratKeluar("", disposisi, tokenAuth)
             }
 
             fabFilter.setOnClickListener {
@@ -66,14 +86,13 @@ class SuratKeluarActivity : AppCompatActivity() {
                 }
 
                 bottomSheetFilterSuratMasukBinding.apply {
-                    sumberSurat1Spinner.visibility = View.GONE
+//                    sumberSurat1Spinner.visibility = View.GONE
                     sumberSurat2Spinner.visibility = View.GONE
 
                     val listBentukSurat = ArrayList<String>()
-                    val listDisposisSurat = ArrayList<String>()
+//                    val listDisposisSurat = ArrayList<String>()
 
                     var bentuk = ""
-                    var disposisi = ""
 
                     listBentukSurat.addAll(
                         listOf(
@@ -97,13 +116,13 @@ class SuratKeluarActivity : AppCompatActivity() {
                         )
                     )
                     bentukSpinner.item = listBentukSurat as ArrayList<*>?
-                    listDisposisSurat.add("All")
-                    for (i in 0 until MainActivity2.listUserSurat.size) {
-                        val rawName = MainActivity2.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
-                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
-                        listDisposisSurat.add(name)
-                    }
-                    disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
+//                    listDisposisSurat.add("All")
+//                    for (i in 0 until MainActivity2.listUserSurat.size) {
+//                        val rawName = MainActivity2.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
+//                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
+//                        listDisposisSurat.add(name)
+//                    }
+//                    disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
 
                     bentukSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -119,21 +138,22 @@ class SuratKeluarActivity : AppCompatActivity() {
                         }
                     }
 
-                    disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            disposisi = if (listDisposisSurat[p2] == "All" || listDisposisSurat[p2] == "") {
-                                ""
-                            } else {
-                                listDisposisSurat[p2]
-                            }
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {
-                            disposisi = ""
-                        }
-                    }
+//                    disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+//                            disposisi = if (listDisposisSurat[p2] == "All" || listDisposisSurat[p2] == "") {
+//                                ""
+//                            } else {
+//                                listDisposisSurat[p2]
+//                            }
+//                        }
+//
+//                        override fun onNothingSelected(p0: AdapterView<*>?) {
+//                            disposisi = ""
+//                        }
+//                    }
 
                     btnApplyFilter.setOnClickListener {
+                        llFilter.visibility = View.GONE
                         getSuratKeluar(bentuk, disposisi, tokenAuth)
                         dialog.dismiss()
                     }
@@ -153,6 +173,7 @@ class SuratKeluarActivity : AppCompatActivity() {
 
     private fun getSuratKeluar(bentuk: String, disposisi: String, tokenAuth: String) {
         binding.loadingAnim.visibility = View.VISIBLE
+        binding.rvSuratKeluarList.visibility = View.VISIBLE
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.getSuratKeluar(bentuk, disposisi, tokenAuth)
             .enqueue(object : Callback<SuratKeluarResponse> {
