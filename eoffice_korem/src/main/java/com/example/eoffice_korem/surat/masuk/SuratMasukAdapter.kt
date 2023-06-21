@@ -12,11 +12,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.denzcoskun.imageslider.models.SlideModel
 import com.example.eoffice_korem.MainActivity2.Companion.listUserSurat
 import com.example.eoffice_korem.R
 import com.example.eoffice_korem.dataClass.DefaultResponse
 import com.example.eoffice_korem.dataClass.SuratMasukData
 import com.example.eoffice_korem.databinding.BottomSheetDisposisiSuratBinding
+import com.example.eoffice_korem.databinding.BottomSheetGambarSuratBinding
 import com.example.eoffice_korem.databinding.BottomSheetRiwayatDisposisiBinding
 import com.example.eoffice_korem.databinding.ItemSuratMasukBinding
 import com.example.eoffice_korem.retrofit.RetrofitClient
@@ -49,6 +51,7 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
     class ItemHolder(private val binding: ItemSuratMasukBinding) : RecyclerView.ViewHolder(binding.root) {
         private lateinit var bottomSheetRiwayatDisposisiBinding: BottomSheetRiwayatDisposisiBinding
         private lateinit var bottomSheetDisposisiSuratBinding: BottomSheetDisposisiSuratBinding
+        private lateinit var bottomSheetGambarSuratBinding: BottomSheetGambarSuratBinding
         private lateinit var myPreferences: MySharedPreferences
 
         private var idPenerima: String = ""
@@ -77,6 +80,30 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                     }
                 } else {
                     btnSmDisposisi.visibility = View.GONE
+                }
+
+                btnSmImg.setOnClickListener {
+                    item.img?.let {
+                        if (it.isNotEmpty()) {
+                            bottomSheetGambarSuratBinding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(itemView.context))
+                            val dialog = BottomSheetDialog(itemView.context).apply {
+                                setCancelable(true)
+                                setContentView(bottomSheetGambarSuratBinding.root)
+                            }
+
+                            bottomSheetGambarSuratBinding.apply {
+                                val imgList = ArrayList<SlideModel>()
+                                for (img in item.img) {
+                                    imgList.add(SlideModel(img.img))
+                                }
+                                imgsliderGiat.setImageList(imgList)
+                            }
+
+                            dialog.show()
+                        } else {
+                            Toasty.info(itemView.context, "Tidak ada gambar", Toast.LENGTH_SHORT, true).show()
+                        }
+                    }
                 }
 
                 if (item.riwayat.toInt() != 0) {

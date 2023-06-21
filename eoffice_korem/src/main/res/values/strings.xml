@@ -133,5 +133,7 @@
     <string name="icon_nonmiliter">icon non militer</string>
     <string name="non_militer">Non Militer</string>
     <string name="error_logger">Error Log</string>
+    <string name="icon_surat_image">icon gambar isi surat</string>
+    <string name="gambar_surat">Lihat Surat</string>
 
 </resources>
