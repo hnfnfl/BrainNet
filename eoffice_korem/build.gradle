@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.eoffice_korem'
+    namespace 'com.jaylangkung.eoffice_korem'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.eoffice_korem"
+        applicationId "com.jaylangkung.eoffice_korem"
         minSdk 24
         targetSdk 33
         versionCode 5
