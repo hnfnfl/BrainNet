@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.eoffice_korem.auth.LoginActivity
+import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivitySplashScreenBinding
 import com.jaylangkung.eoffice_korem.retrofit.AuthService
@@ -24,7 +27,6 @@ class SplashScreen : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private lateinit var myPreferences: MySharedPreferences
 
-    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)

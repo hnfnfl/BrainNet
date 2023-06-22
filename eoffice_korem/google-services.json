@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "305194220151",
+    "project_id": "brainnet-staff",
+    "storage_bucket": "brainnet-staff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305194220151:android:20d34c98cf087874db2472",
+        "android_client_info": {
+          "package_name": "com.jaylangkung.brainnet_staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3BlBvkRDuzJe5592Kka6GxdxR3w1ksiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305194220151:android:75c4e867ff2684a3db2472",
+        "android_client_info": {
+          "package_name": "com.jaylangkung.eoffice_korem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3BlBvkRDuzJe5592Kka6GxdxR3w1ksiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305194220151:android:ed3201a7671d96bfdb2472",
+        "android_client_info": {
+          "package_name": "com.jaylangkung.indirisma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3BlBvkRDuzJe5592Kka6GxdxR3w1ksiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305194220151:android:a4d074fb3df00855db2472",
+        "android_client_info": {
+          "package_name": "com.jaylangkung.korem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3BlBvkRDuzJe5592Kka6GxdxR3w1ksiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305194220151-r1f77lmvbnpr06ehrakqifftmg3e25hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

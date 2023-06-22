@@ -1,15 +1,24 @@
 package com.jaylangkung.eoffice_korem
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.eoffice_korem.dataClass.DataSpinnerResponse
+import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserSuratSpinnerData
 import com.jaylangkung.eoffice_korem.databinding.ActivityMain2Binding
 import com.jaylangkung.eoffice_korem.profile.ProfileActivity
@@ -24,6 +33,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -51,6 +61,31 @@ class MainActivity2 : AppCompatActivity() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ), 100
             )
+        }
+
+        val test = NotificationManagerCompat.from(this@MainActivity2).areNotificationsEnabled()
+        if (!test) {
+            val intent = Intent()
+            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+            intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
+            startActivity(intent)
+        }
+
+        createNotificationChannel()
+        Firebase.messaging.subscribeToTopic("eoffice_korem")
+        Firebase.messaging.token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
+                addToken(iduser, token)
+                Log.e("testing FCM", token)
+            } else {
+                // Handle the error
+                val exception = task.exception
+                exception?.message?.let {
+                    Log.e(TAG, "Error retrieving FCM registration token: $it")
+                }
+            }
         }
 
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
@@ -118,4 +153,48 @@ class MainActivity2 : AppCompatActivity() {
             }
         })
     }
+
+    private fun addToken(iduser_aktivasi: String, deviceID: String) {
+        val service = RetrofitClient().apiRequest().create(AuthService::class.java)
+        service.addToken(iduser_aktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        Log.d("addToken", response.body()!!.message)
+                    }
+                } else {
+                    ErrorHandler().responseHandler(
+                        this@MainActivity2,
+                        "addToken | onResponse", response.message()
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@MainActivity2,
+                    "addToken | onFailure", t.message.toString()
+                )
+            }
+        })
+    }
+
+    fun areNotificationsEnabled(notificationManager: NotificationManagerCompat) = when {
+        notificationManager.areNotificationsEnabled().not() -> false
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+            notificationManager.notificationChannels.firstOrNull { channel ->
+                channel.importance == NotificationManager.IMPORTANCE_NONE
+            } == null
+        }
+        else -> true
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("eoffice_korem", "Default", NotificationManager.IMPORTANCE_HIGH)
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
 }
