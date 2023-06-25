@@ -14,8 +14,8 @@ android {
         applicationId "com.jaylangkung.eoffice_korem"
         minSdk 24
         targetSdk 33
-        versionCode 5
-        versionName "1.4"
+        versionCode 6
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,7 +67,7 @@ dependencies {
     //firebase
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

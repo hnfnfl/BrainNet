@@ -70,6 +70,7 @@ interface SuratService {
         @Field("tipe_surat") tipe_surat: String,
         @Field("jenis") jenis: String,
         @Field("catatan") catatan: String,
+        @Field("catatan_tambahan") catatan_tambahan: String,
         @Field("penerima") penerima: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>

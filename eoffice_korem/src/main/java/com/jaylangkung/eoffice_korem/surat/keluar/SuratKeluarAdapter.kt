@@ -31,6 +31,7 @@ import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>() {
 
@@ -55,6 +56,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         private lateinit var myPreferences: MySharedPreferences
 
         private var idPenerima: String = ""
+        private var catatanTambahan: String = ""
 
         fun bind(item: SuratKeluarData) {
             myPreferences = MySharedPreferences(itemView.context)
@@ -63,7 +65,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
 
             binding.apply {
                 tvSkNomorAgenda.text = item.nomer_agenda
-                tvSkPenerima.text = itemView.context.getString(R.string.sm_penerima, item.penerima)
+                tvSkPenerima.text = itemView.context.getString(R.string.dispo_penerima, item.penerima)
                 tvSkPerihal.text = itemView.context.getString(R.string.sk_perihal, item.perihal)
                 tvSkDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggal_surat)
                 tvSkStatus.text = itemView.context.getString(R.string.cuti_status_view, item.status_surat_keluar)
@@ -77,13 +79,44 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
 
                     bottomSheetDisposisiSuratBinding.apply {
                         val listUser = java.util.ArrayList<String>()
+                        val listCatatanTambahan = ArrayList<String>()
                         for (i in 0 until listUserSurat.size) {
                             listUser.add(listUserSurat[i].nama)
                         }
                         penerimaDisposisiSpinner.item = listUser as List<Any>?
+
+                        listCatatanTambahan.addAll(
+                            listOf(
+                                "ACC CATAT",
+                                "INGATKAN",
+                                "KOORDINASIKAN",
+                                "LAPORKAN",
+                                "MONITOR",
+                                "PEDOMANI",
+                                "PELAJARI",
+                                "SARANKAN",
+                                "ST SPRINKAN EDARKAN",
+                                "TINDAK LANJUTI",
+                                "UDK ARSIPKAN MONITOR",
+                                "UDL",
+                                "WAKILI"
+                            )
+                        )
+                        catatanTambahanDisposisiSpinner.item = listCatatanTambahan as List<Any>?
+
                         penerimaDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                                 idPenerima = listUserSurat[p2].idsurat_user_aktivasi
+                            }
+
+                            override fun onNothingSelected(p0: AdapterView<*>?) {}
+                        }
+
+                        catatanTambahanDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                                // replace space with underscore and lowercase
+                                val catatanTambah = listCatatanTambahan[p2].replace(" ", "_").lowercase(Locale.ROOT)
+                                catatanTambahan = catatanTambah
                             }
 
                             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -93,8 +126,9 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                             btnSendDisposisi.startAnimation()
                             if (idPenerima != "") {
                                 val catatan = inputDisposisiCatatan.text.toString()
-                                insertSuratDisposisi(iduser, item.idsurat_keluar, catatan, idPenerima, tokenAuth)
+                                insertSuratDisposisi(iduser, item.idsurat_keluar, catatan, catatanTambahan, idPenerima, tokenAuth)
                                 idPenerima = ""
+                                catatanTambahan = ""
                                 dialog.dismiss()
                             } else {
                                 btnSendDisposisi.endAnimation()
@@ -183,8 +217,14 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
 
                                 llChild.addView(createTextView("${data.nomer_agenda} (${data.aksi})", 16.0F))
                                 llChild.addView(createTextView(data.tanggal_disposisi, 16.0F))
-                                llChild.addView(createTextView(itemView.context.getString(R.string.sm_pengirim, data.pengirim), 16.0F))
-                                llChild.addView(createTextView(itemView.context.getString(R.string.sm_penerima, data.penerima), 16.0F))
+                                llChild.addView(createTextView(itemView.context.getString(R.string.dispo_pengirim, data.pengirim), 16.0F))
+                                llChild.addView(createTextView(itemView.context.getString(R.string.dispo_penerima, data.penerima), 16.0F))
+                                if (data.catatan.isNotEmpty()) {
+                                    llChild.addView(createTextView(itemView.context.getString(R.string.dispo_catatan, data.catatan), 14.0F))
+                                }
+                                if (data.catatan_tambahan.isNotEmpty()) {
+                                    llChild.addView(createTextView(itemView.context.getString(R.string.dispo_catatan_tambahan, data.catatan_tambahan), 14.0F))
+                                }
                                 llChild.addView(separator)
 
                                 linearlayout.addView(llChild)
@@ -226,9 +266,9 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 })
         }
 
-        private fun insertSuratDisposisi(iduser: String, idsurat: String, catatan: String, penerima: String, tokenAuth: String) {
+        private fun insertSuratDisposisi(iduser: String, idsurat: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String) {
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-            service.insertSuratDisposisi(iduser, idsurat, "surat_keluar", "terusan", catatan, penerima, tokenAuth)
+            service.insertSuratDisposisi(iduser, idsurat, "surat_keluar", "terusan", catatan, catatanTambahan, penerima, tokenAuth)
                 .enqueue(object : Callback<DefaultResponse> {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {

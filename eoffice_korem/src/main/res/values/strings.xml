@@ -101,8 +101,10 @@
     <string name="teruskan_surat">Teruskan Surat</string>
     <string name="disposisikan">Disposisikan</string>
     <string name="icon_disposisi_surat">icon disposisi surat</string>
-    <string name="sm_penerima">Penerima: %1$s</string>
-    <string name="sm_pengirim">Pengirim: %1$s</string>
+    <string name="dispo_penerima">Penerima: %1$s</string>
+    <string name="dispo_pengirim">Pengirim: %1$s</string>
+    <string name="dispo_catatan">Catatan: %1$s</string>
+    <string name="dispo_catatan_tambahan">Catatan Tambahan: %1$s</string>
     <string name="sm_bentuk">Bentuk: %1$s</string>
     <string name="sm_sumber">Sumber: %1$s</string>
     <string name="sm_aksi">Aksi: %1$s</string>
