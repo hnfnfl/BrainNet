@@ -56,7 +56,6 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         private lateinit var myPreferences: MySharedPreferences
 
         private var idPenerima: String = ""
-        private var catatanTambahan: String = ""
 
         fun bind(item: SuratKeluarData) {
             myPreferences = MySharedPreferences(itemView.context)
@@ -78,31 +77,15 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                     }
 
                     bottomSheetDisposisiSuratBinding.apply {
-                        val listUser = java.util.ArrayList<String>()
-                        val listCatatanTambahan = ArrayList<String>()
+                        catatanTambahanDisposisiCheckbox.visibility = View.GONE
+                        tvCatatanTambahan.visibility = View.GONE
+                        inputDisposisiCatatan.hint = "Catatan"
+
+                        val listUser = ArrayList<String>()
                         for (i in 0 until listUserSurat.size) {
                             listUser.add(listUserSurat[i].nama)
                         }
                         penerimaDisposisiSpinner.item = listUser as List<Any>?
-
-                        listCatatanTambahan.addAll(
-                            listOf(
-                                "ACC CATAT",
-                                "INGATKAN",
-                                "KOORDINASIKAN",
-                                "LAPORKAN",
-                                "MONITOR",
-                                "PEDOMANI",
-                                "PELAJARI",
-                                "SARANKAN",
-                                "ST SPRINKAN EDARKAN",
-                                "TINDAK LANJUTI",
-                                "UDK ARSIPKAN MONITOR",
-                                "UDL",
-                                "WAKILI"
-                            )
-                        )
-                        catatanTambahanDisposisiSpinner.item = listCatatanTambahan as List<Any>?
 
                         penerimaDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -112,23 +95,12 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                             override fun onNothingSelected(p0: AdapterView<*>?) {}
                         }
 
-                        catatanTambahanDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                                // replace space with underscore and lowercase
-                                val catatanTambah = listCatatanTambahan[p2].replace(" ", "_").lowercase(Locale.ROOT)
-                                catatanTambahan = catatanTambah
-                            }
-
-                            override fun onNothingSelected(p0: AdapterView<*>?) {}
-                        }
-
                         btnSendDisposisi.setOnClickListener {
                             btnSendDisposisi.startAnimation()
                             if (idPenerima != "") {
                                 val catatan = inputDisposisiCatatan.text.toString()
-                                insertSuratDisposisi(iduser, item.idsurat_keluar, catatan, catatanTambahan, idPenerima, tokenAuth)
+                                insertSuratDisposisi(iduser, item.idsurat_keluar, catatan, "", idPenerima, tokenAuth)
                                 idPenerima = ""
-                                catatanTambahan = ""
                                 dialog.dismiss()
                             } else {
                                 btnSendDisposisi.endAnimation()

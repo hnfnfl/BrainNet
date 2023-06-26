@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,27 +86,21 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                 }
 
                 btnSmImg.setOnClickListener {
-                    item.img?.let {
-                        if (it.isNotEmpty()) {
-                            bottomSheetGambarSuratBinding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(itemView.context))
-                            val dialog = BottomSheetDialog(itemView.context).apply {
-                                setCancelable(true)
-                                setContentView(bottomSheetGambarSuratBinding.root)
-                            }
-
-                            bottomSheetGambarSuratBinding.apply {
-                                val imgList = ArrayList<SlideModel>()
-                                for (img in item.img) {
-                                    imgList.add(SlideModel(img.img))
-                                }
-                                imgsliderGiat.setImageList(imgList)
-                            }
-
-                            dialog.show()
-                        } else {
-                            Toasty.info(itemView.context, "Tidak ada gambar", Toast.LENGTH_SHORT, true).show()
-                        }
+                    bottomSheetGambarSuratBinding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(itemView.context))
+                    val dialog = BottomSheetDialog(itemView.context).apply {
+                        setCancelable(true)
+                        setContentView(bottomSheetGambarSuratBinding.root)
                     }
+
+                    val imgList = ArrayList<SlideModel>()
+                    item.img?.let {
+                        for (img in it) {
+                            imgList.add(SlideModel(img.img))
+                        }
+                    } ?: imgList.add(SlideModel(R.raw.no_images))
+
+                    bottomSheetGambarSuratBinding.imgsliderGiat.setImageList(imgList)
+                    dialog.show()
                 }
 
                 if (item.riwayat.toInt() != 0) {
@@ -180,34 +175,23 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
             val dialog = BottomSheetDialog(itemView.context).apply {
                 setCancelable(true)
                 setContentView(bottomSheetDisposisiSuratBinding.root)
+                behavior.peekHeight = 1500
             }
 
             bottomSheetDisposisiSuratBinding.apply {
+                if (jenis == "terusan") {
+                    catatanTambahanDisposisiCheckbox.visibility = View.GONE
+                    tvCatatanTambahan.visibility = View.GONE
+                    inputDisposisiCatatan.hint = "Catatan"
+                } else {
+                    inputDisposisiCatatan.hint = "Disposisi"
+                }
+
                 val listUser = ArrayList<String>()
-                val listCatatanTambahan = ArrayList<String>()
                 for (i in 0 until listUserSurat.size) {
                     listUser.add(listUserSurat[i].nama)
                 }
                 penerimaDisposisiSpinner.item = listUser as List<Any>?
-
-                listCatatanTambahan.addAll(
-                    listOf(
-                        "ACC CATAT",
-                        "INGATKAN",
-                        "KOORDINASIKAN",
-                        "LAPORKAN",
-                        "MONITOR",
-                        "PEDOMANI",
-                        "PELAJARI",
-                        "SARANKAN",
-                        "ST SPRINKAN EDARKAN",
-                        "TINDAK LANJUTI",
-                        "UDK ARSIPKAN MONITOR",
-                        "UDL",
-                        "WAKILI"
-                    )
-                )
-                catatanTambahanDisposisiSpinner.item = listCatatanTambahan as List<Any>?
 
                 penerimaDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -217,18 +201,37 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                     override fun onNothingSelected(p0: AdapterView<*>?) {}
                 }
 
-                catatanTambahanDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                        // replace space with underscore and lowercase
-                        val catatanTambah = listCatatanTambahan[p2].replace(" ", "_").lowercase(Locale.ROOT)
-                        catatanTambahan = catatanTambah
+                val checkboxList = listOf(
+                    checkboxAccCatat,
+                    checkboxIngatkan,
+                    checkboxKoordinasikan,
+                    checkboxLapor,
+                    checkboxMonitor,
+                    checkboxPedomani,
+                    checkboxSarankan,
+                    checkboxStSprinkanEdarkan,
+                    checkboxTindakLanjuti,
+                    checkboxUdkArsipkanMonitor,
+                    checkboxUdl,
+                    checkboxWakili
+                )
+                val checkedList = mutableListOf<String>()
+                for (checkbox in checkboxList) {
+                    checkbox.setOnCheckedChangeListener { _, isChecked ->
+                        val checkBoxData = checkbox.text.toString().replace(" ", "_").lowercase(Locale.ROOT)
+                        if (isChecked) {
+                            checkedList.add(checkBoxData)
+                        } else {
+                            checkedList.remove(checkBoxData)
+                        }
+                        catatanTambahan = checkedList.joinToString(",")
                     }
-
-                    override fun onNothingSelected(p0: AdapterView<*>?) {}
                 }
+                // join list to string with comma
 
                 btnSendDisposisi.setOnClickListener {
                     btnSendDisposisi.startAnimation()
+                    Log.e("iduser", catatanTambahan)
                     if (idPenerima != "" && catatanTambahan != "") {
                         val catatan = inputDisposisiCatatan.text.toString()
                         insertSuratDisposisi(iduser, idsurat, jenis, catatan, catatanTambahan, idPenerima, tokenAuth)
