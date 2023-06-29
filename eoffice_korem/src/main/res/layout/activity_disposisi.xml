@@ -6,94 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".surat.DisposisiActivity">
 
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/btn_back"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_disposisi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="24dp">
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/ll_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:contentDescription="@string/btn_back"
-                    android:minWidth="48dp"
-                    android:minHeight="48dp"
-                    android:src="@drawable/ic_back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/profile"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/tv_penerima"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:text="Penerima"
                 android:textColor="@color/primaryColor"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_header" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <GridLayout
                 android:id="@+id/penerima_disposisi_checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:columnCount="2"
+                android:columnCount="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_penerima">
 
             </GridLayout>
 
-<!--            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner-->
-<!--                android:id="@+id/penerima_disposisi_spinner"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="12dp"-->
-<!--                android:spinnerMode="dropdown"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/penerima_disposisi_checkbox"-->
-<!--                app:smsp_arrowColor="@color/primaryColor"-->
-<!--                app:smsp_hint="Penerima Disposisi"-->
-<!--                app:smsp_hintColor="@color/primaryColor"-->
-<!--                app:smsp_isOutlined="true"-->
-<!--                app:smsp_itemColor="@color/black"-->
-<!--                app:smsp_itemListColor="@color/black"-->
-<!--                app:smsp_itemListHintBackgroundColor="#808080"-->
-<!--                app:smsp_itemListHintColor="#FFFFFF"-->
-<!--                app:smsp_multilineError="false"-->
-<!--                app:smsp_outlinedBoxColor="@color/primaryColor"-->
-<!--                app:smsp_outlinedBoxRadius="4dp"-->
-<!--                app:smsp_selectedItemListColor="@color/primaryDarkColor" />-->
+            <!--            <com.chivorn.smartmaterialspinner.SmartMaterialSpinner-->
+            <!--                android:id="@+id/penerima_disposisi_spinner"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="12dp"-->
+            <!--                android:spinnerMode="dropdown"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/penerima_disposisi_checkbox"-->
+            <!--                app:smsp_arrowColor="@color/primaryColor"-->
+            <!--                app:smsp_hint="Penerima Disposisi"-->
+            <!--                app:smsp_hintColor="@color/primaryColor"-->
+            <!--                app:smsp_isOutlined="true"-->
+            <!--                app:smsp_itemColor="@color/black"-->
+            <!--                app:smsp_itemListColor="@color/black"-->
+            <!--                app:smsp_itemListHintBackgroundColor="#808080"-->
+            <!--                app:smsp_itemListHintColor="#FFFFFF"-->
+            <!--                app:smsp_multilineError="false"-->
+            <!--                app:smsp_outlinedBoxColor="@color/primaryColor"-->
+            <!--                app:smsp_outlinedBoxRadius="4dp"-->
+            <!--                app:smsp_selectedItemListColor="@color/primaryDarkColor" />-->
 
             <!--        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner-->
             <!--            android:layout_width="match_parent"-->

@@ -143,7 +143,6 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
 
             btnTambahSuratKeluar.setOnClickListener {
                 if (validate()) {
-                    val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
                     val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
                     val kepada = skKepadaInput.text.toString()
                     var foto: MultipartBody.Part? = null
@@ -154,7 +153,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
                     }
 
                     insertSuratKeluar(
-                        iduser.toRequestBody(MultipartBody.FORM),
+                        idPenerima.toRequestBody(MultipartBody.FORM),
                         perihal.toRequestBody(MultipartBody.FORM),
                         kepada.toRequestBody(MultipartBody.FORM),
                         idPenerima.toRequestBody(MultipartBody.FORM),
@@ -162,6 +161,9 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
                         foto,
                         tokenAuth
                     )
+                    idPenerima = ""
+                    perihal = ""
+                    tglSurat = ""
                 }
             }
         }

@@ -23,7 +23,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 class DisposisiActivity : AppCompatActivity() {
 
@@ -79,9 +78,11 @@ class DisposisiActivity : AppCompatActivity() {
                 tvCatatanTambahan.visibility = View.GONE
                 inputDisposisiCatatan.hint = "Catatan"
                 btnSendDisposisi.progressText = "Teruskan"
+                tvDisposisi.text = "Teruskan"
             } else {
                 inputDisposisiCatatan.hint = "Disposisi"
                 btnSendDisposisi.progressText = "Disposisi"
+                tvDisposisi.text = "Disposisi"
             }
 
             val idPenerimaIDList = ArrayList<String>()
@@ -134,7 +135,7 @@ class DisposisiActivity : AppCompatActivity() {
                 btnSendDisposisi.startAnimation()
                 if (idPenerima != "") {
                     val catatan = inputDisposisiCatatan.text.toString()
-                    insertSuratDisposisi(iduser, idsurat, jenis, catatan, catatanTambahan, idPenerima, tokenAuth)
+                    insertSuratDisposisi(iduser, idsurat, caller, jenis, catatan, catatanTambahan, idPenerima, tokenAuth)
                     idPenerima = ""
                     catatanTambahan = ""
                 } else {
@@ -150,9 +151,18 @@ class DisposisiActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertSuratDisposisi(iduser: String, idsurat: String, jenis: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String) {
+    private fun insertSuratDisposisi(
+        iduser: String,
+        idsurat: String,
+        tipe_surat: String,
+        jenis: String,
+        catatan: String,
+        catatanTambahan: String,
+        penerima: String,
+        tokenAuth: String
+    ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.insertSuratDisposisi(iduser, idsurat, "surat_masuk", jenis, catatan, catatanTambahan, penerima, tokenAuth)
+        service.insertSuratDisposisi(iduser, idsurat, tipe_surat, jenis, catatan, catatanTambahan, penerima, tokenAuth)
             .enqueue(object : Callback<DefaultResponse> {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {

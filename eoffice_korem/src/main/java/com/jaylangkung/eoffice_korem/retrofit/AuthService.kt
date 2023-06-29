@@ -40,8 +40,6 @@ interface AuthService {
         @Field("iduser_aktivasi") iduser_aktivasi: String,
     ): Call<DefaultResponse>
 
-    @GET("auth/getSpinnerData")
-    fun getSpinnerData(): Call<DataSpinnerResponse>
 
     @GET("auth/getSpinnerSurat")
     fun getSuratSpinnerData(): Call<DataSpinnerResponse>

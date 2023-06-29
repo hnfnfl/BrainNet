@@ -162,7 +162,6 @@ class TambahSuratMasukActivity : AppCompatActivity() {
 
             btnTambahSuratMasuk.setOnClickListener {
                 if (validate()) {
-                    val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
                     val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
                     val sumberNext = smSumberSuratNextInput.text.toString()
                     val pengirim = smPengirimInput.text.toString()
@@ -174,7 +173,7 @@ class TambahSuratMasukActivity : AppCompatActivity() {
                     }
 
                     insertSuratMasuk(
-                        iduser.toRequestBody(MultipartBody.FORM),
+                        idPenerima.toRequestBody(MultipartBody.FORM),
                         sumber.toRequestBody(MultipartBody.FORM),
                         sumberNext.toRequestBody(MultipartBody.FORM),
                         pengirim.toRequestBody(MultipartBody.FORM),
@@ -183,6 +182,10 @@ class TambahSuratMasukActivity : AppCompatActivity() {
                         foto,
                         tokenAuth
                     )
+                    idPenerima = ""
+                    sumber = ""
+                    perihal = ""
+                    tglSurat = ""
                 }
             }
         }
