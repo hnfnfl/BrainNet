@@ -22,6 +22,19 @@ interface SuratService {
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
 
+    @FormUrlEncoded
+    @POST("surat/editSuratMasuk")
+    fun editSuratMasuk(
+        @Field("idsurat") idsurat: String,
+        @Field("sumber_surat") sumberSurat: String,
+        @Field("sumber_surat_next") sumberSuratNext: String,
+        @Field("pengirim") pengirim: String,
+        @Field("perihal") perihal: String,
+        @Field("status") status: String,
+        @Field("date") tglSurat: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
     @GET("surat/getSuratMasuk")
     fun getSuratMasuk(
         @Query("sumber_surat") sumber: String,

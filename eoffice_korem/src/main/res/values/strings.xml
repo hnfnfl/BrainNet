@@ -137,5 +137,6 @@
     <string name="error_logger">Error Log</string>
     <string name="icon_surat_image">icon gambar isi surat</string>
     <string name="gambar_surat">Lihat Surat</string>
+    <string name="acc_surat">Setujui Surat</string>
 
 </resources>

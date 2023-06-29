@@ -111,13 +111,25 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                     dialog.show()
                 }
 
-                if (item.status_surat_keluar == "draft") {
-                    btnSkAjukan.visibility = View.VISIBLE
-                    btnSkAjukan.setOnClickListener {
-                        editSuratKeluar(item.idsurat_keluar, tokenAuth)
+                when (item.status_surat_keluar) {
+                    "DRAFT" -> {
+                        btnSkAjukan.visibility = View.VISIBLE
+                        btnSkAcc.visibility = View.GONE
+                        btnSkAjukan.setOnClickListener {
+                            editSuratKeluar(item.idsurat_keluar, "pengajuan", tokenAuth)
+                        }
                     }
-                } else {
-                    btnSkAjukan.visibility = View.GONE
+                    "PENGAJUAN" -> {
+                        btnSkAjukan.visibility = View.GONE
+                        btnSkAcc.visibility = View.VISIBLE
+                        btnSkAcc.setOnClickListener {
+                            editSuratKeluar(item.idsurat_keluar, "diacc", tokenAuth)
+                        }
+                    }
+                    else -> {
+                        btnSkAjukan.visibility = View.GONE
+                        btnSkAcc.visibility = View.GONE
+                    }
                 }
 
                 btnSkImg.setOnClickListener {
@@ -210,9 +222,9 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
             }
         }
 
-        private fun editSuratKeluar(idsurat: String, tokenAuth: String) {
+        private fun editSuratKeluar(idsurat: String, status: String, tokenAuth: String) {
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-            service.editSuratKeluar(idsurat, "", "", "", "", "pengajuan", tokenAuth)
+            service.editSuratKeluar(idsurat, "", "", "", "", status, tokenAuth)
                 .enqueue(object : Callback<DefaultResponse> {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {

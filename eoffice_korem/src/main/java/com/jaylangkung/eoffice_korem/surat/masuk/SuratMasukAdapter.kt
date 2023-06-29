@@ -98,9 +98,13 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                             imgList.add(SlideModel(img.img))
                         }
                     } ?: imgList.add(SlideModel(R.raw.no_images))
-
                     bottomSheetGambarSuratBinding.imgsliderGiat.setImageList(imgList)
                     dialog.show()
+
+                    if (item.status_surat == "MASUK") {
+                        editSuratMasuk(item.idsurat_masuk, tokenAuth)
+                        tvSmStatus.text = itemView.context.getString(R.string.cuti_status_view, "DIBACA")
+                    }
                 }
 
                 if (item.riwayat.toInt() != 0) {
@@ -231,7 +235,6 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
 
                 btnSendDisposisi.setOnClickListener {
                     btnSendDisposisi.startAnimation()
-                    Log.e("iduser", catatanTambahan)
                     if (idPenerima != "" && catatanTambahan != "") {
                         val catatan = inputDisposisiCatatan.text.toString()
                         insertSuratDisposisi(iduser, idsurat, jenis, catatan, catatanTambahan, idPenerima, tokenAuth)
@@ -276,6 +279,32 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                         ErrorHandler().responseHandler(
                             itemView.context,
                             "insertSuratDisposisi | onFailure", t.message.toString()
+                        )
+                    }
+                })
+        }
+
+        private fun editSuratMasuk(id: String, tokenAuth: String) {
+            val service = RetrofitClient().apiRequest().create(SuratService::class.java)
+            service.editSuratMasuk(id, "", "", "", "", "dibaca", "", tokenAuth)
+                .enqueue(object : Callback<DefaultResponse> {
+                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                        if (response.isSuccessful) {
+                            if (response.body()!!.status == "success") {
+                                Log.e("editSuratMasuk", response.body()!!.message)
+                            }
+                        } else {
+                            ErrorHandler().responseHandler(
+                                itemView.context,
+                                "editSuratMasuk | onResponse", response.message()
+                            )
+                        }
+                    }
+
+                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                        ErrorHandler().responseHandler(
+                            itemView.context,
+                            "editSuratMasuk | onFailure", t.message.toString()
                         )
                     }
                 })
