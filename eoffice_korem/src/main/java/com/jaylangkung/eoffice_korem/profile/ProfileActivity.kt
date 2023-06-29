@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.jaylangkung.eoffice_korem.MainActivity2
+import com.jaylangkung.eoffice_korem.MainActivity
 import com.jaylangkung.eoffice_korem.databinding.ActivityProfileBinding
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
@@ -24,7 +24,7 @@ class ProfileActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                startActivity(Intent(this@ProfileActivity, MainActivity2::class.java))
+                startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
                 finish()
             }
         })

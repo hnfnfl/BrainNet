@@ -42,7 +42,7 @@ class SuratKeluarActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@SuratKeluarActivity,
-                        com.jaylangkung.eoffice_korem.MainActivity2::class.java
+                        com.jaylangkung.eoffice_korem.MainActivity::class.java
                     )
                 )
                 finish()
@@ -116,8 +116,8 @@ class SuratKeluarActivity : AppCompatActivity() {
                     )
                     bentukSpinner.item = listBentukSurat as ArrayList<*>?
 //                    listDisposisSurat.add("All")
-//                    for (i in 0 until MainActivity2.listUserSurat.size) {
-//                        val rawName = MainActivity2.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
+//                    for (i in 0 until MainActivity.listUserSurat.size) {
+//                        val rawName = MainActivity.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
 //                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
 //                        listDisposisSurat.add(name)
 //                    }

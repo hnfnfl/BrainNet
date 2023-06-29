@@ -138,5 +138,6 @@
     <string name="icon_surat_image">icon gambar isi surat</string>
     <string name="gambar_surat">Lihat Surat</string>
     <string name="acc_surat">Setujui Surat</string>
+    <string name="catatan_tambahan">Catatan Tambahan</string>
 
 </resources>

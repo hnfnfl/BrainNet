@@ -35,7 +35,7 @@ import retrofit2.Response
 import java.util.*
 
 
-class MainActivity2 : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMain2Binding
     private lateinit var myPreferences: MySharedPreferences
@@ -48,10 +48,10 @@ class MainActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
-        myPreferences = MySharedPreferences(this@MainActivity2)
+        myPreferences = MySharedPreferences(this@MainActivity)
         askPermission()
 
-        val test = NotificationManagerCompat.from(this@MainActivity2).areNotificationsEnabled()
+        val test = NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()
         if (!test) {
             val intent = Intent()
             intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
@@ -82,7 +82,7 @@ class MainActivity2 : AppCompatActivity() {
 
         binding.apply {
             getSpinnerData()
-            Glide.with(this@MainActivity2)
+            Glide.with(this@MainActivity)
                 .load(foto)
                 .apply(RequestOptions().override(120))
                 .placeholder(R.drawable.ic_profile)
@@ -98,17 +98,17 @@ class MainActivity2 : AppCompatActivity() {
             }
 
             imgPhoto.setOnClickListener {
-                startActivity(Intent(this@MainActivity2, ProfileActivity::class.java))
+                startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
                 finish()
             }
 
             btnSuratMasuk.setOnClickListener {
-                startActivity(Intent(this@MainActivity2, SuratMasukActivity::class.java))
+                startActivity(Intent(this@MainActivity, SuratMasukActivity::class.java))
                 finish()
             }
 
             btnSuratKeluar.setOnClickListener {
-                startActivity(Intent(this@MainActivity2, SuratKeluarActivity::class.java))
+                startActivity(Intent(this@MainActivity, SuratKeluarActivity::class.java))
                 finish()
             }
         }
@@ -126,7 +126,7 @@ class MainActivity2 : AppCompatActivity() {
                     listUserSurat = response.body()!!.user_surat
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MainActivity2,
+                        this@MainActivity,
                         "getSuratSpinnerData | onResponse", response.message()
                     )
                 }
@@ -134,7 +134,7 @@ class MainActivity2 : AppCompatActivity() {
 
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MainActivity2,
+                    this@MainActivity,
                     "getSuratSpinnerData | onFailure", t.message.toString()
                 )
             }
@@ -151,7 +151,7 @@ class MainActivity2 : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MainActivity2,
+                        this@MainActivity,
                         "addToken | onResponse", response.message()
                     )
                 }
@@ -159,7 +159,7 @@ class MainActivity2 : AppCompatActivity() {
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MainActivity2,
+                    this@MainActivity,
                     "addToken | onFailure", t.message.toString()
                 )
             }
@@ -174,17 +174,17 @@ class MainActivity2 : AppCompatActivity() {
             // FCM SDK (and your app) can post notifications.
         } else {
             // Inform user that that your app will not show notifications.
-            Toasty.warning(this@MainActivity2, "Anda tidak dapat menerima notifikasi", Toasty.LENGTH_LONG).show()
+            Toasty.warning(this@MainActivity, "Anda tidak dapat menerima notifikasi", Toasty.LENGTH_LONG).show()
         }
     }
 
     private fun askPermission() {
-        if (ContextCompat.checkSelfPermission(this@MainActivity2, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity2, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity2, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this@MainActivity2, arrayOf(
+                this@MainActivity, arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -207,7 +207,7 @@ class MainActivity2 : AppCompatActivity() {
                 // Directly ask for the permission
 //                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 ActivityCompat.requestPermissions(
-                    this@MainActivity2, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100
+                    this@MainActivity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100
                 )
             }
         }

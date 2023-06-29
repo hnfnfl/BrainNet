@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                             myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
                             myPreferences.setValueBool(Constants.USER_AKSES_SURAT, true)
                             myPreferences.setValue(Constants.USER_IDAKSES_SURAT, dataUser.iduser_surat)
-                            startActivity(Intent(this@LoginActivity, com.jaylangkung.eoffice_korem.MainActivity2::class.java))
+                            startActivity(Intent(this@LoginActivity, com.jaylangkung.eoffice_korem.MainActivity::class.java))
                             finish()
                         } else {
                             binding.btnLogin.endAnimation()

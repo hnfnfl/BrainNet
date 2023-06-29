@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import com.jaylangkung.eoffice_korem.MainActivity2
+import com.jaylangkung.eoffice_korem.MainActivity
 import com.jaylangkung.eoffice_korem.databinding.ActivityLoggerBinding
 import com.jaylangkung.korem.utils.room.Logger
 import com.jaylangkung.korem.utils.room.LoggerDatabase
@@ -32,7 +32,7 @@ class LoggerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this@LoggerActivity, MainActivity2::class.java))
+        startActivity(Intent(this@LoggerActivity, MainActivity::class.java))
         finish()
     }
 

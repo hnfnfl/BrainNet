@@ -8,7 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jaylangkung.eoffice_korem.MainActivity2
+import com.jaylangkung.eoffice_korem.MainActivity
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.SuratMasukResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivitySuratMasukBinding
@@ -39,7 +39,7 @@ class SuratMasukActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                startActivity(Intent(this@SuratMasukActivity, MainActivity2::class.java))
+                startActivity(Intent(this@SuratMasukActivity, MainActivity::class.java))
                 finish()
             }
         })

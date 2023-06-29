@@ -13,7 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.jaylangkung.eoffice_korem.MainActivity2.Companion.listUserSurat
+import com.jaylangkung.eoffice_korem.MainActivity.Companion.listUserSurat
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivityTambahSuratKeluarBinding

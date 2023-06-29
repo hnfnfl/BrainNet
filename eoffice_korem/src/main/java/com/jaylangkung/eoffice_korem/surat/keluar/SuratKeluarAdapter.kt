@@ -7,23 +7,21 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.jaylangkung.eoffice_korem.MainActivity2.Companion.listUserSurat
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratKeluarData
-import com.jaylangkung.eoffice_korem.databinding.BottomSheetDisposisiSuratBinding
 import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
 import com.jaylangkung.eoffice_korem.databinding.BottomSheetRiwayatDisposisiBinding
 import com.jaylangkung.eoffice_korem.databinding.ItemSuratKeluarBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
+import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
@@ -51,11 +49,9 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
 
     class ItemHolder(private val binding: ItemSuratKeluarBinding) : RecyclerView.ViewHolder(binding.root) {
         private lateinit var bottomSheetRiwayatDisposisiBinding: BottomSheetRiwayatDisposisiBinding
-        private lateinit var bottomSheetDisposisiSuratBinding: BottomSheetDisposisiSuratBinding
         private lateinit var bottomSheetGambarSuratBinding: BottomSheetGambarSuratBinding
         private lateinit var myPreferences: MySharedPreferences
 
-        private var idPenerima: String = ""
 
         fun bind(item: SuratKeluarData) {
             myPreferences = MySharedPreferences(itemView.context)
@@ -70,45 +66,12 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 tvSkStatus.text = itemView.context.getString(R.string.cuti_status_view, item.status_surat_keluar)
 
                 btnSkTeruskan.setOnClickListener {
-                    bottomSheetDisposisiSuratBinding = BottomSheetDisposisiSuratBinding.inflate(LayoutInflater.from(itemView.context))
-                    val dialog = BottomSheetDialog(itemView.context).apply {
-                        setCancelable(true)
-                        setContentView(bottomSheetDisposisiSuratBinding.root)
-                    }
-
-                    bottomSheetDisposisiSuratBinding.apply {
-                        catatanTambahanDisposisiCheckbox.visibility = View.GONE
-                        tvCatatanTambahan.visibility = View.GONE
-                        inputDisposisiCatatan.hint = "Catatan"
-
-                        val listUser = ArrayList<String>()
-                        for (i in 0 until listUserSurat.size) {
-                            listUser.add(listUserSurat[i].nama)
-                        }
-                        penerimaDisposisiSpinner.item = listUser as List<Any>?
-
-                        penerimaDisposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                                idPenerima = listUserSurat[p2].idsurat_user_aktivasi
-                            }
-
-                            override fun onNothingSelected(p0: AdapterView<*>?) {}
-                        }
-
-                        btnSendDisposisi.setOnClickListener {
-                            btnSendDisposisi.startAnimation()
-                            if (idPenerima != "") {
-                                val catatan = inputDisposisiCatatan.text.toString()
-                                insertSuratDisposisi(iduser, item.idsurat_keluar, catatan, "", idPenerima, tokenAuth)
-                                idPenerima = ""
-                                dialog.dismiss()
-                            } else {
-                                btnSendDisposisi.endAnimation()
-                                Toasty.warning(itemView.context, "Penerima Terusan Tidak Boleh Kosong", Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                    dialog.show()
+                    itemView.context.startActivity(
+                        Intent(itemView.context, DisposisiActivity::class.java)
+                            .putExtra("caller", "surat_keluar")
+                            .putExtra("jenis", "terusan")
+                            .putExtra("idsurat", item.idsurat_keluar)
+                    )
                 }
 
                 when (item.status_surat_keluar) {
@@ -225,34 +188,6 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         private fun editSuratKeluar(idsurat: String, status: String, tokenAuth: String) {
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
             service.editSuratKeluar(idsurat, "", "", "", "", status, tokenAuth)
-                .enqueue(object : Callback<DefaultResponse> {
-                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                        if (response.isSuccessful) {
-                            if (response.body()!!.status == "success") {
-                                Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                                itemView.context.startActivity(Intent(itemView.context, SuratKeluarActivity::class.java))
-                                (itemView.context as Activity).finish()
-                            }
-                        } else {
-                            ErrorHandler().responseHandler(
-                                itemView.context,
-                                "insertSuratDisposisi | onResponse", response.message()
-                            )
-                        }
-                    }
-
-                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
-                        ErrorHandler().responseHandler(
-                            itemView.context,
-                            "insertSuratDisposisi | onFailure", t.message.toString()
-                        )
-                    }
-                })
-        }
-
-        private fun insertSuratDisposisi(iduser: String, idsurat: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String) {
-            val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-            service.insertSuratDisposisi(iduser, idsurat, "surat_keluar", "terusan", catatan, catatanTambahan, penerima, tokenAuth)
                 .enqueue(object : Callback<DefaultResponse> {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {

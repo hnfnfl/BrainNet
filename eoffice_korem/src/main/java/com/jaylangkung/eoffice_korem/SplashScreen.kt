@@ -5,11 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.eoffice_korem.auth.LoginActivity
-import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivitySplashScreenBinding
 import com.jaylangkung.eoffice_korem.retrofit.AuthService
@@ -55,7 +52,7 @@ class SplashScreen : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
-                        startActivity(Intent(this@SplashScreen, MainActivity2::class.java))
+                        startActivity(Intent(this@SplashScreen, MainActivity::class.java))
                         finish()
                     }
                 } else {
