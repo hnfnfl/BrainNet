@@ -22,6 +22,7 @@ import com.jaylangkung.eoffice_korem.databinding.ItemSuratKeluarBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
+import com.jaylangkung.eoffice_korem.surat.showDisposisiRiwayat
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
@@ -84,9 +85,13 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                     }
                     "PENGAJUAN" -> {
                         btnSkAjukan.visibility = View.GONE
-                        btnSkAcc.visibility = View.VISIBLE
-                        btnSkAcc.setOnClickListener {
-                            editSuratKeluar(item.idsurat_keluar, "diacc", tokenAuth)
+                        if (iduser == item.tanda_tangan) {
+                            btnSkAcc.visibility = View.VISIBLE
+                            btnSkAcc.setOnClickListener {
+                                editSuratKeluar(item.idsurat_keluar, "diacc", tokenAuth)
+                            }
+                        } else {
+                            btnSkAcc.visibility = View.GONE
                         }
                     }
                     else -> {
@@ -122,62 +127,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 if (item.riwayat.toInt() != 0) {
                     btnSkRiwayat.visibility = View.VISIBLE
                     btnSkRiwayat.setOnClickListener {
-                        bottomSheetRiwayatDisposisiBinding = BottomSheetRiwayatDisposisiBinding.inflate(LayoutInflater.from(itemView.context))
-                        val dialog = BottomSheetDialog(itemView.context).apply {
-                            setCancelable(true)
-                            setContentView(bottomSheetRiwayatDisposisiBinding.root)
-                            behavior.maxHeight = 1500
-                        }
-
-                        bottomSheetRiwayatDisposisiBinding.apply {
-                            for (data in item.riwayat_disposisi) {
-                                val llChild = LinearLayout(itemView.context).apply {
-                                    layoutParams = LinearLayout.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-                                    ).apply {
-                                        setMargins(0, 16, 0, 0)
-                                    }
-                                    orientation = LinearLayout.VERTICAL
-                                }
-
-                                val tvParams = LinearLayout.LayoutParams(
-                                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-                                ).apply {
-                                    setMargins(10, 6, 0, 0)
-                                }
-
-                                val separator = View(itemView.context).apply {
-                                    layoutParams = LinearLayout.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT, 4
-                                    ).apply { setMargins(0, 16, 0, 0) }
-                                    setBackgroundColor(Color.parseColor("#c0c0c0"))
-                                }
-
-                                val createTextView = { text: String, size: Float ->
-                                    TextView(itemView.context).apply {
-                                        this.text = text
-                                        setTextColor(itemView.context.getColor(R.color.black))
-                                        textSize = size
-                                        layoutParams = tvParams
-                                    }
-                                }
-
-                                llChild.addView(createTextView("${data.nomer_agenda} (${data.aksi})", 16.0F))
-                                llChild.addView(createTextView(data.tanggal_disposisi, 16.0F))
-                                llChild.addView(createTextView(itemView.context.getString(R.string.dispo_pengirim, data.pengirim), 16.0F))
-                                llChild.addView(createTextView(itemView.context.getString(R.string.dispo_penerima, data.penerima), 16.0F))
-                                if (data.catatan.isNotEmpty()) {
-                                    llChild.addView(createTextView(itemView.context.getString(R.string.dispo_catatan, data.catatan), 14.0F))
-                                }
-                                if (data.catatan_tambahan.isNotEmpty()) {
-                                    llChild.addView(createTextView(itemView.context.getString(R.string.dispo_catatan_tambahan, data.catatan_tambahan), 14.0F))
-                                }
-                                llChild.addView(separator)
-
-                                linearlayout.addView(llChild)
-                            }
-                        }
-                        dialog.show()
+                        showDisposisiRiwayat(itemView.context, item.riwayat_disposisi)
                     }
                 } else {
                     btnSkRiwayat.visibility = View.GONE

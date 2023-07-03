@@ -105,6 +105,7 @@
     <string name="dispo_pengirim">Pengirim: %1$s</string>
     <string name="dispo_catatan">Catatan: %1$s</string>
     <string name="dispo_catatan_tambahan">Catatan Tambahan: %1$s</string>
+    <string name="dispo_balasan">Balasan: %1$s</string>
     <string name="sm_bentuk">Bentuk: %1$s</string>
     <string name="sm_sumber">Sumber: %1$s</string>
     <string name="sm_aksi">Aksi: %1$s</string>
@@ -139,5 +140,7 @@
     <string name="gambar_surat">Lihat Surat</string>
     <string name="acc_surat">Setujui Surat</string>
     <string name="catatan_tambahan">Catatan Tambahan</string>
+    <string name="dispo_balas">Balasan Surat</string>
+    <string name="balasan">Balasan</string>
 
 </resources>

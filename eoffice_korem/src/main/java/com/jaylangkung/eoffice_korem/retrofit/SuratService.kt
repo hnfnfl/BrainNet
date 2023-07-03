@@ -1,6 +1,7 @@
 package com.jaylangkung.eoffice_korem.retrofit
 
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
+import com.jaylangkung.eoffice_korem.dataClass.NotifikasiResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratKeluarResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratMasukResponse
 import okhttp3.MultipartBody
@@ -87,4 +88,18 @@ interface SuratService {
         @Field("penerima") penerima: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
+
+    @FormUrlEncoded
+    @POST("surat/editSuratDisposisi")
+    fun editSuratDisposisi(
+        @Field("nomer_agenda") nomer_agenda: String,
+        @Field("balasan") balasan: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
+
+    @GET("surat/getNotifikasi")
+    fun getNotifikasi(
+        @Query("iduser") iduser: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<NotifikasiResponse>
 }

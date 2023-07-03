@@ -14,6 +14,7 @@ data class SuratKeluarData(
     val riwayat: String,
     val riwayat_disposisi: ArrayList<SuratRiwayatDisposisi>,
     val status_surat_keluar: String,
+    val tanda_tangan: String,
     val tanggal_surat: String
 )
 

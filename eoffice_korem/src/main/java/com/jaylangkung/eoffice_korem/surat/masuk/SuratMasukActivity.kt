@@ -51,6 +51,7 @@ class SuratMasukActivity : AppCompatActivity() {
         binding.apply {
             empty.visibility = View.GONE
             btnBack.setOnClickListener {
+                empty.visibility = View.GONE
                 llFilter.visibility = View.VISIBLE
                 llDanremKasrem.visibility = View.GONE
                 llMiliterNonmiliter.visibility = View.VISIBLE
@@ -109,13 +110,10 @@ class SuratMasukActivity : AppCompatActivity() {
 
                 bottomSheetFilterSuratMasukBinding.apply {
                     val listBentukSurat = ArrayList<String>()
-//                    val listDisposisSurat = ArrayList<String>()
                     val listSumberSurat = ArrayList<String>()
                     val listSumberSuratNext = ArrayList<String>()
 
                     var bentuk = ""
-//                    var disposisi = ""
-//                    var sumber = ""
                     var sumberNext = ""
 
                     listBentukSurat.addAll(
@@ -140,18 +138,6 @@ class SuratMasukActivity : AppCompatActivity() {
                         )
                     )
                     bentukSpinner.item = listBentukSurat as ArrayList<*>?
-//                    listDisposisSurat.add("All")
-//                    for (i in 0 until listUserSurat.size) {
-//                        val rawName = listUserSurat[i].nama.substringAfter("(").substringBefore(")")
-//                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
-//                        listDisposisSurat.add(name)
-//                    }
-//                    disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
-
-//                    listSumberSurat.addAll(
-//                        listOf("All", "Militer", "Non Militer")
-//                    )
-//                    sumberSurat1Spinner.item = listSumberSurat as ArrayList<*>?
 
                     listSumberSuratNext.addAll(
                         listOf("All", "Komando Atas", "Satuan Samping", "Jajaran Korem")
@@ -171,34 +157,6 @@ class SuratMasukActivity : AppCompatActivity() {
                             bentuk = ""
                         }
                     }
-
-//                    disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                            disposisi = if (listDisposisSurat[p2] == "All" || listDisposisSurat[p2] == "") {
-//                                ""
-//                            } else {
-//                                listDisposisSurat[p2]
-//                            }
-//                        }
-//
-//                        override fun onNothingSelected(p0: AdapterView<*>?) {
-//                            disposisi = ""
-//                        }
-//                    }
-
-//                    sumberSurat1Spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                            sumber = if (listSumberSurat[p2] == "All" || listSumberSurat[p2] == "") {
-//                                ""
-//                            } else {
-//                                listSumberSurat[p2]
-//                            }
-//                        }
-//
-//                        override fun onNothingSelected(p0: AdapterView<*>?) {
-//                            sumber = ""
-//                        }
-//                    }
 
                     sumberSurat2Spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

@@ -19,7 +19,8 @@ import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.eoffice_korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserSuratSpinnerData
-import com.jaylangkung.eoffice_korem.databinding.ActivityMain2Binding
+import com.jaylangkung.eoffice_korem.databinding.ActivityMainBinding
+import com.jaylangkung.eoffice_korem.notifikasi.NotifikasiActivity
 import com.jaylangkung.eoffice_korem.profile.ProfileActivity
 import com.jaylangkung.eoffice_korem.retrofit.AuthService
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
@@ -37,7 +38,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMain2Binding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var myPreferences: MySharedPreferences
 
     companion object {
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMain2Binding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
         askPermission()
@@ -99,6 +100,11 @@ class MainActivity : AppCompatActivity() {
 
             imgPhoto.setOnClickListener {
                 startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+                finish()
+            }
+
+            btnNotification.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
                 finish()
             }
 

@@ -14,8 +14,8 @@ android {
         applicationId "com.jaylangkung.eoffice_korem"
         minSdk 24
         targetSdk 33
-        versionCode 8
-        versionName "1.7"
+        versionCode 1
+        versionName "Beta 1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -85,11 +85,9 @@ class SuratKeluarActivity : AppCompatActivity() {
                 }
 
                 bottomSheetFilterSuratMasukBinding.apply {
-//                    sumberSurat1Spinner.visibility = View.GONE
                     sumberSurat2Spinner.visibility = View.GONE
 
                     val listBentukSurat = ArrayList<String>()
-//                    val listDisposisSurat = ArrayList<String>()
 
                     var bentuk = ""
 
@@ -115,13 +113,6 @@ class SuratKeluarActivity : AppCompatActivity() {
                         )
                     )
                     bentukSpinner.item = listBentukSurat as ArrayList<*>?
-//                    listDisposisSurat.add("All")
-//                    for (i in 0 until MainActivity.listUserSurat.size) {
-//                        val rawName = MainActivity.listUserSurat[i].nama.substringAfter("(").substringBefore(")")
-//                        val name = rawName.replace("Korem 083/Bdj".toRegex(), "")
-//                        listDisposisSurat.add(name)
-//                    }
-//                    disposisiSpinner.item = listDisposisSurat as ArrayList<*>?
 
                     bentukSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -136,20 +127,6 @@ class SuratKeluarActivity : AppCompatActivity() {
                             bentuk = ""
                         }
                     }
-
-//                    disposisiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                            disposisi = if (listDisposisSurat[p2] == "All" || listDisposisSurat[p2] == "") {
-//                                ""
-//                            } else {
-//                                listDisposisSurat[p2]
-//                            }
-//                        }
-//
-//                        override fun onNothingSelected(p0: AdapterView<*>?) {
-//                            disposisi = ""
-//                        }
-//                    }
 
                     btnApplyFilter.setOnClickListener {
                         llFilter.visibility = View.GONE
@@ -166,8 +143,6 @@ class SuratKeluarActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-
     }
 
     private fun getSuratKeluar(bentuk: String, disposisi: String, tokenAuth: String) {

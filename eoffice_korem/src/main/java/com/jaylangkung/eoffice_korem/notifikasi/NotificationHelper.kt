@@ -1,4 +1,4 @@
-package com.jaylangkung.eoffice_korem.utils
+package com.jaylangkung.eoffice_korem.notifikasi
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

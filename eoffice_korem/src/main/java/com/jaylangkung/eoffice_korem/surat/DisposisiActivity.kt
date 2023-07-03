@@ -74,8 +74,6 @@ class DisposisiActivity : AppCompatActivity() {
             }
 
             if (jenis == "terusan") {
-                catatanTambahanDisposisiCheckbox.visibility = View.GONE
-                tvCatatanTambahan.visibility = View.GONE
                 inputDisposisiCatatan.hint = "Catatan"
                 btnSendDisposisi.progressText = "Teruskan"
                 tvDisposisi.text = "Teruskan"
@@ -102,7 +100,6 @@ class DisposisiActivity : AppCompatActivity() {
                 }
                 penerimaDisposisiCheckbox.addView(checkBox)
             }
-
 
             val catatanTambahanIDList = listOf(
                 checkboxAccCatat,
