@@ -3,26 +3,20 @@ package com.jaylangkung.eoffice_korem.surat.keluar
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.denzcoskun.imageslider.models.SlideModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratKeluarData
 import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
-import com.jaylangkung.eoffice_korem.databinding.BottomSheetRiwayatDisposisiBinding
 import com.jaylangkung.eoffice_korem.databinding.ItemSuratKeluarBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
 import com.jaylangkung.eoffice_korem.surat.showDisposisiRiwayat
+import com.jaylangkung.eoffice_korem.surat.showImageSurat
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
@@ -49,10 +43,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
     }
 
     class ItemHolder(private val binding: ItemSuratKeluarBinding) : RecyclerView.ViewHolder(binding.root) {
-        private lateinit var bottomSheetRiwayatDisposisiBinding: BottomSheetRiwayatDisposisiBinding
-        private lateinit var bottomSheetGambarSuratBinding: BottomSheetGambarSuratBinding
         private lateinit var myPreferences: MySharedPreferences
-
 
         fun bind(item: SuratKeluarData) {
             myPreferences = MySharedPreferences(itemView.context)
@@ -101,27 +92,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 }
 
                 btnSkImg.setOnClickListener {
-                    item.img?.let {
-                        if (it.isNotEmpty()) {
-                            bottomSheetGambarSuratBinding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(itemView.context))
-                            val dialog = BottomSheetDialog(itemView.context).apply {
-                                setCancelable(true)
-                                setContentView(bottomSheetGambarSuratBinding.root)
-                            }
-
-                            bottomSheetGambarSuratBinding.apply {
-                                val imgList = ArrayList<SlideModel>()
-                                for (img in item.img) {
-                                    imgList.add(SlideModel(img.img))
-                                }
-                                imgsliderGiat.setImageList(imgList)
-                            }
-
-                            dialog.show()
-                        } else {
-                            Toasty.info(itemView.context, "Tidak ada gambar", Toast.LENGTH_SHORT, true).show()
-                        }
-                    }
+                    showImageSurat(itemView.context, item.img)
                 }
 
                 if (item.riwayat.toInt() != 0) {

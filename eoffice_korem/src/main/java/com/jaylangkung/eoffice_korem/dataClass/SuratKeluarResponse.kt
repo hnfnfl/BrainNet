@@ -7,7 +7,7 @@ data class SuratKeluarResponse(
 
 data class SuratKeluarData(
     val idsurat_keluar: String,
-    val img: ArrayList<SuratKeluarImg>?,
+    val img: ArrayList<SuratImg>?,
     val nomer_agenda: String,
     val penerima: String,
     val perihal: String,
@@ -16,9 +16,4 @@ data class SuratKeluarData(
     val status_surat_keluar: String,
     val tanda_tangan: String,
     val tanggal_surat: String
-)
-
-data class SuratKeluarImg(
-    val id: Int,
-    val img: String
 )

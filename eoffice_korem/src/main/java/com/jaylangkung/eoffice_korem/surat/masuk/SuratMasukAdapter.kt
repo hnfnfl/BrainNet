@@ -2,13 +2,10 @@ package com.jaylangkung.eoffice_korem.surat.masuk
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -16,12 +13,12 @@ import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratMasukData
 import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
-import com.jaylangkung.eoffice_korem.databinding.BottomSheetRiwayatDisposisiBinding
 import com.jaylangkung.eoffice_korem.databinding.ItemSuratMasukBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
 import com.jaylangkung.eoffice_korem.surat.showDisposisiRiwayat
+import com.jaylangkung.eoffice_korem.surat.showImageSurat
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
@@ -47,8 +44,6 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
     }
 
     class ItemHolder(private val binding: ItemSuratMasukBinding) : RecyclerView.ViewHolder(binding.root) {
-        private lateinit var bottomSheetRiwayatDisposisiBinding: BottomSheetRiwayatDisposisiBinding
-        private lateinit var bottomSheetGambarSuratBinding: BottomSheetGambarSuratBinding
         private lateinit var myPreferences: MySharedPreferences
 
         fun bind(item: SuratMasukData) {
@@ -87,21 +82,7 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                 }
 
                 btnSmImg.setOnClickListener {
-                    bottomSheetGambarSuratBinding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(itemView.context))
-                    val dialog = BottomSheetDialog(itemView.context).apply {
-                        setCancelable(true)
-                        setContentView(bottomSheetGambarSuratBinding.root)
-                    }
-
-                    val imgList = ArrayList<SlideModel>()
-                    item.img?.let {
-                        for (img in it) {
-                            imgList.add(SlideModel(img.img))
-                        }
-                    } ?: imgList.add(SlideModel(R.raw.no_images))
-                    bottomSheetGambarSuratBinding.imgsliderGiat.setImageList(imgList)
-                    dialog.show()
-
+                    showImageSurat(itemView.context, item.img)
                     if (item.status_surat == "MASUK") {
                         editSuratMasuk(item.idsurat_masuk, tokenAuth)
                         tvSmStatus.text = itemView.context.getString(R.string.cuti_status_view, "DIBACA")

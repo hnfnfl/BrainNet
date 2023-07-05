@@ -29,7 +29,6 @@ class SuratKeluarActivity : AppCompatActivity() {
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: SuratKeluarAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySuratKeluarBinding.inflate(layoutInflater)

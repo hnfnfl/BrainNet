@@ -8,7 +8,7 @@ data class SuratMasukResponse(
 data class SuratMasukData(
     val bentuk: String,
     val idsurat_masuk: String,
-    val img: ArrayList<SuratMasukImg>?,
+    val img: ArrayList<SuratImg>?,
     val nomer_agenda: String,
     val penerima: String,
     val riwayat: String,
@@ -18,7 +18,7 @@ data class SuratMasukData(
     val tanggal_surat: String
 )
 
-data class SuratMasukImg(
+data class SuratImg(
     val id: Int,
     val img: String
 )
