@@ -26,29 +26,45 @@ fun showImageSurat(ctx: Context, data: ArrayList<SuratImg>?) {
     }
 
     binding.apply {
-        data?.let {
-            for (img in it) {
-                val imageView = ZoomageView(ctx)
-                val layoutParam = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-                ).apply {
-                    setMargins(0, 20, 0, 0)
-                }
-                imageView.apply {
-                    layoutParams = layoutParam
+        if (data?.isNotEmpty() == true) {
+            for (img in data) {
+                val imageView = ZoomageView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+                    ).apply {
+                        setMargins(0, 20, 0, 0)
+                    }
                     scaleType = ImageView.ScaleType.MATRIX
                     id = img.id
                     autoCenter = true
                     isZoomable = true
                     setScaleRange(1f, 4f)
                 }
+
                 Glide.with(ctx)
                     .load(img.img)
                     .placeholder(R.drawable.ic_empty)
                     .error(R.drawable.ic_empty)
                     .into(imageView)
+
                 llSuratImage.addView(imageView)
             }
+        } else {
+            // add empty images
+            val emptyImageView = ZoomageView(ctx).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+                ).apply {
+                    setMargins(0, 20, 0, 0)
+                }
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
+                setImageResource(R.drawable.ic_empty)
+                autoCenter = true
+                isZoomable = true
+                setScaleRange(1f, 4f)
+            }
+
+            llSuratImage.addView(emptyImageView)
         }
 
         btnClose.setOnClickListener {
