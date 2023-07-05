@@ -2,40 +2,48 @@ package com.jaylangkung.eoffice_korem.surat
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.SuratImg
 import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
+import com.jsibbold.zoomage.ZoomageView
 
 fun showImageSurat(ctx: Context, data: ArrayList<SuratImg>?) {
-    val binding: BottomSheetGambarSuratBinding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(ctx))
+    val binding = BottomSheetGambarSuratBinding.inflate(LayoutInflater.from(ctx))
     val dialog = BottomSheetDialog(ctx).apply {
-        setCancelable(false)
         setContentView(binding.root)
-        behavior.apply {
-            isHideable = false
-        }
+        setCancelable(false)
+    }
+    BottomSheetBehavior.from(binding.root.parent as View).apply {
+        state = BottomSheetBehavior.STATE_EXPANDED
+        isHideable = false
+        isDraggable = false
     }
 
     binding.apply {
         data?.let {
             for (img in it) {
-                val imageView = ZoomClass(ctx)
-                val layoutParams = LinearLayout.LayoutParams(
+                val imageView = ZoomageView(ctx)
+                val layoutParam = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
                 ).apply {
-                    setMargins(0, 12, 0, 0)
+                    setMargins(0, 20, 0, 0)
                 }
-                imageView.layoutParams = layoutParams
-                imageView.scaleType = ImageView.ScaleType.MATRIX
-                imageView.id = img.id
+                imageView.apply {
+                    layoutParams = layoutParam
+                    scaleType = ImageView.ScaleType.MATRIX
+                    id = img.id
+                    autoCenter = true
+                    isZoomable = true
+                    setScaleRange(1f, 4f)
+                }
                 Glide.with(ctx)
                     .load(img.img)
-                    .apply(RequestOptions().override(1600))
                     .placeholder(R.drawable.ic_empty)
                     .error(R.drawable.ic_empty)
                     .into(imageView)
@@ -43,11 +51,10 @@ fun showImageSurat(ctx: Context, data: ArrayList<SuratImg>?) {
             }
         }
 
-        separator.setOnClickListener {
+        btnClose.setOnClickListener {
             dialog.dismiss()
         }
     }
 
     dialog.show()
-
 }

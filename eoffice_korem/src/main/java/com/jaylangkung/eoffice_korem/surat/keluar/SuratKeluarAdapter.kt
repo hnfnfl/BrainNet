@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratKeluarData
-import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
 import com.jaylangkung.eoffice_korem.databinding.ItemSuratKeluarBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
