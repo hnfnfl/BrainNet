@@ -113,23 +113,23 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btn_surat_keluar_foto"
+                android:id="@+id/btn_surat_keluar_files"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginTop="14dp"
                 android:backgroundTint="@color/secondaryColor"
-                android:text="@string/tambah_foto"
+                android:text="@string/tambah_files"
                 android:textColor="@color/white" />
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/surat_keluar_img_view"
+            <LinearLayout
+                android:id="@+id/ll_selected_files"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="6dp"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:riv_corner_radius="75dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btn_tanggal_surat"

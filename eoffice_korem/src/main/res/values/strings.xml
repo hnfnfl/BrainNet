@@ -143,5 +143,6 @@
     <string name="dispo_balas">Balasan Surat</string>
     <string name="balasan">Balasan</string>
     <string name="login_webapp">Login Web App</string>
+    <string name="tambah_files">Tambahkan File Gambar/PDF</string>
 
 </resources>
