@@ -145,7 +145,7 @@
                     android:id="@+id/checkbox_acc_catat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ACC CATAT" />
+                    android:text="ACC/CATAT" />
 
                 <CheckBox
                     android:id="@+id/checkbox_ingatkan"
@@ -193,7 +193,7 @@
                     android:id="@+id/checkbox_st_sprinkan_edarkan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ST SPRINKAN EDARKAN" />
+                    android:text="ST/SPRINKAN/EDARKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_tindak_lanjuti"
@@ -205,7 +205,7 @@
                     android:id="@+id/checkbox_udk_arsipkan_monitor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="UDK ARSIPKAN MONITOR" />
+                    android:text="UDK/ARSIPKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_udl"

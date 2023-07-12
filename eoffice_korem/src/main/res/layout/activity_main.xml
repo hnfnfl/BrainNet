@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
-                android:text="Surat Masuk"
+                android:text="@string/surat_masuk"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -144,12 +144,25 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
-                android:text="Surat Keluar"
+                android:text="@string/surat_keluar"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_login_webapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:src="@drawable/ic_scan_qr"
+        app:fab_colorNormal="@color/secondaryColor"
+        app:fab_colorPressed="@color/secondaryDarkColor"
+        app:fab_colorRipple="@color/secondaryColor"
+        app:fab_size="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

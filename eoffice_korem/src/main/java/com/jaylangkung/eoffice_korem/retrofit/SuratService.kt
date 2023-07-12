@@ -102,4 +102,12 @@ interface SuratService {
         @Query("iduser") iduser: String,
         @Header("Authorization") tokenAuth: String
     ): Call<NotifikasiResponse>
+
+    @FormUrlEncoded
+    @POST("surat/insertWebApp")
+    fun insertWebApp(
+        @Field("iduser") iduser: String,
+        @Field("device_id") device_id: String,
+        @Header("Authorization") tokenAuth: String
+    ): Call<DefaultResponse>
 }

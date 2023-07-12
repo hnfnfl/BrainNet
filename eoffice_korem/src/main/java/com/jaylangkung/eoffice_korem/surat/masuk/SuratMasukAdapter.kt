@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.denzcoskun.imageslider.models.SlideModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.SuratMasukData
-import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
 import com.jaylangkung.eoffice_korem.databinding.ItemSuratMasukBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService

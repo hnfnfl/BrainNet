@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.jaylangkung.eoffice_korem.auth.LoginWebappActivity
 import com.jaylangkung.eoffice_korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserSuratSpinnerData
@@ -115,6 +116,11 @@ class MainActivity : AppCompatActivity() {
 
             btnSuratKeluar.setOnClickListener {
                 startActivity(Intent(this@MainActivity, SuratKeluarActivity::class.java))
+                finish()
+            }
+
+            fabLoginWebapp.setOnClickListener {
+                startActivity(Intent(this@MainActivity, LoginWebappActivity::class.java))
                 finish()
             }
         }

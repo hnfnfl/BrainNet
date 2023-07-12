@@ -56,6 +56,13 @@ class TambahSuratMasukActivity : AppCompatActivity() {
                 photoUri = fileUri
                 binding.suratMasukImgView.visibility = View.VISIBLE
                 binding.suratMasukImgView.setImageURI(fileUri)
+//                val imgList = ArrayList<SlideModel>()
+//                item.img?.let {
+//                    for (img in it) {
+//                        imgList.add(SlideModel(img.img))
+//                    }
+//                } ?: imgList.add(SlideModel(R.raw.no_images))
+//                bottomSheetGambarSuratBinding.imgsliderGiat.setImageList(imgList)
             }
             ImagePicker.RESULT_ERROR -> {
                 Toast.makeText(this@TambahSuratMasukActivity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()

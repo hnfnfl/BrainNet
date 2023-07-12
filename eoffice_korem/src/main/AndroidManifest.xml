@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrainNet_korem">
         <activity
+            android:name=".auth.LoginWebappActivity"
+            android:exported="false" />
+        <activity
             android:name=".notifikasi.NotifikasiActivity"
             android:exported="false" />
         <activity
