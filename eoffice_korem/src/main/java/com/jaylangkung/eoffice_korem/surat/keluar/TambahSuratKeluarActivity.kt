@@ -2,26 +2,19 @@ package com.jaylangkung.eoffice_korem.surat.keluar
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.provider.OpenableColumns
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.jaylangkung.eoffice_korem.MainActivity.Companion.listUserSurat
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
@@ -30,15 +23,12 @@ import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
-import com.jaylangkung.eoffice_korem.utils.FileUtils
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 import java.util.*
 
 class TambahSuratKeluarActivity : AppCompatActivity() {
@@ -50,28 +40,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
     private var perihal: String = ""
     private var tglSurat: String = ""
 
-    private var photoUri: Uri? = null
-    private var filePath: ArrayList<String> = ArrayList()
-
-    private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        val resultCode = result.resultCode
-        val data = result.data
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                //Image Uri will not be null for RESULT_OK
-                val fileUri = data?.data!!
-                photoUri = fileUri
-//                binding.suratKeluarImgView.visibility = View.VISIBLE
-//                binding.suratKeluarImgView.setImageURI(fileUri)
-            }
-            ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(this@TambahSuratKeluarActivity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Log.d("Cancel image picking", "Task Cancelled")
-            }
-        }
-    }
+    private var fileUri: ArrayList<Uri> = ArrayList()
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -83,19 +52,19 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
                     // Multiple files were selected
                     for (i in 0 until clipData.itemCount) {
                         val uri = clipData.getItemAt(i).uri
-                        processFile(convertUriToFilePath(this@TambahSuratKeluarActivity, uri)!!)
+                        processFile(uri)
                     }
                 } else {
                     // Single file was selected
                     val uri = data.data!!
-                    processFile(convertUriToFilePath(this@TambahSuratKeluarActivity, uri)!!)
+                    processFile(uri)
                 }
             }
         }
     }
 
     private fun processFile(uri: Uri) {
-        filePath.add(uri)
+        fileUri.add(uri)
 
         val documentFile = DocumentFile.fromSingleUri(this@TambahSuratKeluarActivity, uri)
         val fileName = documentFile?.name
@@ -113,58 +82,10 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             // set on click listener on end icon
             setOnClickListener {
                 binding.llSelectedFiles.removeView(this)
-                filePath.remove(uri)
+                fileUri.remove(uri)
             }
         }
         binding.llSelectedFiles.addView(file)
-    }
-
-    private fun getPathFromContentUri(contentResolver: ContentResolver, uri: Uri): String? {
-        val projection = arrayOf(OpenableColumns.DISPLAY_NAME)
-        val cursor = contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (fileNameIndex != -1) {
-                    return it.getString(fileNameIndex)
-                }
-            }
-        }
-        return null
-    }
-
-    private fun convertUriToFilePath(context: Context, originalUri: Uri): Uri? {
-        val scheme = originalUri.scheme
-        val authority = originalUri.authority
-        val documentId = DocumentsContract.getDocumentId(originalUri)
-
-        if (scheme == "content" && authority == "com.android.providers.media.documents") {
-            val decodedDocumentId = Uri.decode(documentId)
-            val split = decodedDocumentId.split(":")
-            val type = split[0]
-            val contentUri: Uri? = when (type) {
-                "image" -> MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                "video" -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                "audio" -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                else -> null
-            }
-            val selection = "_id=?"
-            val selectionArgs = arrayOf(split[1])
-            val column = "_data"
-            val projection = arrayOf(column)
-
-            contentUri?.let {
-                context.contentResolver.query(it, projection, selection, selectionArgs, null)?.use { cursor ->
-                    if (cursor.moveToFirst()) {
-                        val columnIndex = cursor.getColumnIndexOrThrow(column)
-                        val filePath = cursor.getString(columnIndex)
-                        return Uri.fromFile(File(filePath))
-                    }
-                }
-            }
-        }
-
-        return null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -229,11 +150,6 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             }
 
             btnSuratKeluarFiles.setOnClickListener {
-//                ImagePicker.with(this@TambahSuratKeluarActivity).compress(1024).maxResultSize(1080, 1080).galleryMimeTypes(
-//                    arrayOf("image/png", "image/jpg", "image/jpeg")
-//                ).createIntent {
-//                    startForProfileImageResult.launch(it)
-//                }
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                     type = "*/*"
                     putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Enable multiple file selection
@@ -253,29 +169,29 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
 
             btnTambahSuratKeluar.setOnClickListener {
                 if (validate()) {
+                    btnTambahSuratKeluar.startAnimation()
                     val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
                     val kepada = skKepadaInput.text.toString()
                     val files = ArrayList<MultipartBody.Part>()
-//                    var foto: MultipartBody.Part?
-//                    photoUri?.let {
-//                        val data = photoUri
-//                        val file = FileUtils.getFile(this@TambahSuratKeluarActivity, photoUri)
-//                        val requestBodyPhoto = file?.asRequestBody(contentResolver.getType(it).toString().toMediaTypeOrNull())
-//                        foto = requestBodyPhoto?.let { it1 -> MultipartBody.Part.createFormData("foto", file.name, it1) }
-//                        files.add(foto!!)
-//                    }
 
                     for (uri in fileUri) {
-                        val path = uri.path
-                        if (path != null) {
-                            val file = FileUtils.getFile(this@TambahSuratKeluarActivity, uri)
-                            val requestFile = file?.asRequestBody(contentResolver.getType(uri).toString().toMediaTypeOrNull())
-                            val part = requestFile?.let { it1 -> MultipartBody.Part.createFormData("files[]", file.name, it1) }
-                            if (part != null) {
-                                files.add(part)
+                        val file = Uri.parse(uri.toString())
+                        var fileName = ""
+
+                        contentResolver.openInputStream(file).use { inputStream ->
+                            val cursor = contentResolver.query(file, null, null, null, null)
+                            cursor?.use {
+                                if (it.moveToFirst()) {
+                                    val displayNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                    if (displayNameIndex != -1) {
+                                        fileName = it.getString(displayNameIndex)
+                                    }
+                                }
                             }
-                        } else {
-                            Toasty.warning(this@TambahSuratKeluarActivity, "File tidak ditemukan").show()
+
+                            val requestBody = inputStream?.readBytes()?.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                            val filePart = MultipartBody.Part.createFormData("files[]", fileName, requestBody!!)
+                            files.add(filePart)
                         }
                     }
 
@@ -304,10 +220,10 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
                     Toasty.warning(this@TambahSuratKeluarActivity, "Perihal tidak boleh kosong").show()
                     return false
                 }
-//                fileUri.size == 0 -> {
-//                    Toasty.warning(this@TambahSuratKeluarActivity, "File tidak boleh kosong").show()
-//                    return false
-//                }
+                fileUri.size == 0 -> {
+                    Toasty.warning(this@TambahSuratKeluarActivity, "File tidak boleh kosong").show()
+                    return false
+                }
                 skKepadaInput.text.toString().isBlank() -> {
                     skKepadaInput.error = "Kepada tidak boleh kosong"
                     skKepadaInput.requestFocus()
@@ -330,6 +246,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.insertSuratKeluar(iduser, perihal, kepada, persetujuan, tglSurat, files, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
             override fun onResponse(call: retrofit2.Call<DefaultResponse>, response: retrofit2.Response<DefaultResponse>) {
+                binding.btnTambahSuratKeluar.startAnimation()
                 if (response.isSuccessful) {
                     val message = response.body()!!.message
                     this@TambahSuratKeluarActivity.idPenerima = ""
@@ -346,6 +263,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: retrofit2.Call<DefaultResponse>, t: Throwable) {
+                binding.btnTambahSuratKeluar.startAnimation()
                 ErrorHandler().responseHandler(
                     this@TambahSuratKeluarActivity, "insertSuratKeluar | onFailure", t.message.toString()
                 )

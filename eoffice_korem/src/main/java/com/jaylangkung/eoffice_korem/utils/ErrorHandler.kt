@@ -24,6 +24,9 @@ class ErrorHandler {
             message.contains("Unable to resolve host") -> {
                 Toasty.error(context, "Silahkan cek koneksi internet Anda", Toasty.LENGTH_LONG).show()
             }
+            message.contains("Forbidden") -> {
+                Toasty.error(context, "File yang Anda upload tidak didukung", Toasty.LENGTH_LONG).show()
+            }
             else -> {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
             }
