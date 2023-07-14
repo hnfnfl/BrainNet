@@ -15,7 +15,7 @@ import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
 import com.jaylangkung.eoffice_korem.surat.showDisposisiRiwayat
-import com.jaylangkung.eoffice_korem.surat.showImageSurat
+import com.jaylangkung.eoffice_korem.surat.showFilesSurat
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
@@ -91,7 +91,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 }
 
                 btnSkImg.setOnClickListener {
-                    showImageSurat(itemView.context, item.img)
+                    showFilesSurat(itemView.context, item.img, item.pdf)
                 }
 
                 if (item.riwayat.toInt() != 0) {

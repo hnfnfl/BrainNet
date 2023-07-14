@@ -22,3 +22,8 @@ data class SuratImg(
     val id: Int,
     val img: String
 )
+
+data class SuratPdf(
+    val id: Int,
+    val pdf: String
+)

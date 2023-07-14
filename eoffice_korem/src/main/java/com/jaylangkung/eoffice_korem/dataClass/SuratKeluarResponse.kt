@@ -11,6 +11,7 @@ data class SuratKeluarData(
     val nomer_agenda: String,
     val penerima: String,
     val perihal: String,
+    val pdf: ArrayList<SuratPdf>?,
     val riwayat: String,
     val riwayat_disposisi: ArrayList<SuratRiwayatDisposisi>,
     val status_surat_keluar: String,
