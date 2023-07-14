@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.SuratKeluarResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivitySuratKeluarBinding
@@ -17,7 +18,6 @@ import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,32 +49,22 @@ class SuratKeluarActivity : AppCompatActivity() {
         })
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
-        var disposisi = ""
+        val jabatan = myPreferences.getValue(Constants.USER_JABATAN).toString()
+        var disposisi: String
 
         binding.apply {
             btnBack.setOnClickListener {
-                empty.visibility = View.GONE
-                if (disposisi != "") {
-                    llFilter.visibility = View.VISIBLE
-                    llDanremKasrem.visibility = View.VISIBLE
-                    rvSuratKeluarList.visibility = View.INVISIBLE
-                    disposisi = ""
-                } else {
-                    onBackPressedDispatcher.onBackPressed()
-                }
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            btnDanrem.setOnClickListener {
-                llDanremKasrem.visibility = View.GONE
-                disposisi = "danrem"
-                getSuratKeluar("", disposisi, tokenAuth)
+            disposisi = if (jabatan.contains("Danrem")) {
+                "danrem"
+            } else if (jabatan.contains("Kasrem")) {
+                "kasrem"
+            } else {
+                ""
             }
-
-            btnKasrem.setOnClickListener {
-                llDanremKasrem.visibility = View.GONE
-                disposisi = "kasrem"
-                getSuratKeluar("", disposisi, tokenAuth)
-            }
+            getSuratKeluar("", disposisi, tokenAuth)
 
             fabFilter.setOnClickListener {
                 bottomSheetFilterSuratMasukBinding = BottomSheetFilterSuratMasukBinding.inflate(layoutInflater)
@@ -87,7 +77,6 @@ class SuratKeluarActivity : AppCompatActivity() {
                     sumberSurat2Spinner.visibility = View.GONE
 
                     val listBentukSurat = ArrayList<String>()
-
                     var bentuk = ""
 
                     listBentukSurat.addAll(
@@ -128,7 +117,6 @@ class SuratKeluarActivity : AppCompatActivity() {
                     }
 
                     btnApplyFilter.setOnClickListener {
-                        llFilter.visibility = View.GONE
                         getSuratKeluar(bentuk, disposisi, tokenAuth)
                         dialog.dismiss()
                     }

@@ -45,60 +45,39 @@ class SuratMasukActivity : AppCompatActivity() {
         })
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
-        var disposisi = ""
+        val jabatan = myPreferences.getValue(Constants.USER_JABATAN).toString()
+        var disposisi: String
         var sumber = ""
 
         binding.apply {
             empty.visibility = View.GONE
             btnBack.setOnClickListener {
                 empty.visibility = View.GONE
-                llFilter.visibility = View.VISIBLE
-                llDanremKasrem.visibility = View.GONE
                 llMiliterNonmiliter.visibility = View.VISIBLE
                 rvSuratMasukList.visibility = View.INVISIBLE
                 btnBack.setOnClickListener {
-                    llMiliterNonmiliter.visibility = View.GONE
-                    llDanremKasrem.visibility = View.VISIBLE
-                    if (llDanremKasrem.visibility == View.VISIBLE) {
-                        btnBack.setOnClickListener {
-                            onBackPressedDispatcher.onBackPressed()
-                        }
-                    }
+                    onBackPressedDispatcher.onBackPressed()
                 }
             }
 
-            btnDanrem.setOnClickListener {
-                llMiliterNonmiliter.visibility = View.VISIBLE
-                llDanremKasrem.visibility = View.GONE
-                disposisi = "danrem"
-                btnMiliter.setOnClickListener {
-                    llFilter.visibility = View.GONE
-                    sumber = "militer"
-                    getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
-                }
-
-                btnNonmiliter.setOnClickListener {
-                    llFilter.visibility = View.GONE
-                    sumber = "non_militer"
-                    getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
-                }
+            disposisi = if (jabatan.contains("Danrem")) {
+                "danrem"
+            } else if (jabatan.contains("Kasrem")) {
+                "kasrem"
+            } else {
+                ""
             }
 
-            btnKasrem.setOnClickListener {
-                llMiliterNonmiliter.visibility = View.VISIBLE
-                llDanremKasrem.visibility = View.GONE
-                disposisi = "kasrem"
-                btnMiliter.setOnClickListener {
-                    llFilter.visibility = View.GONE
-                    sumber = "militer"
-                    getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
-                }
+            btnMiliter.setOnClickListener {
+                sumber = "militer"
+                getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
+                llMiliterNonmiliter.visibility = View.GONE
+            }
 
-                btnNonmiliter.setOnClickListener {
-                    llFilter.visibility = View.GONE
-                    sumber = "non_militer"
-                    getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
-                }
+            btnNonmiliter.setOnClickListener {
+                sumber = "non_militer"
+                getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
+                llMiliterNonmiliter.visibility = View.GONE
             }
 
             fabFilter.setOnClickListener {
@@ -110,7 +89,6 @@ class SuratMasukActivity : AppCompatActivity() {
 
                 bottomSheetFilterSuratMasukBinding.apply {
                     val listBentukSurat = ArrayList<String>()
-                    val listSumberSurat = ArrayList<String>()
                     val listSumberSuratNext = ArrayList<String>()
 
                     var bentuk = ""
@@ -173,7 +151,7 @@ class SuratMasukActivity : AppCompatActivity() {
                     }
 
                     btnApplyFilter.setOnClickListener {
-                        llFilter.visibility = View.GONE
+                        llMiliterNonmiliter.visibility = View.GONE
                         getSuratMasuk(sumber, sumberNext, bentuk, disposisi, tokenAuth)
                         dialog.dismiss()
                     }
