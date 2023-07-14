@@ -118,8 +118,7 @@ fun showDisposisiBalas(ctx: Context, nomerAgenda: String) {
             val tokenAuth = ctx.getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
             val balasan = inputDisposisiBalasan.text.toString()
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-            service.editSuratDisposisi(nomerAgenda, balasan, tokenAuth)
-                .enqueue(object : Callback<DefaultResponse> {
+            service.editSuratDisposisi(nomerAgenda, balasan, tokenAuth).enqueue(object : Callback<DefaultResponse> {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {
                             if (response.body()!!.status == "success") {
@@ -128,16 +127,14 @@ fun showDisposisiBalas(ctx: Context, nomerAgenda: String) {
                             }
                         } else {
                             ErrorHandler().responseHandler(
-                                ctx,
-                                "insertSuratDisposisi | onResponse", response.message()
+                                ctx, "insertSuratDisposisi | onResponse", response.message()
                             )
                         }
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         ErrorHandler().responseHandler(
-                            ctx,
-                            "insertSuratDisposisi | onFailure", t.message.toString()
+                            ctx, "insertSuratDisposisi | onFailure", t.message.toString()
                         )
                     }
                 })

@@ -98,8 +98,7 @@ class LoginActivity : AppCompatActivity() {
                         binding.btnLogin.endAnimation()
                         Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         ErrorHandler().responseHandler(
-                            this@LoginActivity,
-                            "loginProcess | onResponse", response.body()!!.message
+                            this@LoginActivity, "loginProcess | onResponse", response.body()!!.message
                         )
                     }
                 }
@@ -108,8 +107,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 binding.btnLogin.endAnimation()
                 ErrorHandler().responseHandler(
-                    this@LoginActivity,
-                    "loginProcess | onFailure", t.message.toString()
+                    this@LoginActivity, "loginProcess | onFailure", t.message.toString()
                 )
             }
         })

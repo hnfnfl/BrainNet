@@ -58,9 +58,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
 
                 btnSkTeruskan.setOnClickListener {
                     itemView.context.startActivity(
-                        Intent(itemView.context, DisposisiActivity::class.java)
-                            .putExtra("caller", "surat_keluar")
-                            .putExtra("jenis", "terusan")
+                        Intent(itemView.context, DisposisiActivity::class.java).putExtra("caller", "surat_keluar").putExtra("jenis", "terusan")
                             .putExtra("idsurat", item.idsurat_keluar)
                     )
                 }
@@ -107,8 +105,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
 
         private fun editSuratKeluar(idsurat: String, status: String, tokenAuth: String) {
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-            service.editSuratKeluar(idsurat, "", "", "", "", status, tokenAuth)
-                .enqueue(object : Callback<DefaultResponse> {
+            service.editSuratKeluar(idsurat, "", "", "", "", status, tokenAuth).enqueue(object : Callback<DefaultResponse> {
                     override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                         if (response.isSuccessful) {
                             if (response.body()!!.status == "success") {
@@ -118,16 +115,14 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                             }
                         } else {
                             ErrorHandler().responseHandler(
-                                itemView.context,
-                                "insertSuratDisposisi | onResponse", response.message()
+                                itemView.context, "insertSuratDisposisi | onResponse", response.message()
                             )
                         }
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         ErrorHandler().responseHandler(
-                            itemView.context,
-                            "insertSuratDisposisi | onFailure", t.message.toString()
+                            itemView.context, "insertSuratDisposisi | onFailure", t.message.toString()
                         )
                     }
                 })

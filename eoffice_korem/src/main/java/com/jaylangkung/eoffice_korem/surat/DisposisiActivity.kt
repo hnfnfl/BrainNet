@@ -2,7 +2,6 @@ package com.jaylangkung.eoffice_korem.surat
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -149,14 +148,7 @@ class DisposisiActivity : AppCompatActivity() {
     }
 
     private fun insertSuratDisposisi(
-        iduser: String,
-        idsurat: String,
-        tipe_surat: String,
-        jenis: String,
-        catatan: String,
-        catatanTambahan: String,
-        penerima: String,
-        tokenAuth: String
+        iduser: String, idsurat: String, tipe_surat: String, jenis: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.insertSuratDisposisi(iduser, idsurat, tipe_surat, jenis, catatan, catatanTambahan, penerima, tokenAuth)
@@ -170,16 +162,14 @@ class DisposisiActivity : AppCompatActivity() {
                         }
                     } else {
                         ErrorHandler().responseHandler(
-                            this@DisposisiActivity,
-                            "insertSuratDisposisi | onResponse", response.message()
+                            this@DisposisiActivity, "insertSuratDisposisi | onResponse", response.message()
                         )
                     }
                 }
 
                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                     ErrorHandler().responseHandler(
-                        this@DisposisiActivity,
-                        "insertSuratDisposisi | onFailure", t.message.toString()
+                        this@DisposisiActivity, "insertSuratDisposisi | onFailure", t.message.toString()
                     )
                 }
             })

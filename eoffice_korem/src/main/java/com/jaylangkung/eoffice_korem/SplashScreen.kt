@@ -57,16 +57,14 @@ class SplashScreen : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@SplashScreen,
-                        "refreshAuthToken | onResponse", response.message()
+                        this@SplashScreen, "refreshAuthToken | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@SplashScreen,
-                    "refreshAuthToken | onFailure", t.message.toString()
+                    this@SplashScreen, "refreshAuthToken | onFailure", t.message.toString()
                 )
             }
         })

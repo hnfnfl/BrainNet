@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.jaylangkung.eoffice_korem.MainActivity
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.SuratKeluarResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivitySuratKeluarBinding
@@ -38,12 +39,7 @@ class SuratKeluarActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                startActivity(
-                    Intent(
-                        this@SuratKeluarActivity,
-                        com.jaylangkung.eoffice_korem.MainActivity::class.java
-                    )
-                )
+                startActivity(Intent(this@SuratKeluarActivity, MainActivity::class.java))
                 finish()
             }
         })
@@ -136,49 +132,45 @@ class SuratKeluarActivity : AppCompatActivity() {
         binding.loadingAnim.visibility = View.VISIBLE
         binding.rvSuratKeluarList.visibility = View.VISIBLE
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.getSuratKeluar(bentuk, disposisi, tokenAuth)
-            .enqueue(object : Callback<SuratKeluarResponse> {
-                override fun onResponse(
-                    call: Call<SuratKeluarResponse>,
-                    response: Response<SuratKeluarResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val listData = response.body()!!.data
-                        if (response.body()!!.status == "success") {
-                            binding.loadingAnim.visibility = View.GONE
-                            binding.empty.visibility = View.GONE
-                            adapter.setItem(listData)
-                            adapter.notifyItemRangeChanged(0, listData.size)
-
-                            with(binding.rvSuratKeluarList) {
-                                layoutManager = LinearLayoutManager(this@SuratKeluarActivity)
-                                itemAnimator = DefaultItemAnimator()
-                                setHasFixedSize(true)
-                                adapter = this@SuratKeluarActivity.adapter
-                            }
-                        } else if (response.body()!!.status == "empty") {
-                            binding.apply {
-                                empty.visibility = View.VISIBLE
-                                loadingAnim.visibility = View.GONE
-                            }
-                            adapter.clearItem()
-                        }
-                    } else {
+        service.getSuratKeluar(bentuk, disposisi, tokenAuth).enqueue(object : Callback<SuratKeluarResponse> {
+            override fun onResponse(
+                call: Call<SuratKeluarResponse>, response: Response<SuratKeluarResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val listData = response.body()!!.data
+                    if (response.body()!!.status == "success") {
                         binding.loadingAnim.visibility = View.GONE
-                        ErrorHandler().responseHandler(
-                            this@SuratKeluarActivity,
-                            "getSuratKeluar | onResponse", response.message()
-                        )
-                    }
-                }
+                        binding.empty.visibility = View.GONE
+                        adapter.setItem(listData)
+                        adapter.notifyItemRangeChanged(0, listData.size)
 
-                override fun onFailure(call: Call<SuratKeluarResponse>, t: Throwable) {
+                        with(binding.rvSuratKeluarList) {
+                            layoutManager = LinearLayoutManager(this@SuratKeluarActivity)
+                            itemAnimator = DefaultItemAnimator()
+                            setHasFixedSize(true)
+                            adapter = this@SuratKeluarActivity.adapter
+                        }
+                    } else if (response.body()!!.status == "empty") {
+                        binding.apply {
+                            empty.visibility = View.VISIBLE
+                            loadingAnim.visibility = View.GONE
+                        }
+                        adapter.clearItem()
+                    }
+                } else {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@SuratKeluarActivity,
-                        "getSuratKeluar | onFailure", t.message.toString()
+                        this@SuratKeluarActivity, "getSuratKeluar | onResponse", response.message()
                     )
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<SuratKeluarResponse>, t: Throwable) {
+                binding.loadingAnim.visibility = View.GONE
+                ErrorHandler().responseHandler(
+                    this@SuratKeluarActivity, "getSuratKeluar | onFailure", t.message.toString()
+                )
+            }
+        })
     }
 }

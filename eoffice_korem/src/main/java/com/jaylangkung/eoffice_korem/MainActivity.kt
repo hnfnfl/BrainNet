@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
                 val token = task.result
                 val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
                 addToken(iduser, token)
-                Log.e("testing FCM", token)
             } else {
                 // Handle the error
                 val exception = task.exception
@@ -130,24 +129,21 @@ class MainActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
         service.getSuratSpinnerData().enqueue(object : Callback<DataSpinnerResponse> {
             override fun onResponse(
-                call: Call<DataSpinnerResponse>,
-                response: Response<DataSpinnerResponse>
+                call: Call<DataSpinnerResponse>, response: Response<DataSpinnerResponse>
             ) {
                 if (response.isSuccessful) {
                     listUserSurat.clear()
                     listUserSurat = response.body()!!.user_surat
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MainActivity,
-                        "getSuratSpinnerData | onResponse", response.message()
+                        this@MainActivity, "getSuratSpinnerData | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MainActivity,
-                    "getSuratSpinnerData | onFailure", t.message.toString()
+                    this@MainActivity, "getSuratSpinnerData | onFailure", t.message.toString()
                 )
             }
         })
@@ -163,16 +159,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MainActivity,
-                        "addToken | onResponse", response.message()
+                        this@MainActivity, "addToken | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MainActivity,
-                    "addToken | onFailure", t.message.toString()
+                    this@MainActivity, "addToken | onFailure", t.message.toString()
                 )
             }
         })
@@ -191,7 +185,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun askPermission() {
-        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+        if (
+            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         ) {
@@ -206,9 +201,7 @@ class MainActivity : AppCompatActivity() {
 
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 // display an educational UI explaining to the user the features that will be enabled

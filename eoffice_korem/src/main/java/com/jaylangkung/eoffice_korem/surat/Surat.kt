@@ -47,11 +47,7 @@ fun showFilesSurat(ctx: Context, imgs: ArrayList<SuratImg>?, pdfs: ArrayList<Sur
                         setScaleRange(1f, 4f)
                     }
 
-                    Glide.with(ctx)
-                        .load(img.img)
-                        .placeholder(R.drawable.ic_empty)
-                        .error(R.drawable.ic_empty)
-                        .into(imageView)
+                    Glide.with(ctx).load(img.img).placeholder(R.drawable.ic_empty).error(R.drawable.ic_empty).into(imageView)
 
                     llSuratFiles.addView(imageView)
                 }
@@ -116,11 +112,6 @@ fun showFilesSurat(ctx: Context, imgs: ArrayList<SuratImg>?, pdfs: ArrayList<Sur
 }
 
 fun downloadFile(url: String, fileName: String): File {
-//    val file = File(fileName)
-//    if (file.exists()) {
-//        // The file already exists, so we don't need to create it
-//        return file
-//    }
     val path = Environment.getExternalStoragePublicDirectory(
         Environment.DIRECTORY_DOCUMENTS
     )

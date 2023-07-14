@@ -47,16 +47,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MyFirebaseMessagingService,
-                        "addToken | onResponse", response.message()
+                        this@MyFirebaseMessagingService, "addToken | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MyFirebaseMessagingService,
-                    "addToken | onFailure", t.message.toString()
+                    this@MyFirebaseMessagingService, "addToken | onFailure", t.message.toString()
                 )
             }
         })

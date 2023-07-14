@@ -74,8 +74,7 @@ class LoginWebappActivity : AppCompatActivity() {
             errorCallback = ErrorCallback {
                 runOnUiThread {
                     ErrorHandler().responseHandler(
-                        this@LoginWebappActivity,
-                        "codeScanner | errorCallback", it.message.toString()
+                        this@LoginWebappActivity, "codeScanner | errorCallback", it.message.toString()
                     )
                 }
             }
@@ -97,8 +96,7 @@ class LoginWebappActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 26) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(200)
+            @Suppress("DEPRECATION") vibrator.vibrate(200)
         }
     }
 
@@ -118,8 +116,7 @@ class LoginWebappActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@LoginWebappActivity,
-                        "insertWebApp | onResponse", response.message()
+                        this@LoginWebappActivity, "insertWebApp | onResponse", response.message()
                     )
                 }
             }
@@ -127,8 +124,7 @@ class LoginWebappActivity : AppCompatActivity() {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@LoginWebappActivity,
-                    "insertWebApp | onResponse", t.message.toString()
+                    this@LoginWebappActivity, "insertWebApp | onResponse", t.message.toString()
                 )
             }
         })

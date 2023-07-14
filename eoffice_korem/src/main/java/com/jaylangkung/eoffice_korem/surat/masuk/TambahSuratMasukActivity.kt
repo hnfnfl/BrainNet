@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.jaylangkung.eoffice_korem.MainActivity.Companion.listUserSurat
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
@@ -23,7 +24,6 @@ import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.FileUtils
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
-import com.github.dhaval2404.imagepicker.ImagePicker
 import es.dmoral.toasty.Toasty
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

@@ -108,16 +108,14 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                             }
                         } else {
                             ErrorHandler().responseHandler(
-                                itemView.context,
-                                "editSuratMasuk | onResponse", response.message()
+                                itemView.context, "editSuratMasuk | onResponse", response.message()
                             )
                         }
                     }
 
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         ErrorHandler().responseHandler(
-                            itemView.context,
-                            "editSuratMasuk | onFailure", t.message.toString()
+                            itemView.context, "editSuratMasuk | onFailure", t.message.toString()
                         )
                     }
                 })

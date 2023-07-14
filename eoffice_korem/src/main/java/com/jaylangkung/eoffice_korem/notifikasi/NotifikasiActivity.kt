@@ -56,8 +56,7 @@ class NotifikasiActivity : AppCompatActivity() {
         binding.loadingAnim.visibility = View.VISIBLE
         binding.rvNotifikasi.visibility = View.VISIBLE
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.getNotifikasi(iduser, tokenAuth)
-            .enqueue(object : Callback<NotifikasiResponse> {
+        service.getNotifikasi(iduser, tokenAuth).enqueue(object : Callback<NotifikasiResponse> {
                 override fun onResponse(call: Call<NotifikasiResponse>, response: Response<NotifikasiResponse>) {
                     if (response.isSuccessful) {
                         val listData = response.body()!!.data
@@ -83,8 +82,7 @@ class NotifikasiActivity : AppCompatActivity() {
                     } else {
                         binding.loadingAnim.visibility = View.GONE
                         ErrorHandler().responseHandler(
-                            this@NotifikasiActivity,
-                            "getNotifikasi | onResponse", response.message()
+                            this@NotifikasiActivity, "getNotifikasi | onResponse", response.message()
                         )
                     }
                 }
@@ -92,8 +90,7 @@ class NotifikasiActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<NotifikasiResponse>, t: Throwable) {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@NotifikasiActivity,
-                        "getNotifikasi | onFailure", t.message.toString()
+                        this@NotifikasiActivity, "getNotifikasi | onFailure", t.message.toString()
                     )
                 }
             })

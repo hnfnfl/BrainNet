@@ -20,7 +20,8 @@ class NotificationHelper(private val context: Context) {
         val intent = Intent(context, SplashScreen::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context, 0, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
 //        val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.ringtone1)
         val channelId = "Default Channel"
