@@ -1,13 +1,17 @@
 package com.jaylangkung.eoffice_korem.surat
 
 import android.content.Context
-import android.os.Environment
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.MimeTypeMap
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.eoffice_korem.R
@@ -15,7 +19,11 @@ import com.jaylangkung.eoffice_korem.dataClass.SuratImg
 import com.jaylangkung.eoffice_korem.dataClass.SuratPdf
 import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
 import com.jsibbold.zoomage.ZoomageView
+import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.*
 import java.io.File
+import java.io.FileOutputStream
+import java.net.HttpURLConnection
 import java.net.URL
 
 fun showFilesSurat(ctx: Context, imgs: ArrayList<SuratImg>?, pdfs: ArrayList<SuratPdf>?) {
@@ -32,6 +40,28 @@ fun showFilesSurat(ctx: Context, imgs: ArrayList<SuratImg>?, pdfs: ArrayList<Sur
 
     binding.apply {
         if (imgs?.isNotEmpty() == true || pdfs?.isNotEmpty() == true) {
+            if (pdfs != null) {
+                for (pdf in pdfs) {
+                    val btnPdf = Button(ctx).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            setMargins(0, 20, 0, 0)
+                        }
+                        id = pdf.id
+                        setTextColor(AppCompatResources.getColorStateList(context, R.color.white))
+                        background = AppCompatResources.getDrawable(context, R.drawable.rounded_box)
+                        backgroundTintList = AppCompatResources.getColorStateList(context, R.color.primaryColor)
+                        text = pdf.pdf.substring(pdf.pdf.lastIndexOf("/") + 1)
+                        setOnClickListener {
+                            Toasty.info(ctx, "Membuka PDF", Toasty.LENGTH_SHORT).show()
+                            downloadAndOpenPdf(ctx, pdf.pdf)
+                        }
+                    }
+                    llSuratFiles.addView(btnPdf)
+                }
+            }
+
             if (imgs != null) {
                 for (img in imgs) {
                     val imageView = ZoomageView(ctx).apply {
@@ -50,39 +80,6 @@ fun showFilesSurat(ctx: Context, imgs: ArrayList<SuratImg>?, pdfs: ArrayList<Sur
                     Glide.with(ctx).load(img.img).placeholder(R.drawable.ic_empty).error(R.drawable.ic_empty).into(imageView)
 
                     llSuratFiles.addView(imageView)
-                }
-            }
-
-            if (pdfs != null) {
-                for (pdf in pdfs) {
-                    val url = pdf.pdf
-                    val outputNameFile = url.substring(url.lastIndexOf("/") + 1)
-                    val file = downloadFile(url, outputNameFile)
-                    val pdfView = PDFView(ctx, null).apply {
-                        layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-                        ).apply {
-                            setMargins(0, 20, 0, 0)
-                        }
-                        id = pdf.id
-                        fromFile(file)
-                            .enableSwipe(true)
-                            .swipeHorizontal(false)
-                            .enableDoubletap(true)
-                            .defaultPage(0)
-                            .enableAnnotationRendering(false)
-                            .password(null)
-                            .scrollHandle(null)
-                            .enableAntialiasing(true)
-                            .spacing(0)
-                            .load()
-                    }
-
-                    llSuratFiles.addView(pdfView)
-
-                    Runtime.getRuntime().addShutdownHook(Thread {
-                        file.delete()
-                    })
                 }
             }
         } else {
@@ -111,18 +108,43 @@ fun showFilesSurat(ctx: Context, imgs: ArrayList<SuratImg>?, pdfs: ArrayList<Sur
     dialog.show()
 }
 
-fun downloadFile(url: String, fileName: String): File {
-    val path = Environment.getExternalStoragePublicDirectory(
-        Environment.DIRECTORY_DOCUMENTS
-    )
-    val file = File(path, "/$fileName")
-    Thread {
-        val inputStream = URL(url).openStream()
-        val outputStream = file.outputStream()
-        inputStream.copyTo(outputStream)
-        inputStream.close()
-        outputStream.close()
-    }.start()
+@OptIn(DelicateCoroutinesApi::class)
+fun downloadAndOpenPdf(context: Context, pdfUrl: String) {
+    GlobalScope.launch(Dispatchers.IO) {
+        try {
+            // Download the PDF file
+            val url = URL(pdfUrl)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.connect()
 
-    return file
+            val inputStream = connection.inputStream
+            val fileName = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1)
+            val file = File(context.filesDir, "pdfs/$fileName")
+            file.parentFile?.mkdirs()
+
+            val outputStream = FileOutputStream(file)
+            val buffer = ByteArray(4096)
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+
+            outputStream.close()
+            inputStream.close()
+
+            // Open the prompt to choose an application to open the downloaded file
+            withContext(Dispatchers.Main) {
+                val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf")
+                val contentUri = FileProvider.getUriForFile(context, "com.jaylangkung.eoffice_korem.fileprovider", file)
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(contentUri, mimeType)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                context.startActivity(intent)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
