@@ -1,8 +1,10 @@
-package com.jaylangkung.eoffice_korem.surat
+package com.jaylangkung.eoffice_korem.utils
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -21,6 +23,9 @@ import com.jaylangkung.eoffice_korem.databinding.BottomSheetGambarSuratBinding
 import com.jsibbold.zoomage.ZoomageView
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
@@ -147,4 +152,29 @@ fun downloadAndOpenPdf(context: Context, pdfUrl: String) {
             e.printStackTrace()
         }
     }
+}
+
+fun convertFilesToMultipart(fileUris: ArrayList<Uri>, contentResolver: ContentResolver): ArrayList<MultipartBody.Part> {
+    val files = java.util.ArrayList<MultipartBody.Part>()
+    for (uri in fileUris) {
+        val file = Uri.parse(uri.toString())
+        var fileName = ""
+
+        contentResolver.openInputStream(file).use { inputStream ->
+            val cursor = contentResolver.query(file, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val displayNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (displayNameIndex != -1) {
+                        fileName = it.getString(displayNameIndex)
+                    }
+                }
+            }
+
+            val requestBody = inputStream?.readBytes()?.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val filePart = MultipartBody.Part.createFormData("files[]", fileName, requestBody!!)
+            files.add(filePart)
+        }
+    }
+    return files
 }

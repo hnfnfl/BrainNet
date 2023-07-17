@@ -5,11 +5,9 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -21,11 +19,11 @@ import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivityTambahSuratKeluarBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
+import com.jaylangkung.eoffice_korem.utils.convertFilesToMultipart
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
 import es.dmoral.toasty.Toasty
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -66,10 +64,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
     private fun processFile(uri: Uri) {
         fileUri.add(uri)
 
-        val documentFile = DocumentFile.fromSingleUri(this@TambahSuratKeluarActivity, uri)
-        val fileName = documentFile?.name
-        Toast.makeText(this, "Selected file: $fileName", Toast.LENGTH_SHORT).show()
-
+        val fileName = DocumentFile.fromSingleUri(this@TambahSuratKeluarActivity, uri)?.name
         // add layout to show file name to linear layout
         val file = TextView(this@TambahSuratKeluarActivity).apply {
             text = fileName
@@ -172,28 +167,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
                     btnTambahSuratKeluar.startAnimation()
                     val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
                     val kepada = skKepadaInput.text.toString()
-                    val files = ArrayList<MultipartBody.Part>()
-
-                    for (uri in fileUri) {
-                        val file = Uri.parse(uri.toString())
-                        var fileName = ""
-
-                        contentResolver.openInputStream(file).use { inputStream ->
-                            val cursor = contentResolver.query(file, null, null, null, null)
-                            cursor?.use {
-                                if (it.moveToFirst()) {
-                                    val displayNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                                    if (displayNameIndex != -1) {
-                                        fileName = it.getString(displayNameIndex)
-                                    }
-                                }
-                            }
-
-                            val requestBody = inputStream?.readBytes()?.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-                            val filePart = MultipartBody.Part.createFormData("files[]", fileName, requestBody!!)
-                            files.add(filePart)
-                        }
-                    }
+                    val files = convertFilesToMultipart(fileUri, contentResolver)
 
                     insertSuratKeluar(
                         idPenerima.toRequestBody(MultipartBody.FORM),
@@ -246,7 +220,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.insertSuratKeluar(iduser, perihal, kepada, persetujuan, tglSurat, files, tokenAuth).enqueue(object : retrofit2.Callback<DefaultResponse> {
             override fun onResponse(call: retrofit2.Call<DefaultResponse>, response: retrofit2.Response<DefaultResponse>) {
-                binding.btnTambahSuratKeluar.startAnimation()
+                binding.btnTambahSuratKeluar.endAnimation()
                 if (response.isSuccessful) {
                     val message = response.body()!!.message
                     this@TambahSuratKeluarActivity.idPenerima = ""
@@ -263,7 +237,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: retrofit2.Call<DefaultResponse>, t: Throwable) {
-                binding.btnTambahSuratKeluar.startAnimation()
+                binding.btnTambahSuratKeluar.endAnimation()
                 ErrorHandler().responseHandler(
                     this@TambahSuratKeluarActivity, "insertSuratKeluar | onFailure", t.message.toString()
                 )

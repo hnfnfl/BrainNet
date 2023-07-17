@@ -5,15 +5,14 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.github.dhaval2404.imagepicker.ImagePicker
+import androidx.core.content.ContextCompat
+import androidx.documentfile.provider.DocumentFile
 import com.jaylangkung.eoffice_korem.MainActivity.Companion.listUserSurat
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
@@ -22,13 +21,11 @@ import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
-import com.jaylangkung.eoffice_korem.utils.FileUtils
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
+import com.jaylangkung.eoffice_korem.utils.convertFilesToMultipart
 import es.dmoral.toasty.Toasty
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,36 +38,52 @@ class TambahSuratMasukActivity : AppCompatActivity() {
     private lateinit var myPreferences: MySharedPreferences
 
     private var idPenerima: String = ""
-    private var sumber: String = ""
+    private var jenis: String = ""
     private var perihal: String = ""
     private var tglSurat: String = ""
-    private var photoUri: Uri? = null
+    private var fileUri: ArrayList<Uri> = ArrayList()
 
-    private val startForProfileImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        val resultCode = result.resultCode
-        val data = result.data
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                //Image Uri will not be null for RESULT_OK
-                val fileUri = data?.data!!
-                photoUri = fileUri
-                binding.suratMasukImgView.visibility = View.VISIBLE
-                binding.suratMasukImgView.setImageURI(fileUri)
-//                val imgList = ArrayList<SlideModel>()
-//                item.img?.let {
-//                    for (img in it) {
-//                        imgList.add(SlideModel(img.img))
-//                    }
-//                } ?: imgList.add(SlideModel(R.raw.no_images))
-//                bottomSheetGambarSuratBinding.imgsliderGiat.setImageList(imgList)
-            }
-            ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(this@TambahSuratMasukActivity, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                Log.d("Cancel image picking", "Task Cancelled")
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            if (data != null) {
+                val clipData = data.clipData
+
+                if (clipData != null) {
+                    // Multiple files were selected
+                    for (i in 0 until clipData.itemCount) {
+                        val uri = clipData.getItemAt(i).uri
+                        processFile(uri)
+                    }
+                } else {
+                    // Single file was selected
+                    val uri = data.data!!
+                    processFile(uri)
+                }
             }
         }
+    }
+
+    private fun processFile(uri: Uri) {
+        fileUri.add(uri)
+
+        val fileName = DocumentFile.fromSingleUri(this@TambahSuratMasukActivity, uri)?.name
+        // add layout to show file name to linear layout
+        val file = TextView(this@TambahSuratMasukActivity).apply {
+            text = fileName
+            setTextColor(ContextCompat.getColor(this@TambahSuratMasukActivity, R.color.black))
+            textSize = 16f
+            setPadding(0, 12, 0, 0)
+            val endIcon = ContextCompat.getDrawable(this@TambahSuratMasukActivity, R.drawable.ic_close)
+            setCompoundDrawablesWithIntrinsicBounds(null, null, endIcon, null)
+            compoundDrawablePadding = 8
+            // set on click listener on end icon
+            setOnClickListener {
+                binding.llSelectedFiles.removeView(this)
+                fileUri.remove(uri)
+            }
+        }
+        binding.llSelectedFiles.addView(file)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,7 +141,7 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             sumberSuratSpinner.item = listJenisSurat as List<*>?
             sumberSuratSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    sumber = if (listJenisSurat[position] == "Non Militer") "non_militer" else "militer"
+                    jenis = if (listJenisSurat[position] == "Non Militer") "non_militer" else "militer"
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -147,11 +160,11 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             }
 
             btnSuratMasukFoto.setOnClickListener {
-                ImagePicker.with(this@TambahSuratMasukActivity).compress(1024).maxResultSize(1080, 1080).galleryMimeTypes(
-                    arrayOf("image/png", "image/jpg", "image/jpeg")
-                ).createIntent {
-                    startForProfileImageResult.launch(it)
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    type = "image/*"
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Enable multiple file selection
                 }
+                launcher.launch(intent)
             }
 
             btnTanggalSurat.setOnClickListener {
@@ -169,30 +182,22 @@ class TambahSuratMasukActivity : AppCompatActivity() {
 
             btnTambahSuratMasuk.setOnClickListener {
                 if (validate()) {
+                    binding.btnTambahSuratMasuk.startAnimation()
                     val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
                     val sumberNext = smSumberSuratNextInput.text.toString()
                     val pengirim = smPengirimInput.text.toString()
-                    var foto: MultipartBody.Part? = null
-                    photoUri?.let {
-                        val file = FileUtils.getFile(this@TambahSuratMasukActivity, photoUri)
-                        val requestBodyPhoto = file?.asRequestBody(contentResolver.getType(it).toString().toMediaTypeOrNull())
-                        foto = requestBodyPhoto?.let { it1 -> MultipartBody.Part.createFormData("foto", file.name, it1) }
-                    }
+                    val files = convertFilesToMultipart(fileUri, contentResolver)
 
                     insertSuratMasuk(
                         idPenerima.toRequestBody(MultipartBody.FORM),
-                        sumber.toRequestBody(MultipartBody.FORM),
+                        jenis.toRequestBody(MultipartBody.FORM),
                         sumberNext.toRequestBody(MultipartBody.FORM),
                         pengirim.toRequestBody(MultipartBody.FORM),
                         perihal.toRequestBody(MultipartBody.FORM),
                         tglSurat.toRequestBody(MultipartBody.FORM),
-                        foto,
+                        files,
                         tokenAuth
                     )
-                    idPenerima = ""
-                    sumber = ""
-                    perihal = ""
-                    tglSurat = ""
                 }
             }
         }
@@ -205,8 +210,8 @@ class TambahSuratMasukActivity : AppCompatActivity() {
                     Toasty.warning(this@TambahSuratMasukActivity, "Penerima tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                     return false
                 }
-                sumber.isBlank() -> {
-                    Toasty.warning(this@TambahSuratMasukActivity, "Sumber tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                jenis.isBlank() -> {
+                    Toasty.warning(this@TambahSuratMasukActivity, "Jenis Surat tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                     return false
                 }
                 perihal.isBlank() -> {
@@ -223,6 +228,10 @@ class TambahSuratMasukActivity : AppCompatActivity() {
                     smPengirimInput.requestFocus()
                     return false
                 }
+                fileUri.size == 0 -> {
+                    Toasty.warning(this@TambahSuratMasukActivity, "Foto tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    return false
+                }
                 else -> return true
             }
         }
@@ -235,14 +244,19 @@ class TambahSuratMasukActivity : AppCompatActivity() {
         pengirim: RequestBody,
         perihal: RequestBody,
         tglSurat: RequestBody,
-        file: MultipartBody.Part?,
+        file: ArrayList<MultipartBody.Part>,
         tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
         service.insertSuratMasuk(iduser, sumber, sumberNext, pengirim, perihal, tglSurat, file, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                binding.btnTambahSuratMasuk.endAnimation()
                 if (response.isSuccessful) {
                     val message = response.body()!!.message
+                    this@TambahSuratMasukActivity.idPenerima = ""
+                    this@TambahSuratMasukActivity.jenis = ""
+                    this@TambahSuratMasukActivity.perihal = ""
+                    this@TambahSuratMasukActivity.tglSurat = ""
                     Toasty.success(this@TambahSuratMasukActivity, message, Toasty.LENGTH_SHORT).show()
                     startActivity(Intent(this@TambahSuratMasukActivity, SuratMasukActivity::class.java))
                     finish()
@@ -254,6 +268,7 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                binding.btnTambahSuratMasuk.endAnimation()
                 ErrorHandler().responseHandler(
                     this@TambahSuratMasukActivity, "insertSuratMasuk | onFailure", t.message.toString()
                 )

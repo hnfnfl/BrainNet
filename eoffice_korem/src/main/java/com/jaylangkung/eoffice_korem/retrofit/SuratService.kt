@@ -8,7 +8,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.util.ArrayList
 
 interface SuratService {
     @Multipart
@@ -20,7 +19,7 @@ interface SuratService {
         @Part("pengirim") pengirim: RequestBody,
         @Part("perihal") perihal: RequestBody,
         @Part("tanggal_surat") tglSurat: RequestBody,
-        @Part foto: MultipartBody.Part? = null,
+        @Part files: ArrayList<MultipartBody.Part>,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
 
