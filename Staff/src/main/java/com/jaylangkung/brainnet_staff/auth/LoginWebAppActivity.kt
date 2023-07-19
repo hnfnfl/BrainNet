@@ -1,20 +1,21 @@
 package com.jaylangkung.brainnet_staff.auth
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityLoginWebAppBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -35,36 +36,49 @@ class LoginWebAppActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@LoginWebAppActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@LoginWebAppActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@LoginWebAppActivity, binding.scannerView)
-        // Parameters (default values)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        // ex. listOf(BarcodeFormat.QR_CODE)
-        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = false // Whether to enable flash or not
-        codeScanner.startPreview()
+        binding.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                binding.loadingAnim.visibility = View.VISIBLE
-                if (it.text.contains("webapp", ignoreCase = true)) {
-                    insertWebApp(idadmin, it.text, tokenAuth)
-                } else {
-                    Toasty.warning(this@LoginWebAppActivity, "QR Code tidak cocok", Toasty.LENGTH_LONG).show()
-                    onBackPressed()
+        codeScanner = CodeScanner(this@LoginWebAppActivity, binding.scannerView).apply {
+            camera = CodeScanner.CAMERA_BACK
+            formats = CodeScanner.ALL_FORMATS
+            autoFocusMode = AutoFocusMode.CONTINUOUS
+            scanMode = ScanMode.SINGLE
+            isAutoFocusEnabled = true
+            isFlashEnabled = false
+            startPreview()
+
+            decodeCallback = DecodeCallback {
+                runOnUiThread {
+                    binding.loadingAnim.visibility = View.VISIBLE
+                    if (it.text.contains("webapp", ignoreCase = true)) {
+                        insertWebApp(idadmin, it.text, tokenAuth)
+                    } else {
+                        Toasty.warning(this@LoginWebAppActivity, "QR Code tidak valid", Toasty.LENGTH_SHORT, true).show()
+                        vibrate()
+                        onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
-        }
-        codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
+            errorCallback = ErrorCallback {
+                runOnUiThread {
+                    ErrorHandler().responseHandler(
+                        this@LoginWebAppActivity, "codeScanner | errorCallback", it.message.toString()
+                    )
+                }
+            }
         }
     }
 
@@ -78,17 +92,12 @@ class LoginWebAppActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@LoginWebAppActivity, MainActivity::class.java))
-        finish()
-    }
-
     private fun vibrate() {
-        val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = ContextCompat.getSystemService(this, Vibrator::class.java) as Vibrator
         if (Build.VERSION.SDK_INT >= 26) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
-            vibrator.vibrate(200)
+            @Suppress("DEPRECATION") vibrator.vibrate(200)
         }
     }
 
@@ -101,12 +110,11 @@ class LoginWebAppActivity : AppCompatActivity() {
                     vibrate()
                     if (response.body()!!.status == "success") {
                         Toasty.success(this@LoginWebAppActivity, "Login berhasil", Toasty.LENGTH_LONG).show()
-                        onBackPressed()
+                        onBackPressedDispatcher.onBackPressed()
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@LoginWebAppActivity,
-                        "insertWebApp | onResponse", response.message()
+                        this@LoginWebAppActivity, "insertWebApp | onResponse", response.message()
                     )
                 }
             }
@@ -114,8 +122,7 @@ class LoginWebAppActivity : AppCompatActivity() {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@LoginWebAppActivity,
-                    "insertWebApp | onResponse", t.message.toString()
+                    this@LoginWebAppActivity, "insertWebApp | onResponse", t.message.toString()
                 )
             }
         })

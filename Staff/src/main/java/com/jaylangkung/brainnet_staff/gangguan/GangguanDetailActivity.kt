@@ -2,13 +2,14 @@ package com.jaylangkung.brainnet_staff.gangguan
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityGangguanDetailBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -32,12 +33,19 @@ class GangguanDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@GangguanDetailActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@GangguanDetailActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idgangguan = intent.getStringExtra(idgangguan).toString()
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnSubmit.setOnClickListener {
@@ -47,11 +55,6 @@ class GangguanDetailActivity : AppCompatActivity() {
                 editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth)
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@GangguanDetailActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun validate(): Boolean {
@@ -75,19 +78,16 @@ class GangguanDetailActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@GangguanDetailActivity,
-                        "editGangguan | onResponse", response.message()
+                        this@GangguanDetailActivity, "editGangguan | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@GangguanDetailActivity,
-                    "editGangguan | onFailure", t.message.toString()
+                    this@GangguanDetailActivity, "editGangguan | onFailure", t.message.toString()
                 )
             }
         })
     }
-
 }

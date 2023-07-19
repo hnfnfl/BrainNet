@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -52,17 +53,22 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@EditTiangActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@EditTiangActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idtiang = intent.getStringExtra(idtiang).toString()
-
-
 
         client = LocationServices.getFusedLocationProviderClient(this@EditTiangActivity)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this@EditTiangActivity)
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnSave.setOnClickListener {
@@ -72,10 +78,6 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@EditTiangActivity, ScannerTiangActivity::class.java))
-        finish()
-    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap

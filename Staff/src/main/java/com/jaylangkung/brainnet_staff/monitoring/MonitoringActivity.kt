@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,10 +43,17 @@ class MonitoringActivity : AppCompatActivity() {
         ethernetAdapter = EthernetAdapter()
         userDCAdapter = UserDCAdapter()
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@MonitoringActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         getEthernet(tokenAuth)
@@ -80,11 +88,6 @@ class MonitoringActivity : AppCompatActivity() {
                 binding.loadingAnim.visibility = View.GONE
             }, 500)
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@MonitoringActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getEthernet(tokenAuth: String) {

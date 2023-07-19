@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -41,12 +42,19 @@ class DispensasiActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@DispensasiActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@DispensasiActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSpinnerData()
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnTglJanji.setOnClickListener {
@@ -72,11 +80,6 @@ class DispensasiActivity : AppCompatActivity() {
                 insertDispensasi(idpelanggan, tgl, tokenAuth)
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@DispensasiActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getSpinnerData() {

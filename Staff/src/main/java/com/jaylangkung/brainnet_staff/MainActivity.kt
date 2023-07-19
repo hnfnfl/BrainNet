@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetMenuPelangganBinding: BottomSheetMenuPelangganBinding
     private lateinit var bottomSheetMenuPelayananBinding: BottomSheetMenuPelayananBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var gangguanAdapter: GangguanAdapter
+    private lateinit var adapter: GangguanAdapter
     private var listGangguanAdapter: ArrayList<GangguanEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
-        gangguanAdapter = GangguanAdapter()
+        adapter = GangguanAdapter()
 
         if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
                 this@MainActivity,
@@ -282,21 +282,21 @@ class MainActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
-                        gangguanAdapter.setListGangguanItem(listGangguanAdapter)
-                        gangguanAdapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
+                        adapter.setListGangguanItem(listGangguanAdapter)
+                        adapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
 
                         with(binding.rvGangguan) {
                             layoutManager = LinearLayoutManager(this@MainActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = gangguanAdapter
+                            adapter = this@MainActivity.adapter
                         }
                     } else if (response.body()!!.status == "empty") {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listGangguanAdapter.clear()
-                        gangguanAdapter.setListGangguanItem(listGangguanAdapter)
-                        gangguanAdapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
+                        adapter.setListGangguanItem(listGangguanAdapter)
+                        adapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE

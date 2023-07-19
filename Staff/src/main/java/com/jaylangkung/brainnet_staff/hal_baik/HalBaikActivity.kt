@@ -3,19 +3,20 @@ package com.jaylangkung.brainnet_staff.hal_baik
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.HalBaikEntity
+import com.jaylangkung.brainnet_staff.data_class.HalBaikResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityHalBaikBinding
 import com.jaylangkung.brainnet_staff.databinding.BottomSheetHalBaikBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
-import com.jaylangkung.brainnet_staff.data_class.HalBaikEntity
-import com.jaylangkung.brainnet_staff.data_class.HalBaikResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -29,7 +30,7 @@ class HalBaikActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHalBaikBinding
     private lateinit var addHalBaikBinding: BottomSheetHalBaikBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var halBaikAdapter: HalBaikAdapter
+    private lateinit var adapter: HalBaikAdapter
     private var listHalBaik: ArrayList<HalBaikEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,14 @@ class HalBaikActivity : AppCompatActivity() {
         binding = ActivityHalBaikBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@HalBaikActivity)
-        halBaikAdapter = HalBaikAdapter()
+        adapter = HalBaikAdapter()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@HalBaikActivity, MainActivity::class.java))
+                finish()
+            }
+        })
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
@@ -45,7 +53,7 @@ class HalBaikActivity : AppCompatActivity() {
         getHalBaik(idadmin, tokenAuth)
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.fabAddGoodThings.setOnClickListener {
@@ -67,8 +75,7 @@ class HalBaikActivity : AppCompatActivity() {
                             }
                         } else {
                             ErrorHandler().responseHandler(
-                                this@HalBaikActivity,
-                                "insertHalBaik | onResponse", response.message()
+                                this@HalBaikActivity, "insertHalBaik | onResponse", response.message()
                             )
                         }
                     }
@@ -76,8 +83,7 @@ class HalBaikActivity : AppCompatActivity() {
                     override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                         binding.loadingAnim.visibility = View.GONE
                         ErrorHandler().responseHandler(
-                            this@HalBaikActivity,
-                            "insertHalBaik | onFailure", t.message.toString()
+                            this@HalBaikActivity, "insertHalBaik | onFailure", t.message.toString()
                         )
                     }
                 })
@@ -89,11 +95,6 @@ class HalBaikActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@HalBaikActivity, MainActivity::class.java))
-        finish()
-    }
-
     private fun getHalBaik(idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getHalBaik(idadmin, tokenAuth).enqueue(object : Callback<HalBaikResponse> {
@@ -103,27 +104,26 @@ class HalBaikActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listHalBaik = listData
-                        halBaikAdapter.setHalBaikItem(listHalBaik)
-                        halBaikAdapter.notifyItemRangeChanged(0, listHalBaik.size)
+                        adapter.setHalBaikItem(listHalBaik)
+                        adapter.notifyItemRangeChanged(0, listHalBaik.size)
 
                         with(binding.rvHalBaik) {
                             layoutManager = LinearLayoutManager(this@HalBaikActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = halBaikAdapter
+                            adapter = this@HalBaikActivity.adapter
                         }
                     } else if (response.body()!!.status == "empty") {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listHalBaik.clear()
-                        halBaikAdapter.setHalBaikItem(listHalBaik)
-                        halBaikAdapter.notifyItemRangeChanged(0, listHalBaik.size)
+                        adapter.setHalBaikItem(listHalBaik)
+                        adapter.notifyItemRangeChanged(0, listHalBaik.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@HalBaikActivity,
-                        "getHalBaik | onResponse", response.message()
+                        this@HalBaikActivity, "getHalBaik | onResponse", response.message()
                     )
                 }
             }
@@ -131,8 +131,7 @@ class HalBaikActivity : AppCompatActivity() {
             override fun onFailure(call: Call<HalBaikResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@HalBaikActivity,
-                    "getHalBaik | onFailure", t.message.toString()
+                    this@HalBaikActivity, "getHalBaik | onFailure", t.message.toString()
                 )
             }
         })

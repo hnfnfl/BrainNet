@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -47,6 +48,13 @@ class CustomerActivationActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@CustomerActivationActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@CustomerActivationActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
@@ -66,7 +74,7 @@ class CustomerActivationActivity : AppCompatActivity() {
         }
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnActivateCustomer.setOnClickListener {
@@ -89,11 +97,6 @@ class CustomerActivationActivity : AppCompatActivity() {
                 mDialog.show()
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@CustomerActivationActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getSpinnerData() {

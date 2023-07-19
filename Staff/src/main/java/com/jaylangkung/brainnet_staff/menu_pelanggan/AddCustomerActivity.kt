@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -48,13 +49,20 @@ class AddCustomerActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@AddCustomerActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@AddCustomerActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getProvinsi()
         getSpinnerData()
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnAddCustomer.setOnClickListener {
@@ -68,12 +76,9 @@ class AddCustomerActivity : AppCompatActivity() {
                 val alamatPasang = binding.customerAddressInstall.text.toString()
                 val lokasi = binding.customerLocation.text.toString()
 
-                val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity)
-                    .setTitle("Tambahkan Pelanggan Baru")
-                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user)
-                    { dialogInterface, _ ->
+                val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity).setTitle("Tambahkan Pelanggan Baru")
+                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator").setCancelable(true)
+                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user) { dialogInterface, _ ->
                         insertPelanggan(
                             noktp,
                             namaPelanggan,
@@ -94,22 +99,14 @@ class AddCustomerActivity : AppCompatActivity() {
                             tokenAuth
                         )
                         dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
+                    }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
                         dialogInterface.dismiss()
-                    }
-                    .build()
+                    }.build()
                 // Show Dialog
                 mDialog.show()
             }
         }
 
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@AddCustomerActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getProvinsi() {
@@ -142,16 +139,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@AddCustomerActivity,
-                        "getProvinsi | onResponse", response.message()
+                        this@AddCustomerActivity, "getProvinsi | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<WilayahResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@AddCustomerActivity,
-                    "getProvinsi | onFailure", t.message.toString()
+                    this@AddCustomerActivity, "getProvinsi | onFailure", t.message.toString()
                 )
             }
         })
@@ -185,16 +180,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@AddCustomerActivity,
-                        "getKotaKab | onResponse", response.message()
+                        this@AddCustomerActivity, "getKotaKab | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<WilayahResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@AddCustomerActivity,
-                    "getKotaKab | onFailure", t.message.toString()
+                    this@AddCustomerActivity, "getKotaKab | onFailure", t.message.toString()
                 )
             }
         })
@@ -226,16 +219,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@AddCustomerActivity,
-                        "getkecamatan | onResponse", response.message()
+                        this@AddCustomerActivity, "getkecamatan | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<WilayahResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@AddCustomerActivity,
-                    "getkecamatan | onFailure", t.message.toString()
+                    this@AddCustomerActivity, "getkecamatan | onFailure", t.message.toString()
                 )
             }
         })
@@ -265,16 +256,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@AddCustomerActivity,
-                        "getKelurahan | onResponse", response.message()
+                        this@AddCustomerActivity, "getKelurahan | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<WilayahResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@AddCustomerActivity,
-                    "getKelurahan | onFailure", t.message.toString()
+                    this@AddCustomerActivity, "getKelurahan | onFailure", t.message.toString()
                 )
             }
         })
@@ -348,16 +337,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@AddCustomerActivity,
-                        "getSpinnerData | onResponse", response.message()
+                        this@AddCustomerActivity, "getSpinnerData | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@AddCustomerActivity,
-                    "getSpinnerData | onFailure", t.message.toString()
+                    this@AddCustomerActivity, "getSpinnerData | onFailure", t.message.toString()
                 )
             }
         })
@@ -462,23 +449,7 @@ class AddCustomerActivity : AppCompatActivity() {
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertPelanggan(
-            noktp,
-            nama,
-            alamat,
-            rt,
-            rw,
-            kelurahan,
-            kecamatan,
-            kota,
-            provinsi,
-            nohp,
-            idmarketing,
-            alamat_pasang,
-            paket,
-            idrekanan,
-            lokasi,
-            penagih,
-            tokenAuth
+            noktp, nama, alamat, rt, rw, kelurahan, kecamatan, kota, provinsi, nohp, idmarketing, alamat_pasang, paket, idrekanan, lokasi, penagih, tokenAuth
         ).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
@@ -488,16 +459,14 @@ class AddCustomerActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@AddCustomerActivity,
-                        "insertPelanggan | onResponse", response.message()
+                        this@AddCustomerActivity, "insertPelanggan | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@AddCustomerActivity,
-                    "insertPelanggan | onResponse", t.message.toString()
+                    this@AddCustomerActivity, "insertPelanggan | onResponse", t.message.toString()
                 )
             }
         })

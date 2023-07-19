@@ -8,14 +8,16 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.TiangResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityScannerTiangBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.TiangResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -36,30 +38,40 @@ class ScannerTiangActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@ScannerTiangActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@ScannerTiangActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@ScannerTiangActivity, binding.scannerView)
-        // Parameters (default values)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        // ex. listOf(BarcodeFormat.QR_CODE)
-        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = false // Whether to enable flash or not
-        codeScanner.startPreview()
-
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                binding.loadingAnim.visibility = View.VISIBLE
-                getTiang(it.text, tokenAuth)
-            }
-        }
-        codeScanner.errorCallback = ErrorCallback.SUPPRESS
-
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        codeScanner = CodeScanner(this@ScannerTiangActivity, binding.scannerView).apply {
+            camera = CodeScanner.CAMERA_BACK
+            formats = CodeScanner.ALL_FORMATS
+            autoFocusMode = AutoFocusMode.CONTINUOUS
+            scanMode = ScanMode.SINGLE
+            isAutoFocusEnabled = true
+            isFlashEnabled = false
+            startPreview()
+
+            decodeCallback = DecodeCallback {
+                runOnUiThread {
+                    binding.loadingAnim.visibility = View.VISIBLE
+                    getTiang(it.text, tokenAuth)
+                }
+            }
+
+            errorCallback = ErrorCallback {
+                runOnUiThread {
+                    Toasty.error(this@ScannerTiangActivity, "Camera initialization error: ${it.message}", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
@@ -73,17 +85,12 @@ class ScannerTiangActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@ScannerTiangActivity, MainActivity::class.java))
-        finish()
-    }
-
     private fun vibrate() {
-        val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = ContextCompat.getSystemService(this, Vibrator::class.java) as Vibrator
         if (Build.VERSION.SDK_INT >= 26) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
-            vibrator.vibrate(200)
+            @Suppress("DEPRECATION") vibrator.vibrate(200)
         }
     }
 
@@ -95,8 +102,7 @@ class ScannerTiangActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     vibrate()
                     if (response.body()!!.status == "success") {
-                        val intent = Intent(this@ScannerTiangActivity, EditTiangActivity::class.java)
-                            .apply {
+                        val intent = Intent(this@ScannerTiangActivity, EditTiangActivity::class.java).apply {
                                 putExtra(EditTiangActivity.idtiang, response.body()!!.data[0].idtiang)
                                 putExtra(EditTiangActivity.serialNumber, response.body()!!.data[0].serial_number)
                             }
@@ -104,13 +110,12 @@ class ScannerTiangActivity : AppCompatActivity() {
                         finish()
                     } else if (response.body()!!.status == "empty") {
                         Toasty.warning(this@ScannerTiangActivity, "Nomor Seri tiang tidak ditemukan", Toast.LENGTH_LONG).show()
-                        onBackPressed()
+                        onBackPressedDispatcher.onBackPressed()
                     }
                 } else {
-                    onBackPressed()
+                    onBackPressedDispatcher.onBackPressed()
                     ErrorHandler().responseHandler(
-                        this@ScannerTiangActivity,
-                        "getTiang | onResponse", response.message()
+                        this@ScannerTiangActivity, "getTiang | onResponse", response.message()
                     )
                 }
             }
@@ -118,8 +123,7 @@ class ScannerTiangActivity : AppCompatActivity() {
             override fun onFailure(call: Call<TiangResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@ScannerTiangActivity,
-                    "getTiang | onFailure", t.message.toString()
+                    this@ScannerTiangActivity, "getTiang | onFailure", t.message.toString()
                 )
             }
         })

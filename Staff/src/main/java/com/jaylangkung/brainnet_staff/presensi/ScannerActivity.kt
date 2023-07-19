@@ -8,14 +8,16 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityScannerBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -36,30 +38,43 @@ class ScannerActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@ScannerActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@ScannerActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        codeScanner = CodeScanner(this@ScannerActivity, binding.scannerView)
-        // Parameters (default values)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        codeScanner.autoFocusMode = AutoFocusMode.CONTINUOUS // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = false // Whether to enable flash or not
-        codeScanner.startPreview()
-
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                binding.loadingAnim.visibility = View.VISIBLE
-                getAbsensi(it.text, idadmin, tokenAuth)
-            }
-        }
-        codeScanner.errorCallback = ErrorCallback.SUPPRESS
-
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        codeScanner = CodeScanner(this@ScannerActivity, binding.scannerView).apply {
+            camera = CodeScanner.CAMERA_BACK
+            formats = CodeScanner.ALL_FORMATS
+            autoFocusMode = AutoFocusMode.CONTINUOUS
+            scanMode = ScanMode.SINGLE
+            isAutoFocusEnabled = true
+            isFlashEnabled = false
+            startPreview()
+
+            decodeCallback = DecodeCallback {
+                runOnUiThread {
+                    binding.loadingAnim.visibility = View.VISIBLE
+                    getAbsensi(it.text, idadmin, tokenAuth)
+                }
+            }
+
+            errorCallback = ErrorCallback {
+                runOnUiThread {
+                    ErrorHandler().responseHandler(
+                        this@ScannerActivity, "codeScanner | errorCallback", it.message.toString()
+                    )
+                }
+            }
         }
     }
 
@@ -73,17 +88,12 @@ class ScannerActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@ScannerActivity, MainActivity::class.java))
-        finish()
-    }
-
     private fun vibrate() {
-        val vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = ContextCompat.getSystemService(this, Vibrator::class.java) as Vibrator
         if (Build.VERSION.SDK_INT >= 26) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
-            vibrator.vibrate(200)
+            @Suppress("DEPRECATION") vibrator.vibrate(200)
         }
     }
 
@@ -97,24 +107,21 @@ class ScannerActivity : AppCompatActivity() {
                     when (response.body()!!.status) {
                         "success" -> {
                             Toasty.success(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                            onBackPressed()
                         }
                         "already" -> {
                             Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                            onBackPressed()
                         }
                         "not_match" -> {
                             Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
-                            onBackPressed()
                         }
                         else -> {
                             Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
                         }
                     }
+                    onBackPressedDispatcher.onBackPressed()
                 } else {
                     ErrorHandler().responseHandler(
-                        this@ScannerActivity,
-                        "getAbsensi | onResponse", response.message()
+                        this@ScannerActivity, "getAbsensi | onResponse", response.message()
                     )
                 }
             }
@@ -122,8 +129,7 @@ class ScannerActivity : AppCompatActivity() {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@ScannerActivity,
-                    "getAbsensi | onFailure", t.message.toString()
+                    this@ScannerActivity, "getAbsensi | onFailure", t.message.toString()
                 )
             }
         })

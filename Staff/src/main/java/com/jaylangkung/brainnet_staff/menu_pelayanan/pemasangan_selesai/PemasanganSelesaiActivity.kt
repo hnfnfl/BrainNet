@@ -4,17 +4,18 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
-import com.jaylangkung.brainnet_staff.databinding.ActivityPemasanganSelesaiBinding
+import com.jaylangkung.brainnet_staff.data_class.BelumTerpasangResponse
 import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.databinding.ActivityPemasanganSelesaiBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.BelumTerpasangResponse
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -28,7 +29,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPemasanganSelesaiBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var pemasanganSelesaiAdapter: PemasanganSelesaiAdapter
+    private lateinit var adapter: PemasanganSelesaiAdapter
     private var listPemasangan: ArrayList<DataSpinnerEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,20 +37,22 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
         binding = ActivityPemasanganSelesaiBinding.inflate(layoutInflater)
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@PemasanganSelesaiActivity)
-        pemasanganSelesaiAdapter = PemasanganSelesaiAdapter()
+        adapter = PemasanganSelesaiAdapter()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@PemasanganSelesaiActivity, MainActivity::class.java))
+                finish()
+            }
+        })
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         getBelumTerpasang(tokenAuth)
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@PemasanganSelesaiActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getBelumTerpasang(tokenAuth: String) {
@@ -62,50 +65,43 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listPemasangan = listData
-                        pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
-                        pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
+                        adapter.setPemasanganItem(listPemasangan)
+                        adapter.notifyItemRangeChanged(0, listPemasangan.size)
 
                         with(binding.rvPemasanganSelesai) {
                             layoutManager = LinearLayoutManager(this@PemasanganSelesaiActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = pemasanganSelesaiAdapter
+                            adapter = this@PemasanganSelesaiActivity.adapter
                         }
-                        pemasanganSelesaiAdapter.setOnItemClickCallback(object : PemasanganSelesaiAdapter.OnItemClickCallback {
+                        adapter.setOnItemClickCallback(object : PemasanganSelesaiAdapter.OnItemClickCallback {
                             override fun onItemClicked(data: ArrayList<DataSpinnerEntity>, position: Int) {
                                 val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
                                 val idpelanggan = listPemasangan[position].idpelanggan
 
-                                val mDialog = MaterialDialog.Builder(this@PemasanganSelesaiActivity as Activity)
-                                    .setTitle("Selesaikan Pemasangan")
-                                    .setMessage("Apakah Anda yakin ingin menyelesaikan pemasangan ini?")
-                                    .setCancelable(true)
-                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked)
-                                    { dialogInterface, _ ->
-                                        service.insertBayarTeknisi(idpelanggan, idadmin, tokenAuth)
-                                            .enqueue(object : Callback<DefaultResponse> {
+                                val mDialog = MaterialDialog.Builder(this@PemasanganSelesaiActivity as Activity).setTitle("Selesaikan Pemasangan")
+                                    .setMessage("Apakah Anda yakin ingin menyelesaikan pemasangan ini?").setCancelable(true)
+                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked) { dialogInterface, _ ->
+                                        service.insertBayarTeknisi(idpelanggan, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
                                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                                     if (response.isSuccessful) {
                                                         if (response.body()!!.status == "success") {
                                                             Toasty.success(
-                                                                this@PemasanganSelesaiActivity,
-                                                                "Pemasangan berhasil diselesaikan",
-                                                                Toasty.LENGTH_LONG
+                                                                this@PemasanganSelesaiActivity, "Pemasangan berhasil diselesaikan", Toasty.LENGTH_LONG
                                                             ).show()
                                                             listPemasangan.removeAt(position)
-                                                            if (listPemasangan.isNullOrEmpty()) {
+                                                            if (listPemasangan.isEmpty()) {
                                                                 binding.empty.visibility = View.VISIBLE
                                                                 binding.loadingAnim.visibility = View.GONE
                                                                 listPemasangan.clear()
                                                             }
-                                                            pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
-                                                            pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
+                                                            adapter.setPemasanganItem(listPemasangan)
+                                                            adapter.notifyItemRangeChanged(0, listPemasangan.size)
                                                         }
                                                     } else {
                                                         binding.loadingAnim.visibility = View.GONE
                                                         ErrorHandler().responseHandler(
-                                                            this@PemasanganSelesaiActivity,
-                                                            "insertBayarTeknisi | onResponse", response.message()
+                                                            this@PemasanganSelesaiActivity, "insertBayarTeknisi | onResponse", response.message()
                                                         )
                                                     }
                                                 }
@@ -113,18 +109,14 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                                                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                                                     binding.loadingAnim.visibility = View.GONE
                                                     ErrorHandler().responseHandler(
-                                                        this@PemasanganSelesaiActivity,
-                                                        "insertBayarTeknisi | onResponse", t.message.toString()
+                                                        this@PemasanganSelesaiActivity, "insertBayarTeknisi | onResponse", t.message.toString()
                                                     )
                                                 }
                                             })
                                         dialogInterface.dismiss()
-                                    }
-                                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                                    { dialogInterface, _ ->
+                                    }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
                                         dialogInterface.dismiss()
-                                    }
-                                    .build()
+                                    }.build()
                                 // Show Dialog
                                 mDialog.show()
                             }
@@ -134,14 +126,13 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listPemasangan.clear()
-                        pemasanganSelesaiAdapter.setPemasanganItem(listPemasangan)
-                        pemasanganSelesaiAdapter.notifyItemRangeChanged(0, listPemasangan.size)
+                        adapter.setPemasanganItem(listPemasangan)
+                        adapter.notifyItemRangeChanged(0, listPemasangan.size)
                     }
                 } else {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@PemasanganSelesaiActivity,
-                        "getBelumTerpasang | onResponse", response.message()
+                        this@PemasanganSelesaiActivity, "getBelumTerpasang | onResponse", response.message()
                     )
                 }
             }
@@ -149,8 +140,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
             override fun onFailure(call: Call<BelumTerpasangResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@PemasanganSelesaiActivity,
-                    "getBelumTerpasang | onFailure", t.message.toString()
+                    this@PemasanganSelesaiActivity, "getBelumTerpasang | onFailure", t.message.toString()
                 )
             }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,7 @@ class RestartActivity : AppCompatActivity() {
 
     private lateinit var restartBinding: ActivityRestartBinding
     private lateinit var myPreferences: MySharedPreferences
-    private lateinit var userAdapter: UserAdapter
+    private lateinit var adapter: UserAdapter
     private var userSearch: ArrayList<UserEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +34,21 @@ class RestartActivity : AppCompatActivity() {
         restartBinding = ActivityRestartBinding.inflate(layoutInflater)
         setContentView(restartBinding.root)
         myPreferences = MySharedPreferences(this@RestartActivity)
-        userAdapter = UserAdapter()
+        adapter = UserAdapter()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@RestartActivity, MainActivity::class.java))
+                finish()
+            }
+        })
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getPelanggan(tokenAuth)
 
         restartBinding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         restartBinding.svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -49,15 +57,10 @@ class RestartActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                userAdapter.filter.filter(query)
+                adapter.filter.filter(query)
                 return true
             }
         })
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@RestartActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getPelanggan(tokenAuth: String) {
@@ -69,21 +72,20 @@ class RestartActivity : AppCompatActivity() {
                         restartBinding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         userSearch = listData
-                        userAdapter.setUserItem(userSearch)
-                        userAdapter.notifyItemRangeChanged(0, userSearch.size)
+                        adapter.setUserItem(userSearch)
+                        adapter.notifyItemRangeChanged(0, userSearch.size)
 
                         with(restartBinding.rvUserList) {
                             layoutManager = LinearLayoutManager(this@RestartActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
-                            adapter = userAdapter
+                            adapter = this@RestartActivity.adapter
                         }
                     }
                 } else {
                     restartBinding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@RestartActivity,
-                        "getPelanggan | onResponse", response.message()
+                        this@RestartActivity, "getPelanggan | onResponse", response.message()
                     )
                 }
             }
@@ -91,8 +93,7 @@ class RestartActivity : AppCompatActivity() {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 restartBinding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@RestartActivity,
-                    "getPelanggan | onFailure", t.message.toString()
+                    this@RestartActivity, "getPelanggan | onFailure", t.message.toString()
                 )
             }
         })

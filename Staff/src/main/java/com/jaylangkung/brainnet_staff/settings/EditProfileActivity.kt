@@ -2,6 +2,7 @@ package com.jaylangkung.brainnet_staff.settings
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ActivityEditProfileBinding
@@ -28,6 +29,13 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@EditProfileActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@EditProfileActivity, SettingActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val nama = myPreferences.getValue(Constants.USER_NAMA).toString()
@@ -40,6 +48,10 @@ class EditProfileActivity : AppCompatActivity() {
         binding.tvValueAddressEdit.setText(alamat)
         binding.tvValuePhoneEdit.setText(telp)
 
+        binding.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         binding.btnSave.setOnClickListener {
             if (validate()) {
                 binding.btnSave.startAnimation()
@@ -50,11 +62,6 @@ class EditProfileActivity : AppCompatActivity() {
                 editProfile(idadmin, editEmail, editName, editAddress, editPhone, tokenAuth)
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@EditProfileActivity, SettingActivity::class.java))
-        finish()
     }
 
     private fun validate(): Boolean {
@@ -100,8 +107,7 @@ class EditProfileActivity : AppCompatActivity() {
                         myPreferences.setValue(Constants.USER_ALAMAT, alamat)
                         myPreferences.setValue(Constants.USER_TELP, telp)
                         Toasty.success(this@EditProfileActivity, "Profil berhasil dirubah", Toasty.LENGTH_LONG).show()
-                        startActivity(Intent(this@EditProfileActivity, SettingActivity::class.java))
-                        finish()
+                        onBackPressedDispatcher.onBackPressed()
                     }
                 } else {
                     ErrorHandler().responseHandler(

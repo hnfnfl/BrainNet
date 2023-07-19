@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
@@ -42,13 +43,20 @@ class PembayaranActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@PembayaranActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@PembayaranActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSpinnerData()
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnConfirmPayment.setOnClickListener {
@@ -71,11 +79,6 @@ class PembayaranActivity : AppCompatActivity() {
                 mDialog.show()
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@PembayaranActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getSpinnerData() {

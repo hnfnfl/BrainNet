@@ -4,19 +4,20 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.TodoEntity
+import com.jaylangkung.brainnet_staff.data_class.TodoResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityToDoBinding
 import com.jaylangkung.brainnet_staff.databinding.BottomSheetTodoBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
-import com.jaylangkung.brainnet_staff.data_class.TodoEntity
-import com.jaylangkung.brainnet_staff.data_class.TodoResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -41,11 +42,18 @@ class TodoActivity : AppCompatActivity() {
         myPreferences = MySharedPreferences(this@TodoActivity)
         todoAdapter = TodoAdapter()
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@TodoActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.fabAddTodo.setOnClickListener {
@@ -82,11 +90,6 @@ class TodoActivity : AppCompatActivity() {
         getTodo(tokenAuth)
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@TodoActivity, MainActivity::class.java))
-        finish()
-    }
-
     private fun getTodo(tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.getTodo(tokenAuth).enqueue(object : Callback<TodoResponse> {
@@ -111,20 +114,16 @@ class TodoActivity : AppCompatActivity() {
                                 val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
                                 val idtodoList = listTodo[position].idtodo_list
 
-                                val mDialog = MaterialDialog.Builder(this@TodoActivity as Activity)
-                                    .setTitle("Selesaikan ToDo")
-                                    .setMessage("Apakah Anda yakin ingin menyelesaikan ToDo ini?")
-                                    .setCancelable(true)
-                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked)
-                                    { dialogInterface, _ ->
-                                        service.editTodo(idtodoList, idadmin, tokenAuth)
-                                            .enqueue(object : Callback<DefaultResponse> {
+                                val mDialog = MaterialDialog.Builder(this@TodoActivity as Activity).setTitle("Selesaikan ToDo")
+                                    .setMessage("Apakah Anda yakin ingin menyelesaikan ToDo ini?").setCancelable(true)
+                                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked) { dialogInterface, _ ->
+                                        service.editTodo(idtodoList, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
                                                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                                                     if (response.isSuccessful) {
                                                         if (response.body()!!.status == "success") {
                                                             Toasty.success(this@TodoActivity, "Todo berhasil diselesaikan", Toasty.LENGTH_LONG).show()
                                                             listTodo.removeAt(position)
-                                                            if (listTodo.isNullOrEmpty()) {
+                                                            if (listTodo.isEmpty()) {
                                                                 binding.empty.visibility = View.VISIBLE
                                                                 binding.loadingAnim.visibility = View.GONE
                                                                 listTodo.clear()
@@ -135,8 +134,7 @@ class TodoActivity : AppCompatActivity() {
                                                     } else {
                                                         binding.loadingAnim.visibility = View.GONE
                                                         ErrorHandler().responseHandler(
-                                                            this@TodoActivity,
-                                                            "editTodo | onResponse", response.message()
+                                                            this@TodoActivity, "editTodo | onResponse", response.message()
                                                         )
                                                     }
                                                 }
@@ -144,18 +142,14 @@ class TodoActivity : AppCompatActivity() {
                                                 override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                                                     binding.loadingAnim.visibility = View.GONE
                                                     ErrorHandler().responseHandler(
-                                                        this@TodoActivity,
-                                                        "editTodo | onResponse", t.message.toString()
+                                                        this@TodoActivity, "editTodo | onResponse", t.message.toString()
                                                     )
                                                 }
                                             })
                                         dialogInterface.dismiss()
-                                    }
-                                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                                    { dialogInterface, _ ->
+                                    }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
                                         dialogInterface.dismiss()
-                                    }
-                                    .build()
+                                    }.build()
                                 // Show Dialog
                                 mDialog.show()
                             }
@@ -171,8 +165,7 @@ class TodoActivity : AppCompatActivity() {
                 } else {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@TodoActivity,
-                        "getTodo | onResponse", response.message()
+                        this@TodoActivity, "getTodo | onResponse", response.message()
                     )
                 }
             }
@@ -180,8 +173,7 @@ class TodoActivity : AppCompatActivity() {
             override fun onFailure(call: Call<TodoResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@TodoActivity,
-                    "getTodo | onFailure", t.message.toString()
+                    this@TodoActivity, "getTodo | onFailure", t.message.toString()
                 )
             }
         })
