@@ -3,6 +3,7 @@ package com.jaylangkung.brainnet_staff.todo_list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jaylangkung.brainnet_staff.data_class.TodoEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemTodoListBinding
 
 class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoItemHolder>() {

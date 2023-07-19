@@ -1,4 +1,11 @@
-package com.jaylangkung.brainnet_staff.auth
+package com.jaylangkung.brainnet_staff.data_class
+
+class LoginResponse(
+    var status: String = "",
+    var message: String = "",
+    var data: ArrayList<StaffEntity>,
+    var tokenAuth: String = ""
+)
 
 class StaffEntity(
     var idadmin: String = "",

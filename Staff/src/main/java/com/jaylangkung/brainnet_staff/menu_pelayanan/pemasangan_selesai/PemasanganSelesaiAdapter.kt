@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.databinding.ItemPemasanganSelesaiBinding
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
 
 class PemasanganSelesaiAdapter : RecyclerView.Adapter<PemasanganSelesaiAdapter.PemasanganItemHolder>() {
 

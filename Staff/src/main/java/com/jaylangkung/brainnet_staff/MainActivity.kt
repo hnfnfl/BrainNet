@@ -1,6 +1,7 @@
 package com.jaylangkung.brainnet_staff
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -20,11 +21,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.jaylangkung.brainnet_staff.auth.LoginWebAppActivity
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.GangguanEntity
+import com.jaylangkung.brainnet_staff.data_class.GangguanResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityMainBinding
 import com.jaylangkung.brainnet_staff.databinding.BottomSheetMenuPelangganBinding
 import com.jaylangkung.brainnet_staff.databinding.BottomSheetMenuPelayananBinding
 import com.jaylangkung.brainnet_staff.gangguan.GangguanAdapter
-import com.jaylangkung.brainnet_staff.gangguan.GangguanEntity
 import com.jaylangkung.brainnet_staff.hal_baik.HalBaikActivity
 import com.jaylangkung.brainnet_staff.menu_pelanggan.AddCustomerActivity
 import com.jaylangkung.brainnet_staff.menu_pelanggan.CustomerActivationActivity
@@ -38,8 +41,6 @@ import com.jaylangkung.brainnet_staff.presensi.ScannerActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.GangguanResponse
 import com.jaylangkung.brainnet_staff.settings.SettingActivity
 import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
 import com.jaylangkung.brainnet_staff.todo_list.TodoActivity
@@ -68,16 +69,13 @@ class MainActivity : AppCompatActivity() {
         myPreferences = MySharedPreferences(this@MainActivity)
         gangguanAdapter = GangguanAdapter()
 
-        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED
-            &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this@MainActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this@MainActivity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA),
-                100
+                this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA), 100
             )
         }
 
@@ -93,10 +91,22 @@ class MainActivity : AppCompatActivity() {
 
             // Get new FCM registration token
             val deviceToken = task.result
-            insertToken(idadmin, deviceToken.toString())
+            addToken(idadmin, deviceToken.toString())
         })
 
         Firebase.messaging.subscribeToTopic("notifikasi")
+        Firebase.messaging.token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                addToken(idadmin, token)
+            } else {
+                // Handle the error
+                val exception = task.exception
+                exception?.message?.let {
+                    Log.e(ContentValues.TAG, "Error retrieving FCM registration token: $it")
+                }
+            }
+        }
 
         getGangguan(tokenAuth)
 
@@ -233,12 +243,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainActivity, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
-                onBackPressed()
+                finish()
             }
         }
     }
 
-    private fun insertToken(idadmin: String, device_token: String) {
+    private fun addToken(idadmin: String, device_token: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
         service.addToken(idadmin, device_token).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
@@ -248,16 +258,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@MainActivity,
-                        "insertToken | onResponse", response.message()
+                        this@MainActivity, "insertToken | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@MainActivity,
-                    "insertToken | onFailure", t.message.toString()
+                    this@MainActivity, "insertToken | onFailure", t.message.toString()
                 )
             }
         })
@@ -293,8 +301,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
-                        this@MainActivity,
-                        "getGangguan | onResponse", response.message()
+                        this@MainActivity, "getGangguan | onResponse", response.message()
                     )
                 }
             }
@@ -302,8 +309,7 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure(call: Call<GangguanResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@MainActivity,
-                    "getGangguan | onFailure", t.message.toString()
+                    this@MainActivity, "getGangguan | onFailure", t.message.toString()
                 )
             }
         })

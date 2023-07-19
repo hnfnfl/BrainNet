@@ -3,6 +3,7 @@ package com.jaylangkung.brainnet_staff.hal_baik
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jaylangkung.brainnet_staff.data_class.HalBaikEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemHalBaikBinding
 
 class HalBaikAdapter : RecyclerView.Adapter<HalBaikAdapter.HalBaikItemHolder>() {

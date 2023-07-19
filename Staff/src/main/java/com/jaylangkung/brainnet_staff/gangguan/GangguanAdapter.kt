@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.GangguanEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemGangguanBinding
 
 class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.GangguanItemHolder>() {

@@ -8,13 +8,9 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.*
 import com.jaylangkung.brainnet_staff.databinding.ActivityAddCustomerBinding
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.WilayahEntity
 import com.jaylangkung.brainnet_staff.retrofit.*
-import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.WilayahResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences

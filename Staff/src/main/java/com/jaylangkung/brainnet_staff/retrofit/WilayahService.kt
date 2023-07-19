@@ -1,6 +1,6 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
-import com.jaylangkung.brainnet_staff.retrofit.response.WilayahResponse
+import com.jaylangkung.brainnet_staff.data_class.WilayahResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

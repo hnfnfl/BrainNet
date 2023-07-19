@@ -3,6 +3,7 @@ package com.jaylangkung.brainnet_staff.notifikasi
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jaylangkung.brainnet_staff.data_class.NotifikasiEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemNotifikasiBinding
 
 class NotifikasiAdapter : RecyclerView.Adapter<NotifikasiAdapter.NotifItemHolder>() {

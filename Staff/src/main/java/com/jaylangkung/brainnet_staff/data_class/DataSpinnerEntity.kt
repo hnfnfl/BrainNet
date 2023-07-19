@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData
+package com.jaylangkung.brainnet_staff.data_class
 
 class DataSpinnerEntity(
     var idpaket_internet: String = "",

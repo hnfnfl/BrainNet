@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.UserDCEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemUserDcBinding
 
 class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.UserDCItemHolder>() {

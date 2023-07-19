@@ -1,6 +1,6 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
-import com.jaylangkung.brainnet_staff.retrofit.response.*
+import com.jaylangkung.brainnet_staff.data_class.*
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

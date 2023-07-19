@@ -14,8 +14,9 @@ import com.jaylangkung.brainnet_staff.databinding.ActivityToDoBinding
 import com.jaylangkung.brainnet_staff.databinding.BottomSheetTodoBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.TodoResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.TodoEntity
+import com.jaylangkung.brainnet_staff.data_class.TodoResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences

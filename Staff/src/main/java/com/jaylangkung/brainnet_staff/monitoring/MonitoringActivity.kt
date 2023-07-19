@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.EthernetEntity
+import com.jaylangkung.brainnet_staff.data_class.EthernetResponse
+import com.jaylangkung.brainnet_staff.data_class.UserDCEntity
+import com.jaylangkung.brainnet_staff.data_class.UserDCResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityMonitoringBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.EthernetResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.UserDCResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences

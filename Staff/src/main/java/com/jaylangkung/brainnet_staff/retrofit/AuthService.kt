@@ -1,8 +1,8 @@
 package com.jaylangkung.brainnet_staff.retrofit
 
-import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.LoginResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

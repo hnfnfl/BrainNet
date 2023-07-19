@@ -1,4 +1,9 @@
-package com.jaylangkung.brainnet_staff.tiang
+package com.jaylangkung.brainnet_staff.data_class
+
+class TiangResponse(
+    var status: String = "",
+    var data: ArrayList<TiangEntity>
+)
 
 class TiangEntity(
     var idtiang: String = "",
