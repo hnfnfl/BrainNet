@@ -352,6 +352,12 @@
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
+                        <com.nambimobile.widgets.efab.ExpandableFab
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            app:efab_orientation="portrait" />
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -362,74 +368,64 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/menu"
+    <com.nambimobile.widgets.efab.ExpandableFabLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu_animationDelayPerItem="50"
-        app:menu_backgroundColor="#80757575"
-        app:menu_buttonSpacing="0dp"
-        app:menu_colorNormal="@color/secondaryColor"
-        app:menu_colorPressed="@color/secondaryDarkColor"
-        app:menu_colorRipple="@color/secondaryColor"
-        app:menu_fab_size="normal"
-        app:menu_icon="@drawable/ic_scan_qr"
-        app:menu_labels_colorNormal="@color/primaryDarkColor"
-        app:menu_labels_cornerRadius="8dp"
-        app:menu_labels_ellipsize="none"
-        app:menu_labels_hideAnimation="@anim/fab_scale_down"
-        app:menu_labels_margin="0dp"
-        app:menu_labels_maxLines="-1"
-        app:menu_labels_padding="8dp"
-        app:menu_labels_position="left"
-        app:menu_labels_showAnimation="@anim/fab_scale_up"
-        app:menu_labels_showShadow="true"
-        app:menu_labels_singleLine="false"
-        app:menu_labels_textColor="#FFFFFF"
-        app:menu_labels_textSize="14sp"
-        app:menu_openDirection="up"
-        app:menu_shadowColor="#66000000"
-        app:menu_shadowRadius="4dp"
-        app:menu_shadowXOffset="1dp"
-        app:menu_shadowYOffset="3dp"
-        app:menu_showShadow="true">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.github.clans.fab.FloatingActionButton
+        <com.nambimobile.widgets.efab.Overlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:overlay_alpha="0.75"
+            app:overlay_color="#515151"
+            app:overlay_openingAnimationDurationMs="200" />
+
+        <com.nambimobile.widgets.efab.ExpandableFab
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="12dp"
+            app:efab_closingAnticipateTension="0"
+            app:efab_fabOptionSize="custom"
+            app:efab_firstFabOptionMarginPx="150"
+            app:efab_icon="@drawable/ic_scan_qr"
+            app:efab_iconAnimationRotationDeg="90"
+            app:efab_size="custom"
+            app:efab_successiveFabOptionMarginPx="120"
+            app:fabCustomSize="65dp"
+            app:maxImageSize="38dp" />
+
+        <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_web_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_internet"
-            app:fab_colorNormal="@color/primaryColor"
-            app:fab_colorPressed="@color/primaryDarkColor"
-            app:fab_label="@string/login_webapp"
-            app:fab_size="normal" />
+            app:fab_icon="@drawable/ic_internet"
+            app:label_backgroundColor="@color/secondaryColor"
+            app:label_text="@string/login_webapp"
+            app:label_textColor="@color/white"
+            app:maxImageSize="30dp" />
 
-        <com.github.clans.fab.FloatingActionButton
+        <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_tiang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_pole"
-            app:fab_colorNormal="@color/primaryColor"
-            app:fab_colorPressed="@color/primaryDarkColor"
-            app:fab_label="@string/edit_data_tiang"
-            app:fab_size="normal" />
+            app:fab_icon="@drawable/ic_pole"
+            app:label_backgroundColor="@color/secondaryColor"
+            app:label_text="@string/edit_data_tiang"
+            app:maxImageSize="30dp" />
 
-        <com.github.clans.fab.FloatingActionButton
+        <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_presensi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_calendar"
-            android:tint="@color/white"
-            app:fab_colorNormal="@color/primaryColor"
-            app:fab_colorPressed="@color/primaryDarkColor"
-            app:fab_label="@string/presensi"
-            app:fab_size="normal" />
+            app:fab_icon="@drawable/ic_calendar"
+            app:label_backgroundColor="@color/secondaryColor"
+            app:label_text="@string/presensi"
+            app:maxImageSize="30dp" />
 
-    </com.github.clans.fab.FloatingActionMenu>
+    </com.nambimobile.widgets.efab.ExpandableFabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
