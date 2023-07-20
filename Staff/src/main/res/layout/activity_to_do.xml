@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="18dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rv_todo_list"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,6 +24,8 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:contentDescription="@string/btn_back"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +44,7 @@
         android:id="@+id/rv_todo_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         android:paddingHorizontal="24dp"
         android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
