@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         myPreferences = MySharedPreferences(this@MainActivity)
         adapter = GangguanAdapter()
         askPermission()
-        askPermissionPushNotification()
 
         val nama = myPreferences.getValue(Constants.USER_NAMA)
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
@@ -296,30 +295,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun askPermission() {
-        if (
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@MainActivity, arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ), 100
-            )
-        }
-    }
+        val cameraPermission = Manifest.permission.CAMERA
+        val readStoragePermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val writeStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
+        val permissionsToRequest = mutableListOf<String>()
 
-    private fun askPermissionPushNotification() {
+        // Check for notification permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                    this@MainActivity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101
-                )
+                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
             }
+        }
+
+        // Check for camera, storage, and location permissions
+        if (ContextCompat.checkSelfPermission(this@MainActivity, cameraPermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(cameraPermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, readStoragePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(readStoragePermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, writeStoragePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(writeStoragePermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, locationPermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(locationPermission)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity, permissionsToRequest.toTypedArray(), 100
+            )
         }
     }
 }
