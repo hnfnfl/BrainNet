@@ -65,7 +65,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listPemasangan = listData
-                        adapter.setPemasanganItem(listPemasangan)
+                        adapter.setItem(listPemasangan)
                         adapter.notifyItemRangeChanged(0, listPemasangan.size)
 
                         with(binding.rvPemasanganSelesai) {
@@ -83,36 +83,36 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                                     .setMessage("Apakah Anda yakin ingin menyelesaikan pemasangan ini?").setCancelable(true)
                                     .setPositiveButton(getString(R.string.yes), R.drawable.ic_checked) { dialogInterface, _ ->
                                         service.insertBayarTeknisi(idpelanggan, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-                                                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                                                    if (response.isSuccessful) {
-                                                        if (response.body()!!.status == "success") {
-                                                            Toasty.success(
-                                                                this@PemasanganSelesaiActivity, "Pemasangan berhasil diselesaikan", Toasty.LENGTH_LONG
-                                                            ).show()
-                                                            listPemasangan.removeAt(position)
-                                                            if (listPemasangan.isEmpty()) {
-                                                                binding.empty.visibility = View.VISIBLE
-                                                                binding.loadingAnim.visibility = View.GONE
-                                                                listPemasangan.clear()
-                                                            }
-                                                            adapter.setPemasanganItem(listPemasangan)
-                                                            adapter.notifyItemRangeChanged(0, listPemasangan.size)
+                                            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                                                if (response.isSuccessful) {
+                                                    if (response.body()!!.status == "success") {
+                                                        Toasty.success(
+                                                            this@PemasanganSelesaiActivity, "Pemasangan berhasil diselesaikan", Toasty.LENGTH_LONG
+                                                        ).show()
+                                                        listPemasangan.removeAt(position)
+                                                        if (listPemasangan.isEmpty()) {
+                                                            binding.empty.visibility = View.VISIBLE
+                                                            binding.loadingAnim.visibility = View.GONE
+                                                            listPemasangan.clear()
                                                         }
-                                                    } else {
-                                                        binding.loadingAnim.visibility = View.GONE
-                                                        ErrorHandler().responseHandler(
-                                                            this@PemasanganSelesaiActivity, "insertBayarTeknisi | onResponse", response.message()
-                                                        )
+                                                        adapter.setItem(listPemasangan)
+                                                        adapter.notifyItemRangeChanged(0, listPemasangan.size)
                                                     }
-                                                }
-
-                                                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                                                } else {
                                                     binding.loadingAnim.visibility = View.GONE
                                                     ErrorHandler().responseHandler(
-                                                        this@PemasanganSelesaiActivity, "insertBayarTeknisi | onResponse", t.message.toString()
+                                                        this@PemasanganSelesaiActivity, "insertBayarTeknisi | onResponse", response.message()
                                                     )
                                                 }
-                                            })
+                                            }
+
+                                            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                                                binding.loadingAnim.visibility = View.GONE
+                                                ErrorHandler().responseHandler(
+                                                    this@PemasanganSelesaiActivity, "insertBayarTeknisi | onResponse", t.message.toString()
+                                                )
+                                            }
+                                        })
                                         dialogInterface.dismiss()
                                     }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
                                         dialogInterface.dismiss()
@@ -126,7 +126,7 @@ class PemasanganSelesaiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listPemasangan.clear()
-                        adapter.setPemasanganItem(listPemasangan)
+                        adapter.setItem(listPemasangan)
                         adapter.notifyItemRangeChanged(0, listPemasangan.size)
                     }
                 } else {

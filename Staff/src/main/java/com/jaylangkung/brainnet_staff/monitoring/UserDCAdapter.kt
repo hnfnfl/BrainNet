@@ -7,18 +7,18 @@ import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.data_class.UserDCEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemUserDcBinding
 
-class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.UserDCItemHolder>() {
+class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.ItemHolder>() {
 
-    private var listUserDC = ArrayList<UserDCEntity>()
+    private var list = ArrayList<UserDCEntity>()
 
-    fun setUserDCItem(todoItem: List<UserDCEntity>?) {
+    fun setItem(todoItem: List<UserDCEntity>?) {
         if (todoItem == null) return
-        listUserDC.clear()
-        listUserDC.addAll(todoItem)
-        notifyItemRangeChanged(0, listUserDC.size)
+        list.clear()
+        list.addAll(todoItem)
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class UserDCItemHolder(private val binding: ItemUserDcBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemUserDcBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(userDCItem: UserDCEntity) {
             with(binding) {
                 tvName.text = userDCItem.nama
@@ -31,17 +31,17 @@ class UserDCAdapter : RecyclerView.Adapter<UserDCAdapter.UserDCItemHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserDCItemHolder {
-        val itemUserDCBinding = ItemUserDcBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserDCItemHolder(itemUserDCBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val binding = ItemUserDcBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: UserDCItemHolder, position: Int) {
-        val vendorItem = listUserDC[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = listUserDC.size
+    override fun getItemCount(): Int = list.size
 }
 
 

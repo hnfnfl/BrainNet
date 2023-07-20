@@ -8,18 +8,18 @@ import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.data_class.EthernetEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemEthernetBinding
 
-class EthernetAdapter : RecyclerView.Adapter<EthernetAdapter.EthernetItemHolder>() {
+class EthernetAdapter : RecyclerView.Adapter<EthernetAdapter.ItemHolder>() {
 
-    private var listEthernet = ArrayList<EthernetEntity>()
+    private var list = ArrayList<EthernetEntity>()
 
-    fun setEthernetItem(todoItem: List<EthernetEntity>?) {
-        if (todoItem == null) return
-        listEthernet.clear()
-        listEthernet.addAll(todoItem)
-        notifyItemRangeChanged(0, listEthernet.size)
+    fun setItem(item: List<EthernetEntity>?) {
+        if (item == null) return
+        list.clear()
+        list.addAll(item)
+        notifyItemRangeChanged(0, list.size)
     }
 
-    class EthernetItemHolder(private val binding: ItemEthernetBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemEthernetBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(ethernetItem: EthernetEntity) {
             with(binding) {
                 tvEthernet.text = ethernetItem.name
@@ -30,17 +30,17 @@ class EthernetAdapter : RecyclerView.Adapter<EthernetAdapter.EthernetItemHolder>
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EthernetItemHolder {
-        val itemEthernetBinding = ItemEthernetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EthernetItemHolder(itemEthernetBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val binding = ItemEthernetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: EthernetItemHolder, position: Int) {
-        val vendorItem = listEthernet[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = listEthernet.size
+    override fun getItemCount(): Int = list.size
 }
 
 

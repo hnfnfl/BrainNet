@@ -63,38 +63,45 @@ class CustomerActivationActivity : AppCompatActivity() {
         val listTerminal = ArrayList<String>()
         listTerminal.add("Tidak")
         listTerminal.add("Ya")
-        binding.spinnerIsterminal.item = listTerminal as List<Any>?
-        binding.spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                isterminal = listTerminal[p2]
+
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            spinnerIsterminal.item = listTerminal as List<Any>?
+            spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    isterminal = listTerminal[p2]
+                }
 
-        }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+            }
 
-        binding.btnActivateCustomer.setOnClickListener {
-            if (validate()) {
-                val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
-                    .setTitle("Aktivasi Pelanggan Baru")
-                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
-                    { dialogInterface, _ ->
-                        insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+
+            btnActivateCustomer.setOnClickListener {
+                if (validate()) {
+                    val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
+                        .setTitle("Aktivasi Pelanggan Baru")
+                        .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
+                        { dialogInterface, _ ->
+                            insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
+                            dialogInterface.dismiss()
+                        }
+                        .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
+                        { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
     }
@@ -209,7 +216,7 @@ class CustomerActivationActivity : AppCompatActivity() {
             }
             idpaketinstalasi == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Paket Instalasi tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
+                false
             }
             else -> true
         }

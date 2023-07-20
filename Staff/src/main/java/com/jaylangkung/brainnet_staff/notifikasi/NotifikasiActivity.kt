@@ -49,7 +49,6 @@ class NotifikasiActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-
     }
 
     private fun getNotification(tokenAuth: String) {
@@ -61,7 +60,7 @@ class NotifikasiActivity : AppCompatActivity() {
                         binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         listNotif = listData
-                        adapter.setNotifItem(listNotif)
+                        adapter.setItem(listNotif)
                         adapter.notifyItemRangeChanged(0, listNotif.size)
 
 
@@ -75,13 +74,12 @@ class NotifikasiActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listNotif.clear()
-                        adapter.setNotifItem(listNotif)
+                        adapter.setItem(listNotif)
                         adapter.notifyItemRangeChanged(0, listNotif.size)
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@NotifikasiActivity,
-                        "getNotification | onResponse", response.message()
+                        this@NotifikasiActivity, "getNotification | onResponse", response.message()
                     )
                 }
             }
@@ -89,8 +87,7 @@ class NotifikasiActivity : AppCompatActivity() {
             override fun onFailure(call: Call<NotifikasiResponse>, t: Throwable) {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
-                    this@NotifikasiActivity,
-                    "getNotification | onFailure", t.message.toString()
+                    this@NotifikasiActivity, "getNotification | onFailure", t.message.toString()
                 )
             }
         })

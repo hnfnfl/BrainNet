@@ -6,16 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.data_class.TodoEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemTodoListBinding
 
-class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoItemHolder>() {
+class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ItemHolder>() {
 
-    private var listTodo = ArrayList<TodoEntity>()
+    private var list = ArrayList<TodoEntity>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    fun setTodoItem(todoItem: List<TodoEntity>?) {
+    fun setItem(todoItem: List<TodoEntity>?) {
         if (todoItem == null) return
-        listTodo.clear()
-        listTodo.addAll(todoItem)
-        notifyItemRangeChanged(0, listTodo.size)
+        list.clear()
+        list.addAll(todoItem)
+        notifyItemRangeChanged(0, list.size)
     }
 
     interface OnItemClickCallback {
@@ -26,7 +26,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoItemHolder>() {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    class TodoItemHolder(private val binding: ItemTodoListBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemTodoListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(todoItem: TodoEntity) {
             with(binding) {
                 tvTodoList.text = todoItem.todo
@@ -35,20 +35,20 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoItemHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoItemHolder {
-        val itemTodoBinding = ItemTodoListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TodoItemHolder(itemTodoBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val binding = ItemTodoListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TodoItemHolder, position: Int) {
-        val vendorItem = listTodo[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
         holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(listTodo, position)
+            onItemClickCallback.onItemClicked(list, position)
         }
     }
 
-    override fun getItemCount(): Int = listTodo.size
+    override fun getItemCount(): Int = list.size
 }
 
 

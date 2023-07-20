@@ -9,9 +9,17 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
-import com.jaylangkung.brainnet_staff.data_class.*
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.WilayahEntity
+import com.jaylangkung.brainnet_staff.data_class.WilayahResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityAddCustomerBinding
-import com.jaylangkung.brainnet_staff.retrofit.*
+import com.jaylangkung.brainnet_staff.retrofit.ApiWilayah
+import com.jaylangkung.brainnet_staff.retrofit.AuthService
+import com.jaylangkung.brainnet_staff.retrofit.DataService
+import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
+import com.jaylangkung.brainnet_staff.retrofit.WilayahService
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -61,52 +69,53 @@ class AddCustomerActivity : AppCompatActivity() {
         getProvinsi()
         getSpinnerData()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnAddCustomer.setOnClickListener {
-            if (validate()) {
-                val noktp = binding.customerInputKtp.text.toString()
-                val namaPelanggan = binding.customerName.text.toString()
-                val alamatPelanggan = binding.customerAddress.text.toString()
-                val rt = binding.customerRt.text.toString()
-                val rw = binding.customerRw.text.toString()
-                val nohp = binding.customerPhone.text.toString()
-                val alamatPasang = binding.customerAddressInstall.text.toString()
-                val lokasi = binding.customerLocation.text.toString()
+            btnAddCustomer.setOnClickListener {
+                if (validate()) {
+                    val noktp = customerInputKtp.text.toString()
+                    val namaPelanggan = customerName.text.toString()
+                    val alamatPelanggan = customerAddress.text.toString()
+                    val rt = customerRt.text.toString()
+                    val rw = customerRw.text.toString()
+                    val nohp = customerPhone.text.toString()
+                    val alamatPasang = customerAddressInstall.text.toString()
+                    val lokasi = customerLocation.text.toString()
 
-                val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity).setTitle("Tambahkan Pelanggan Baru")
-                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator").setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user) { dialogInterface, _ ->
-                        insertPelanggan(
-                            noktp,
-                            namaPelanggan,
-                            alamatPelanggan,
-                            rt,
-                            rw,
-                            kelurahan,
-                            kecamatan,
-                            kotaKab,
-                            provinsi,
-                            nohp,
-                            marketing,
-                            alamatPasang,
-                            paketInternet,
-                            rekanan,
-                            lokasi,
-                            penagih,
-                            tokenAuth
-                        )
-                        dialogInterface.dismiss()
-                    }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }.build()
-                // Show Dialog
-                mDialog.show()
+                    val mDialog = MaterialDialog.Builder(this@AddCustomerActivity as Activity).setTitle("Tambahkan Pelanggan Baru")
+                        .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator").setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), R.drawable.ic_add_user) { dialogInterface, _ ->
+                            insertPelanggan(
+                                noktp,
+                                namaPelanggan,
+                                alamatPelanggan,
+                                rt,
+                                rw,
+                                kelurahan,
+                                kecamatan,
+                                kotaKab,
+                                provinsi,
+                                nohp,
+                                marketing,
+                                alamatPasang,
+                                paketInternet,
+                                rekanan,
+                                lokasi,
+                                penagih,
+                                tokenAuth
+                            )
+                            dialogInterface.dismiss()
+                        }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }.build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
-
     }
 
     private fun getProvinsi() {
@@ -351,80 +360,98 @@ class AddCustomerActivity : AppCompatActivity() {
     }
 
     private fun validate(): Boolean {
-        when {
-            binding.customerInputKtp.text.toString() == "" -> {
-                binding.customerInputKtp.error = "Nomor KTP tidak boleh kosong"
-                binding.customerInputKtp.requestFocus()
-                return false
+        binding.apply {
+            return when {
+                customerInputKtp.text.toString() == "" -> {
+                    customerInputKtp.error = "Nomor KTP tidak boleh kosong"
+                    customerInputKtp.requestFocus()
+                    false
+                }
+
+                customerName.text.toString() == "" -> {
+                    customerName.error = "Nama Pelanggan tidak boleh kosong"
+                    customerName.requestFocus()
+                    false
+                }
+
+                customerAddress.text.toString() == "" -> {
+                    customerAddress.error = "Alamat Pelanggan tidak boleh kosong"
+                    customerAddress.requestFocus()
+                    false
+                }
+
+                customerRt.text.toString() == "" -> {
+                    customerRt.error = "RT tidak boleh kosong"
+                    customerRt.requestFocus()
+                    false
+                }
+
+                customerRw.text.toString() == "" -> {
+                    customerRw.error = "RW tidak boleh kosong"
+                    customerRw.requestFocus()
+                    false
+                }
+
+                customerPhone.text.toString() == "" -> {
+                    customerPhone.error = "Nomor HP tidak boleh kosong"
+                    customerPhone.requestFocus()
+                    false
+                }
+
+                customerAddressInstall.text.toString() == "" -> {
+                    customerAddressInstall.error = "Alamat Pemasangan tidak boleh kosong"
+                    customerAddressInstall.requestFocus()
+                    false
+                }
+
+                customerLocation.text.toString() == "" -> {
+                    customerLocation.error = "Lokasi tidak boleh kosong"
+                    customerLocation.requestFocus()
+                    false
+                }
+
+                provinsi == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Provinsi tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                kotaKab == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Kota/Kab tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                kecamatan == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Kecamatan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                kelurahan == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Kelurahan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                paketInternet == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Paket Internet tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                marketing == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Marketing tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                rekanan == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Rekanan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                penagih == "" -> {
+                    Toasty.warning(this@AddCustomerActivity, "Penagih tidak boleh kosong", Toasty.LENGTH_SHORT).show()
+                    false
+                }
+
+                else -> true
             }
-            binding.customerName.text.toString() == "" -> {
-                binding.customerName.error = "Nama Pelanggan tidak boleh kosong"
-                binding.customerName.requestFocus()
-                return false
-            }
-            binding.customerAddress.text.toString() == "" -> {
-                binding.customerAddress.error = "Alamat Pelanggan tidak boleh kosong"
-                binding.customerAddress.requestFocus()
-                return false
-            }
-            binding.customerRt.text.toString() == "" -> {
-                binding.customerRt.error = "RT tidak boleh kosong"
-                binding.customerRt.requestFocus()
-                return false
-            }
-            binding.customerRw.text.toString() == "" -> {
-                binding.customerRw.error = "RW tidak boleh kosong"
-                binding.customerRw.requestFocus()
-                return false
-            }
-            binding.customerPhone.text.toString() == "" -> {
-                binding.customerPhone.error = "Nomor HP tidak boleh kosong"
-                binding.customerPhone.requestFocus()
-                return false
-            }
-            binding.customerAddressInstall.text.toString() == "" -> {
-                binding.customerAddressInstall.error = "Alamat Pemasangan tidak boleh kosong"
-                binding.customerAddressInstall.requestFocus()
-                return false
-            }
-            binding.customerLocation.text.toString() == "" -> {
-                binding.customerLocation.error = "Lokasi tidak boleh kosong"
-                binding.customerLocation.requestFocus()
-                return false
-            }
-            provinsi == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Provinsi tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            kotaKab == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Kota/Kab tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            kecamatan == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Kecamatan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            kelurahan == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Kelurahan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            paketInternet == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Paket Internet tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            marketing == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Marketing tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            rekanan == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Rekanan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            penagih == "" -> {
-                Toasty.warning(this@AddCustomerActivity, "Penagih tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
-            }
-            else -> return true
         }
     }
 

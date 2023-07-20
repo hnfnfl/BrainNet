@@ -1,6 +1,5 @@
 package com.jaylangkung.brainnet_staff.tiang
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -47,29 +46,31 @@ class ScannerTiangActivity : AppCompatActivity() {
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
-        codeScanner = CodeScanner(this@ScannerTiangActivity, binding.scannerView).apply {
-            camera = CodeScanner.CAMERA_BACK
-            formats = CodeScanner.ALL_FORMATS
-            autoFocusMode = AutoFocusMode.CONTINUOUS
-            scanMode = ScanMode.SINGLE
-            isAutoFocusEnabled = true
-            isFlashEnabled = false
-            startPreview()
-
-            decodeCallback = DecodeCallback {
-                runOnUiThread {
-                    binding.loadingAnim.visibility = View.VISIBLE
-                    getTiang(it.text, tokenAuth)
-                }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            errorCallback = ErrorCallback {
-                runOnUiThread {
-                    Toasty.error(this@ScannerTiangActivity, "Camera initialization error: ${it.message}", Toast.LENGTH_LONG).show()
+            codeScanner = CodeScanner(this@ScannerTiangActivity, scannerView).apply {
+                camera = CodeScanner.CAMERA_BACK
+                formats = CodeScanner.ALL_FORMATS
+                autoFocusMode = AutoFocusMode.CONTINUOUS
+                scanMode = ScanMode.SINGLE
+                isAutoFocusEnabled = true
+                isFlashEnabled = false
+                startPreview()
+
+                decodeCallback = DecodeCallback {
+                    runOnUiThread {
+                        loadingAnim.visibility = View.VISIBLE
+                        getTiang(it.text, tokenAuth)
+                    }
+                }
+
+                errorCallback = ErrorCallback {
+                    runOnUiThread {
+                        Toasty.error(this@ScannerTiangActivity, "Camera initialization error: ${it.message}", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -103,9 +104,9 @@ class ScannerTiangActivity : AppCompatActivity() {
                     vibrate()
                     if (response.body()!!.status == "success") {
                         val intent = Intent(this@ScannerTiangActivity, EditTiangActivity::class.java).apply {
-                                putExtra(EditTiangActivity.idtiang, response.body()!!.data[0].idtiang)
-                                putExtra(EditTiangActivity.serialNumber, response.body()!!.data[0].serial_number)
-                            }
+                            putExtra(EditTiangActivity.idtiang, response.body()!!.data[0].idtiang)
+                            putExtra(EditTiangActivity.serialNumber, response.body()!!.data[0].serial_number)
+                        }
                         startActivity(intent)
                         finish()
                     } else if (response.body()!!.status == "empty") {

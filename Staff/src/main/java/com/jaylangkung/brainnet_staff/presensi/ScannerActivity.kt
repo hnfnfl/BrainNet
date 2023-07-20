@@ -1,6 +1,5 @@
 package com.jaylangkung.brainnet_staff.presensi
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -48,31 +47,33 @@ class ScannerActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
-        codeScanner = CodeScanner(this@ScannerActivity, binding.scannerView).apply {
-            camera = CodeScanner.CAMERA_BACK
-            formats = CodeScanner.ALL_FORMATS
-            autoFocusMode = AutoFocusMode.CONTINUOUS
-            scanMode = ScanMode.SINGLE
-            isAutoFocusEnabled = true
-            isFlashEnabled = false
-            startPreview()
-
-            decodeCallback = DecodeCallback {
-                runOnUiThread {
-                    binding.loadingAnim.visibility = View.VISIBLE
-                    getAbsensi(it.text, idadmin, tokenAuth)
-                }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            errorCallback = ErrorCallback {
-                runOnUiThread {
-                    ErrorHandler().responseHandler(
-                        this@ScannerActivity, "codeScanner | errorCallback", it.message.toString()
-                    )
+            codeScanner = CodeScanner(this@ScannerActivity, scannerView).apply {
+                camera = CodeScanner.CAMERA_BACK
+                formats = CodeScanner.ALL_FORMATS
+                autoFocusMode = AutoFocusMode.CONTINUOUS
+                scanMode = ScanMode.SINGLE
+                isAutoFocusEnabled = true
+                isFlashEnabled = false
+                startPreview()
+
+                decodeCallback = DecodeCallback {
+                    runOnUiThread {
+                        loadingAnim.visibility = View.VISIBLE
+                        getAbsensi(it.text, idadmin, tokenAuth)
+                    }
+                }
+
+                errorCallback = ErrorCallback {
+                    runOnUiThread {
+                        ErrorHandler().responseHandler(
+                            this@ScannerActivity, "codeScanner | errorCallback", it.message.toString()
+                        )
+                    }
                 }
             }
         }
@@ -108,12 +109,15 @@ class ScannerActivity : AppCompatActivity() {
                         "success" -> {
                             Toasty.success(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
                         }
+
                         "already" -> {
                             Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
                         }
+
                         "not_match" -> {
                             Toasty.warning(this@ScannerActivity, response.body()!!.message, Toast.LENGTH_LONG).show()
                         }
+
                         else -> {
                             Toasty.error(this@ScannerActivity, response.message(), Toasty.LENGTH_LONG).show()
                         }

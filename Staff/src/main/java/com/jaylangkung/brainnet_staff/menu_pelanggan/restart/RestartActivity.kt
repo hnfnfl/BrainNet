@@ -24,15 +24,15 @@ import retrofit2.Response
 
 class RestartActivity : AppCompatActivity() {
 
-    private lateinit var restartBinding: ActivityRestartBinding
+    private lateinit var binding: ActivityRestartBinding
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: UserAdapter
     private var userSearch: ArrayList<UserEntity> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restartBinding = ActivityRestartBinding.inflate(layoutInflater)
-        setContentView(restartBinding.root)
+        binding = ActivityRestartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         myPreferences = MySharedPreferences(this@RestartActivity)
         adapter = UserAdapter()
 
@@ -47,20 +47,22 @@ class RestartActivity : AppCompatActivity() {
 
         getPelanggan(tokenAuth)
 
-        restartBinding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+
+            svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    adapter.filter.filter(query)
+                    return true
+                }
+            })
         }
-
-        restartBinding.svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                adapter.filter.filter(query)
-                return true
-            }
-        })
     }
 
     private fun getPelanggan(tokenAuth: String) {
@@ -69,13 +71,13 @@ class RestartActivity : AppCompatActivity() {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
-                        restartBinding.loadingAnim.visibility = View.GONE
+                        binding.loadingAnim.visibility = View.GONE
                         val listData = response.body()!!.data
                         userSearch = listData
-                        adapter.setUserItem(userSearch)
+                        adapter.setItem(userSearch)
                         adapter.notifyItemRangeChanged(0, userSearch.size)
 
-                        with(restartBinding.rvUserList) {
+                        with(binding.rvUserList) {
                             layoutManager = LinearLayoutManager(this@RestartActivity)
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
@@ -83,7 +85,7 @@ class RestartActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    restartBinding.loadingAnim.visibility = View.GONE
+                    binding.loadingAnim.visibility = View.GONE
                     ErrorHandler().responseHandler(
                         this@RestartActivity, "getPelanggan | onResponse", response.message()
                     )
@@ -91,7 +93,7 @@ class RestartActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                restartBinding.loadingAnim.visibility = View.GONE
+                binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@RestartActivity, "getPelanggan | onFailure", t.message.toString()
                 )

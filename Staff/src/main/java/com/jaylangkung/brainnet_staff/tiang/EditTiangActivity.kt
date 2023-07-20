@@ -19,10 +19,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityEditTiangBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -67,14 +67,16 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this@EditTiangActivity)
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnSave.setOnClickListener {
-            binding.btnSave.startAnimation()
-            val keterangan = binding.tvValueDesc.text.toString()
-            editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
+            btnSave.setOnClickListener {
+                btnSave.startAnimation()
+                val keterangan = tvValueDesc.text.toString()
+                editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
+            }
         }
     }
 

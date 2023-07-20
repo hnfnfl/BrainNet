@@ -5,10 +5,10 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityEditProfileBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -43,56 +43,67 @@ class EditProfileActivity : AppCompatActivity() {
         val alamat = myPreferences.getValue(Constants.USER_ALAMAT).toString()
         val telp = myPreferences.getValue(Constants.USER_TELP).toString()
 
-        binding.tvValueEmailEdit.setText(email)
-        binding.tvValueNameEdit.setText(nama)
-        binding.tvValueAddressEdit.setText(alamat)
-        binding.tvValuePhoneEdit.setText(telp)
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+            tvValueEmailEdit.setText(email)
+            tvValueNameEdit.setText(nama)
+            tvValueAddressEdit.setText(alamat)
+            tvValuePhoneEdit.setText(telp)
 
-        binding.btnSave.setOnClickListener {
-            if (validate()) {
-                binding.btnSave.startAnimation()
-                val editEmail = binding.tvValueEmailEdit.text.toString()
-                val editName = binding.tvValueNameEdit.text.toString()
-                val editAddress = binding.tvValueAddressEdit.text.toString()
-                val editPhone = binding.tvValuePhoneEdit.text.toString()
-                editProfile(idadmin, editEmail, editName, editAddress, editPhone, tokenAuth)
+
+
+            btnSave.setOnClickListener {
+                if (validate()) {
+                    btnSave.startAnimation()
+                    val editEmail = tvValueEmailEdit.text.toString()
+                    val editName = tvValueNameEdit.text.toString()
+                    val editAddress = tvValueAddressEdit.text.toString()
+                    val editPhone = tvValuePhoneEdit.text.toString()
+                    editProfile(idadmin, editEmail, editName, editAddress, editPhone, tokenAuth)
+                }
             }
         }
     }
 
     private fun validate(): Boolean {
         fun String.isValidEmail() = isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-        when {
-            binding.tvValueEmailEdit.text.toString() == "" -> {
-                binding.tvValueEmailEdit.error = getString(R.string.email_cant_empty)
-                binding.tvValueEmailEdit.requestFocus()
-                return false
+        binding.apply {
+            return when {
+                tvValueEmailEdit.text.toString() == "" -> {
+                    tvValueEmailEdit.error = getString(R.string.email_cant_empty)
+                    tvValueEmailEdit.requestFocus()
+                    false
+                }
+
+                !tvValueEmailEdit.text.toString().isValidEmail() -> {
+                    tvValueEmailEdit.error = getString(R.string.email_format_error)
+                    tvValueEmailEdit.requestFocus()
+                    false
+                }
+
+                tvValueNameEdit.text.toString() == "" -> {
+                    tvValueNameEdit.error = "Nama tidak boleh kosong"
+                    tvValueNameEdit.requestFocus()
+                    false
+                }
+
+                tvValueAddressEdit.text.toString() == "" -> {
+                    tvValueAddressEdit.error = "Alamat tidak boleh kosong"
+                    tvValueAddressEdit.requestFocus()
+                    false
+                }
+
+                tvValuePhoneEdit.text.toString() == "" -> {
+                    tvValuePhoneEdit.error = "Nomor HP tidak boleh kosong"
+                    tvValuePhoneEdit.requestFocus()
+                    false
+                }
+
+                else -> true
             }
-            !binding.tvValueEmailEdit.text.toString().isValidEmail() -> {
-                binding.tvValueEmailEdit.error = getString(R.string.email_format_error)
-                binding.tvValueEmailEdit.requestFocus()
-                return false
-            }
-            binding.tvValueNameEdit.text.toString() == "" -> {
-                binding.tvValueNameEdit.error = "Nama tidak boleh kosong"
-                binding.tvValueNameEdit.requestFocus()
-                return false
-            }
-            binding.tvValueAddressEdit.text.toString() == "" -> {
-                binding.tvValueAddressEdit.error = "Alamat tidak boleh kosong"
-                binding.tvValueAddressEdit.requestFocus()
-                return false
-            }
-            binding.tvValuePhoneEdit.text.toString() == "" -> {
-                binding.tvValuePhoneEdit.error = "Nomor HP tidak boleh kosong"
-                binding.tvValuePhoneEdit.requestFocus()
-                return false
-            }
-            else -> return true
         }
     }
 
@@ -111,8 +122,7 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@EditProfileActivity,
-                        "editProfile | onResponse", response.message()
+                        this@EditProfileActivity, "editProfile | onResponse", response.message()
                     )
                 }
             }
@@ -120,8 +130,7 @@ class EditProfileActivity : AppCompatActivity() {
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 binding.btnSave.endAnimation()
                 ErrorHandler().responseHandler(
-                    this@EditProfileActivity,
-                    "editProfile | onFailure", t.message.toString()
+                    this@EditProfileActivity, "editProfile | onFailure", t.message.toString()
                 )
             }
         })

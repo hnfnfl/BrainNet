@@ -43,46 +43,47 @@ class SettingActivity : AppCompatActivity() {
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnEditProfile.setOnClickListener {
-            startActivity(Intent(this@SettingActivity, EditProfileActivity::class.java))
-            finish()
-        }
+            btnEditProfile.setOnClickListener {
+                startActivity(Intent(this@SettingActivity, EditProfileActivity::class.java))
+                finish()
+            }
 
-        binding.btnLogout.setOnClickListener {
-            val mDialog =
-                MaterialDialog.Builder(this@SettingActivity)
-                    .setTitle("Logout")
-                    .setMessage(getString(R.string.confirm_logout))
-                    .setCancelable(true).setPositiveButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }.setNegativeButton(getString(R.string.yes), R.drawable.ic_logout) { dialogInterface, _ ->
-                        myPreferences.setValue(Constants.USER, "")
-                        myPreferences.setValue(Constants.USER_IDADMIN, "")
-                        myPreferences.setValue(Constants.USER_EMAIL, "")
-                        myPreferences.setValue(Constants.USER_NAMA, "")
-                        myPreferences.setValue(Constants.USER_ALAMAT, "")
-                        myPreferences.setValue(Constants.USER_TELP, "")
-                        myPreferences.setValue(Constants.FOTO_PATH, "")
-                        myPreferences.setValue(Constants.FOTO_PATH, "")
-                        myPreferences.setValue(Constants.DEVICE_TOKEN, "")
-                        myPreferences.setValue(Constants.TokenAuth, "")
-                        logout(idadmin)
-                        startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
-                        finish()
-                        dialogInterface.dismiss()
-                    }.build()
-            mDialog.show()
-        }
+            btnLogout.setOnClickListener {
+                val mDialog =
+                    MaterialDialog.Builder(this@SettingActivity)
+                        .setTitle("Logout")
+                        .setMessage(getString(R.string.confirm_logout))
+                        .setCancelable(true).setPositiveButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }.setNegativeButton(getString(R.string.yes), R.drawable.ic_logout) { dialogInterface, _ ->
+                            myPreferences.setValue(Constants.USER, "")
+                            myPreferences.setValue(Constants.USER_IDADMIN, "")
+                            myPreferences.setValue(Constants.USER_EMAIL, "")
+                            myPreferences.setValue(Constants.USER_NAMA, "")
+                            myPreferences.setValue(Constants.USER_ALAMAT, "")
+                            myPreferences.setValue(Constants.USER_TELP, "")
+                            myPreferences.setValue(Constants.FOTO_PATH, "")
+                            myPreferences.setValue(Constants.FOTO_PATH, "")
+                            myPreferences.setValue(Constants.DEVICE_TOKEN, "")
+                            myPreferences.setValue(Constants.TokenAuth, "")
+                            logout(idadmin)
+                            startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
+                            finish()
+                            dialogInterface.dismiss()
+                        }.build()
+                mDialog.show()
+            }
 
-        binding.appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
-
-        binding.appVersion.setOnClickListener {
-            startActivity(Intent(this@SettingActivity, LoggerActivity::class.java))
-            finish()
+            appVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME)
+            appVersion.setOnClickListener {
+                startActivity(Intent(this@SettingActivity, LoggerActivity::class.java))
+                finish()
+            }
         }
     }
 

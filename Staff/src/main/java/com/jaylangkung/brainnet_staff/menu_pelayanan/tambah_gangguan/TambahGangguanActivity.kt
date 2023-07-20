@@ -8,13 +8,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
-import com.jaylangkung.brainnet_staff.databinding.ActivityTambahGangguanBinding
 import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.databinding.ActivityTambahGangguanBinding
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
-import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -66,35 +66,37 @@ class TambahGangguanActivity : AppCompatActivity() {
         listPrioritas.add("High")
         listPrioritas.add("Urgent")
 
-        binding.spinnerKepada.item = listKepada as List<Any>?
-        binding.spinnerPrioritas.item = listPrioritas as List<Any>?
-
-        binding.spinnerKepada.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                kepada = listKepada[p2]
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            spinnerKepada.item = listKepada as List<Any>?
+            spinnerPrioritas.item = listPrioritas as List<Any>?
 
-        }
+            spinnerKepada.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    kepada = listKepada[p2]
+                }
 
-        binding.spinnerPrioritas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                prioritas = listPrioritas[p2]
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            spinnerPrioritas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    prioritas = listPrioritas[p2]
+                }
 
-        }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+            }
 
-        binding.btnAddGangguan.setOnClickListener {
-            if (validate()) {
-                val isi = binding.tvTambahGangguanIsi.text.toString()
-                insertGangguan(idpelanggan, kepada, prioritas, isi, idadmin, tokenAuth)
+            btnAddGangguan.setOnClickListener {
+                if (validate()) {
+                    val isi = tvTambahGangguanIsi.text.toString()
+                    insertGangguan(idpelanggan, kepada, prioritas, isi, idadmin, tokenAuth)
+                }
             }
         }
     }
@@ -126,16 +128,14 @@ class TambahGangguanActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@TambahGangguanActivity,
-                        "getSpinnerData | onResponse", response.message()
+                        this@TambahGangguanActivity, "getSpinnerData | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@TambahGangguanActivity,
-                    "getSpinnerData | onFailure", t.message.toString()
+                    this@TambahGangguanActivity, "getSpinnerData | onFailure", t.message.toString()
                 )
             }
         })
@@ -147,30 +147,29 @@ class TambahGangguanActivity : AppCompatActivity() {
                 Toasty.warning(this@TambahGangguanActivity, "Pelanggan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                 false
             }
+
             kepada == "" -> {
                 Toasty.warning(this@TambahGangguanActivity, "Kepada tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                 false
             }
+
             prioritas == "" -> {
                 Toasty.warning(this@TambahGangguanActivity, "Prioritas tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                 false
             }
+
             binding.tvTambahGangguanIsi.text.toString() == "" -> {
                 binding.tvTambahGangguanIsi.error = "Isi tidak boleh kosong"
                 binding.tvTambahGangguanIsi.requestFocus()
                 false
             }
+
             else -> true
         }
     }
 
     private fun insertGangguan(
-        idpelanggan: String,
-        kepada: String,
-        prioritas: String,
-        isi: String,
-        idadmin: String,
-        tokenAuth: String
+        idpelanggan: String, kepada: String, prioritas: String, isi: String, idadmin: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertGangguan(
@@ -184,16 +183,14 @@ class TambahGangguanActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@TambahGangguanActivity,
-                        "insertGangguan | onResponse", response.message()
+                        this@TambahGangguanActivity, "insertGangguan | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@TambahGangguanActivity,
-                    "insertGangguan | onResponse", t.message.toString()
+                    this@TambahGangguanActivity, "insertGangguan | onResponse", t.message.toString()
                 )
             }
         })

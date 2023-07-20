@@ -9,7 +9,8 @@ import com.jaylangkung.brainnet_staff.utils.room.LoggerDatabase
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class ErrorHandler {
 
@@ -21,9 +22,11 @@ class ErrorHandler {
             message.contains("failed to connect to", ignoreCase = true) -> {
                 Toasty.error(context, "Terdapat permasalahan pada server", Toasty.LENGTH_LONG).show()
             }
+
             message.contains("Unable to resolve host") -> {
                 Toasty.error(context, "Silahkan cek koneksi internet Anda", Toasty.LENGTH_LONG).show()
             }
+
             else -> {
                 Toasty.error(context, R.string.try_again, Toasty.LENGTH_LONG).show()
             }

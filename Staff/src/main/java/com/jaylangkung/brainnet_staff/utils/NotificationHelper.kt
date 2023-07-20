@@ -25,16 +25,18 @@ class NotificationHelper(private val context: Context) {
 
         val sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.packageName + "/" + R.raw.ringtone1)
         val channelId = "Default Channel"
-        val mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
-            .setColor(ContextCompat.getColor(context, R.color.primaryColor))
-            .setContentTitle(title)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setLights(Color.BLUE, 200, 200)
-            .setSound(sound)
+        val mBuilder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId).apply {
+            color = ContextCompat.getColor(context, R.color.primaryColor)
+            setContentTitle(title)
+            setSmallIcon(R.mipmap.ic_launcher)
+            setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            setContentIntent(pendingIntent)
+            setAutoCancel(true)
+            priority = NotificationCompat.PRIORITY_HIGH
+            setLights(Color.BLUE, 200, 200)
+            setSound(sound)
+        }
+
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

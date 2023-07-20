@@ -46,37 +46,39 @@ class LoginWebAppActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
-        codeScanner = CodeScanner(this@LoginWebAppActivity, binding.scannerView).apply {
-            camera = CodeScanner.CAMERA_BACK
-            formats = CodeScanner.ALL_FORMATS
-            autoFocusMode = AutoFocusMode.CONTINUOUS
-            scanMode = ScanMode.SINGLE
-            isAutoFocusEnabled = true
-            isFlashEnabled = false
-            startPreview()
-
-            decodeCallback = DecodeCallback {
-                runOnUiThread {
-                    binding.loadingAnim.visibility = View.VISIBLE
-                    if (it.text.contains("webapp", ignoreCase = true)) {
-                        insertWebApp(idadmin, it.text, tokenAuth)
-                    } else {
-                        Toasty.warning(this@LoginWebAppActivity, "QR Code tidak valid", Toasty.LENGTH_SHORT, true).show()
-                        vibrate()
-                        onBackPressedDispatcher.onBackPressed()
-                    }
-                }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            errorCallback = ErrorCallback {
-                runOnUiThread {
-                    ErrorHandler().responseHandler(
-                        this@LoginWebAppActivity, "codeScanner | errorCallback", it.message.toString()
-                    )
+            codeScanner = CodeScanner(this@LoginWebAppActivity, scannerView).apply {
+                camera = CodeScanner.CAMERA_BACK
+                formats = CodeScanner.ALL_FORMATS
+                autoFocusMode = AutoFocusMode.CONTINUOUS
+                scanMode = ScanMode.SINGLE
+                isAutoFocusEnabled = true
+                isFlashEnabled = false
+                startPreview()
+
+                decodeCallback = DecodeCallback {
+                    runOnUiThread {
+                        binding.loadingAnim.visibility = View.VISIBLE
+                        if (it.text.contains("webapp", ignoreCase = true)) {
+                            insertWebApp(idadmin, it.text, tokenAuth)
+                        } else {
+                            Toasty.warning(this@LoginWebAppActivity, "QR Code tidak valid", Toasty.LENGTH_SHORT, true).show()
+                            vibrate()
+                            onBackPressedDispatcher.onBackPressed()
+                        }
+                    }
+                }
+
+                errorCallback = ErrorCallback {
+                    runOnUiThread {
+                        ErrorHandler().responseHandler(
+                            this@LoginWebAppActivity, "codeScanner | errorCallback", it.message.toString()
+                        )
+                    }
                 }
             }
         }

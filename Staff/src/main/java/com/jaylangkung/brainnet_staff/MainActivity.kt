@@ -282,7 +282,7 @@ class MainActivity : AppCompatActivity() {
                         binding.empty.visibility = View.GONE
                         val listData = response.body()!!.data
                         listGangguanAdapter = listData
-                        adapter.setListGangguanItem(listGangguanAdapter)
+                        adapter.setItem(listGangguanAdapter)
                         adapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
 
                         with(binding.rvGangguan) {
@@ -295,7 +295,7 @@ class MainActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listGangguanAdapter.clear()
-                        adapter.setListGangguanItem(listGangguanAdapter)
+                        adapter.setItem(listGangguanAdapter)
                         adapter.notifyItemRangeChanged(0, listGangguanAdapter.size)
                     }
                 } else {

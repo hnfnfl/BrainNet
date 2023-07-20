@@ -44,15 +44,17 @@ class GangguanDetailActivity : AppCompatActivity() {
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
-        binding.btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnSubmit.setOnClickListener {
-            val penyelesaian = binding.tvValueSolution.text.toString()
-            if (validate()) {
-                binding.btnSubmit.startAnimation()
-                editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth)
+            btnSubmit.setOnClickListener {
+                val penyelesaian = binding.tvValueSolution.text.toString()
+                if (validate()) {
+                    binding.btnSubmit.startAnimation()
+                    editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth)
+                }
             }
         }
     }
@@ -71,12 +73,13 @@ class GangguanDetailActivity : AppCompatActivity() {
         service.editGangguan(idgangguan, penyelesaian, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
+                    binding.btnSubmit.endAnimation()
                     if (response.body()!!.status == "success") {
-                        binding.btnSubmit.endAnimation()
                         startActivity(Intent(this@GangguanDetailActivity, MainActivity::class.java))
                         Toasty.success(this@GangguanDetailActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                     }
                 } else {
+                    binding.btnSubmit.endAnimation()
                     ErrorHandler().responseHandler(
                         this@GangguanDetailActivity, "editGangguan | onResponse", response.message()
                     )
