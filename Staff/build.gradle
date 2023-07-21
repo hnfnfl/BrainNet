@@ -103,7 +103,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //for pict image
-    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
     implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
 
     //qrcode reader
