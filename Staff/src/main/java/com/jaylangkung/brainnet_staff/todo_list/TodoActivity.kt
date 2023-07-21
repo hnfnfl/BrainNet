@@ -62,7 +62,10 @@ class TodoActivity : AppCompatActivity() {
             fabAddTodo.setOnClickListener {
                 addTodoBinding = BottomSheetTodoBinding.inflate(layoutInflater)
 
-                val dialog = BottomSheetDialog(this@TodoActivity)
+                val dialog = BottomSheetDialog(this@TodoActivity).apply {
+                    setCancelable(true)
+                    setContentView(addTodoBinding.root)
+                }
                 val btnSave = addTodoBinding.btnSaveTodo
 
                 btnSave.setOnClickListener {
@@ -86,8 +89,7 @@ class TodoActivity : AppCompatActivity() {
                     })
                     dialog.dismiss()
                 }
-                dialog.setCancelable(true)
-                dialog.setContentView(addTodoBinding.root)
+
                 dialog.show()
             }
         }

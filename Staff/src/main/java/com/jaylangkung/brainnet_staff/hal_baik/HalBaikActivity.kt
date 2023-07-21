@@ -60,7 +60,10 @@ class HalBaikActivity : AppCompatActivity() {
             fabAddGoodThings.setOnClickListener {
                 addHalBaikBinding = BottomSheetHalBaikBinding.inflate(layoutInflater)
 
-                val dialog = BottomSheetDialog(this@HalBaikActivity)
+                val dialog = BottomSheetDialog(this@HalBaikActivity).apply {
+                    setCancelable(true)
+                    setContentView(addHalBaikBinding.root)
+                }
                 val btnSave = addHalBaikBinding.btnSaveHalBaik
 
                 btnSave.setOnClickListener {
@@ -90,12 +93,11 @@ class HalBaikActivity : AppCompatActivity() {
                     })
                     dialog.dismiss()
                 }
-                dialog.setCancelable(true)
-                dialog.setContentView(addHalBaikBinding.root)
+
                 dialog.show()
             }
         }
-        }
+    }
 
     private fun getHalBaik(idadmin: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)

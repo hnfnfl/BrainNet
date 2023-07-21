@@ -151,7 +151,10 @@ class MainActivity : AppCompatActivity() {
             llMenuUser.setOnClickListener {
                 bottomSheetMenuPelangganBinding = BottomSheetMenuPelangganBinding.inflate(layoutInflater)
 
-                val dialog = BottomSheetDialog(this@MainActivity)
+                val dialog = BottomSheetDialog(this@MainActivity).apply {
+                    setCancelable(true)
+                    setContentView(bottomSheetMenuPelangganBinding.root)
+                }
 
                 bottomSheetMenuPelangganBinding.llRestart.setOnClickListener {
                     startActivity(Intent(this@MainActivity, RestartActivity::class.java))
@@ -171,15 +174,16 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
 
-                dialog.setCancelable(true)
-                dialog.setContentView(bottomSheetMenuPelangganBinding.root)
                 dialog.show()
             }
 
             llServices.setOnClickListener {
                 bottomSheetMenuPelayananBinding = BottomSheetMenuPelayananBinding.inflate(layoutInflater)
 
-                val dialog = BottomSheetDialog(this@MainActivity)
+                val dialog = BottomSheetDialog(this@MainActivity).apply {
+                    setCancelable(true)
+                    setContentView(bottomSheetMenuPelayananBinding.root)
+                }
 
                 bottomSheetMenuPelayananBinding.llInsertInterference.setOnClickListener {
                     startActivity(Intent(this@MainActivity, TambahGangguanActivity::class.java))
@@ -206,8 +210,6 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
 
-                dialog.setCancelable(true)
-                dialog.setContentView(bottomSheetMenuPelayananBinding.root)
                 dialog.show()
             }
 
