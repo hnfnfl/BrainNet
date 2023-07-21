@@ -20,7 +20,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
-import com.jaylangkung.brainnet_staff.auth.LoginWebAppActivity
 import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.data_class.GangguanEntity
 import com.jaylangkung.brainnet_staff.data_class.GangguanResponse
@@ -37,12 +36,11 @@ import com.jaylangkung.brainnet_staff.menu_pelayanan.pemasangan_selesai.Pemasang
 import com.jaylangkung.brainnet_staff.menu_pelayanan.tambah_gangguan.TambahGangguanActivity
 import com.jaylangkung.brainnet_staff.monitoring.MonitoringActivity
 import com.jaylangkung.brainnet_staff.notifikasi.NotifikasiActivity
-import com.jaylangkung.brainnet_staff.presensi.ScannerActivity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
+import com.jaylangkung.brainnet_staff.scanner.ScannerActivity
 import com.jaylangkung.brainnet_staff.settings.SettingActivity
-import com.jaylangkung.brainnet_staff.tiang.ScannerTiangActivity
 import com.jaylangkung.brainnet_staff.todo_list.TodoActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
@@ -133,17 +131,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             fabPresensi.setOnClickListener {
-                startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
+                val intent = Intent(this@MainActivity, ScannerActivity::class.java).putExtra("caller", "presensi")
+                startActivity(intent)
                 finish()
             }
 
             fabTiang.setOnClickListener {
-                startActivity(Intent(this@MainActivity, ScannerTiangActivity::class.java))
+                val intent = Intent(this@MainActivity, ScannerActivity::class.java).putExtra("caller", "tiang")
+                startActivity(intent)
                 finish()
             }
 
             fabWebApp.setOnClickListener {
-                startActivity(Intent(this@MainActivity, LoginWebAppActivity::class.java))
+                val intent = Intent(this@MainActivity, ScannerActivity::class.java).putExtra("caller", "webapp")
+                startActivity(intent)
                 finish()
             }
 

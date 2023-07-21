@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presensi.ScannerActivity">
+    tools:context=".scanner.ScannerActivity">
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -31,10 +31,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/presensi"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="18sp" />
 

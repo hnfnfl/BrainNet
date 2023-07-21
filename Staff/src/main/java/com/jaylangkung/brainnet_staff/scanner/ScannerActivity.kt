@@ -1,4 +1,4 @@
-package com.jaylangkung.brainnet_staff.presensi
+package com.jaylangkung.brainnet_staff.scanner
 
 import android.content.Intent
 import android.os.Build
@@ -14,9 +14,11 @@ import com.budiyev.android.codescanner.*
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.TiangResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityScannerBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
+import com.jaylangkung.brainnet_staff.tiang.EditTiangActivity
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -46,10 +48,25 @@ class ScannerActivity : AppCompatActivity() {
 
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+        val caller = intent.getStringExtra("caller").toString()
 
         binding.apply {
             btnBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
+            }
+
+            when (caller) {
+                "presensi" -> {
+                    tvTitle.text = getString(R.string.presensi)
+                }
+
+                "webapp" -> {
+                    tvTitle.text = getString(R.string.login_webapp)
+                }
+
+                "tiang" -> {
+                    tvTitle.text = getString(R.string.edit_data_tiang)
+                }
             }
 
             codeScanner = CodeScanner(this@ScannerActivity, scannerView).apply {
@@ -64,7 +81,25 @@ class ScannerActivity : AppCompatActivity() {
                 decodeCallback = DecodeCallback {
                     runOnUiThread {
                         loadingAnim.visibility = View.VISIBLE
-                        getAbsensi(it.text, idadmin, tokenAuth)
+                        when (caller) {
+                            "presensi" -> {
+                                getAbsensi(it.text, idadmin, tokenAuth)
+                            }
+
+                            "webapp" -> {
+                                if (it.text.contains("webapp", ignoreCase = true)) {
+                                    insertWebApp(idadmin, it.text, tokenAuth)
+                                } else {
+                                    Toasty.warning(this@ScannerActivity, "QR Code tidak valid", Toasty.LENGTH_SHORT, true).show()
+                                    vibrate()
+                                    startPreview()
+                                }
+                            }
+
+                            "tiang" -> {
+                                getTiang(idadmin, tokenAuth)
+                            }
+                        }
                     }
                 }
 
@@ -73,6 +108,8 @@ class ScannerActivity : AppCompatActivity() {
                         ErrorHandler().responseHandler(
                             this@ScannerActivity, "codeScanner | errorCallback", it.message.toString()
                         )
+                        Toasty.error(this@ScannerActivity, it.message.toString(), Toasty.LENGTH_LONG).show()
+                        onBackPressedDispatcher.onBackPressed()
                     }
                 }
             }
@@ -134,6 +171,68 @@ class ScannerActivity : AppCompatActivity() {
                 binding.loadingAnim.visibility = View.GONE
                 ErrorHandler().responseHandler(
                     this@ScannerActivity, "getAbsensi | onFailure", t.message.toString()
+                )
+            }
+        })
+    }
+
+    private fun insertWebApp(idadmin: String, device_id: String, tokenAuth: String) {
+        val service = RetrofitClient().apiRequest().create(DataService::class.java)
+        service.insertWebApp(idadmin, device_id, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                binding.loadingAnim.visibility = View.GONE
+                if (response.isSuccessful) {
+                    vibrate()
+                    if (response.body()!!.status == "success") {
+                        Toasty.success(this@ScannerActivity, "Login berhasil", Toasty.LENGTH_LONG).show()
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                } else {
+                    ErrorHandler().responseHandler(
+                        this@ScannerActivity, "insertWebApp | onResponse", response.message()
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                binding.loadingAnim.visibility = View.GONE
+                ErrorHandler().responseHandler(
+                    this@ScannerActivity, "insertWebApp | onResponse", t.message.toString()
+                )
+            }
+        })
+    }
+
+    private fun getTiang(idadmin: String, tokenAuth: String) {
+        val service = RetrofitClient().apiRequest().create(DataService::class.java)
+        service.getTiang(idadmin, tokenAuth).enqueue(object : Callback<TiangResponse> {
+            override fun onResponse(call: Call<TiangResponse>, response: Response<TiangResponse>) {
+                binding.loadingAnim.visibility = View.GONE
+                if (response.isSuccessful) {
+                    vibrate()
+                    if (response.body()!!.status == "success") {
+                        val intent = Intent(this@ScannerActivity, EditTiangActivity::class.java).apply {
+                            putExtra(EditTiangActivity.idtiang, response.body()!!.data[0].idtiang)
+                            putExtra(EditTiangActivity.serialNumber, response.body()!!.data[0].serial_number)
+                        }
+                        startActivity(intent)
+                        finish()
+                    } else if (response.body()!!.status == "empty") {
+                        Toasty.warning(this@ScannerActivity, "Nomor Seri tiang tidak ditemukan", Toast.LENGTH_LONG).show()
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                } else {
+                    onBackPressedDispatcher.onBackPressed()
+                    ErrorHandler().responseHandler(
+                        this@ScannerActivity, "getTiang | onResponse", response.message()
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<TiangResponse>, t: Throwable) {
+                binding.loadingAnim.visibility = View.GONE
+                ErrorHandler().responseHandler(
+                    this@ScannerActivity, "getTiang | onFailure", t.message.toString()
                 )
             }
         })
