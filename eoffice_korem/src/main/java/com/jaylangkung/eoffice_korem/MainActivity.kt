@@ -53,14 +53,6 @@ class MainActivity : AppCompatActivity() {
         myPreferences = MySharedPreferences(this@MainActivity)
         askPermission()
 
-        val test = NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()
-        if (!test) {
-            val intent = Intent()
-            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
-            intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
-            startActivity(intent)
-        }
-
         Firebase.messaging.subscribeToTopic("eoffice_korem")
         Firebase.messaging.token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -172,49 +164,34 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    // Declare the launcher at the top of your Activity/Fragment:
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
-        } else {
-            // Inform user that that your app will not show notifications.
-            Toasty.warning(this@MainActivity, "Anda tidak dapat menerima notifikasi", Toasty.LENGTH_LONG).show()
-        }
-    }
-
     private fun askPermission() {
-        if (
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@MainActivity, arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                ), 100
-            )
+        val cameraPermission = Manifest.permission.CAMERA
+        val readStoragePermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val writeStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val permissionsToRequest = mutableListOf<String>()
+
+        // Check for notification permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
 
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-//                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                ActivityCompat.requestPermissions(
-                    this@MainActivity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100
-                )
-            }
+        // Check for camera, storage, and location permissions
+        if (ContextCompat.checkSelfPermission(this@MainActivity, cameraPermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(cameraPermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, readStoragePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(readStoragePermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, writeStoragePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(writeStoragePermission)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity, permissionsToRequest.toTypedArray(), 100
+            )
         }
     }
 }
