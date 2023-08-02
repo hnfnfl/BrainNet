@@ -70,6 +70,11 @@ class SuratMasukActivity : AppCompatActivity() {
                 ""
             }
 
+            if (nomerAgenda != "") {
+                binding.llMiliterNonmiliter.visibility = View.GONE
+                getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
+            }
+
             btnMiliter.setOnClickListener {
                 sumber = "militer"
                 getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
@@ -195,7 +200,7 @@ class SuratMasukActivity : AppCompatActivity() {
                         if (nomerAgenda != "") {
                             for (i in listData.indices) {
                                 if (listData[i].nomer_agenda == nomerAgenda) {
-                                    binding.rvSuratMasukList.scrollToPosition(i)
+                                    binding.rvSuratMasukList.smoothScrollToPosition(i)
                                     break
                                 }
                             }

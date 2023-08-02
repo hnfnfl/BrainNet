@@ -15,10 +15,10 @@ import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
 import com.jaylangkung.eoffice_korem.surat.showDisposisiRiwayat
-import com.jaylangkung.eoffice_korem.utils.showFilesSurat
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
+import com.jaylangkung.eoffice_korem.utils.showFilesSurat
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,6 +71,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                             editSuratKeluar(item.idsurat_keluar, "pengajuan", tokenAuth)
                         }
                     }
+
                     "PENGAJUAN" -> {
                         btnSkAjukan.visibility = View.GONE
                         if (iduser == item.tanda_tangan) {
@@ -82,6 +83,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                             btnSkAcc.visibility = View.GONE
                         }
                     }
+
                     else -> {
                         btnSkAjukan.visibility = View.GONE
                         btnSkAcc.visibility = View.GONE
@@ -106,26 +108,26 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         private fun editSuratKeluar(idsurat: String, status: String, tokenAuth: String) {
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
             service.editSuratKeluar(idsurat, "", "", "", "", status, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                        if (response.isSuccessful) {
-                            if (response.body()!!.status == "success") {
-                                Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                                itemView.context.startActivity(Intent(itemView.context, SuratKeluarActivity::class.java))
-                                (itemView.context as Activity).finish()
-                            }
-                        } else {
-                            ErrorHandler().responseHandler(
-                                itemView.context, "insertSuratDisposisi | onResponse", response.message()
-                            )
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status == "success") {
+                            Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                            itemView.context.startActivity(Intent(itemView.context, SuratKeluarActivity::class.java))
+                            (itemView.context as Activity).finish()
                         }
-                    }
-
-                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    } else {
                         ErrorHandler().responseHandler(
-                            itemView.context, "insertSuratDisposisi | onFailure", t.message.toString()
+                            itemView.context, "insertSuratDisposisi | onResponse", response.message()
                         )
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    ErrorHandler().responseHandler(
+                        itemView.context, "insertSuratDisposisi | onFailure", t.message.toString()
+                    )
+                }
+            })
         }
     }
 

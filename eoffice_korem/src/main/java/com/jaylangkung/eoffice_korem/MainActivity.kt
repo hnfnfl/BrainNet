@@ -7,20 +7,18 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
-import com.jaylangkung.eoffice_korem.auth.LoginWebappActivity
 import com.jaylangkung.eoffice_korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserSuratSpinnerData
 import com.jaylangkung.eoffice_korem.databinding.ActivityMainBinding
+import com.jaylangkung.eoffice_korem.notifikasi.NotificationHelper
 import com.jaylangkung.eoffice_korem.notifikasi.NotifikasiActivity
 import com.jaylangkung.eoffice_korem.profile.ProfileActivity
 import com.jaylangkung.eoffice_korem.retrofit.AuthService
@@ -30,11 +28,10 @@ import com.jaylangkung.eoffice_korem.surat.masuk.SuratMasukActivity
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.Calendar
 
 
 class MainActivity : AppCompatActivity() {
@@ -111,8 +108,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             fabLoginWebapp.setOnClickListener {
-                startActivity(Intent(this@MainActivity, LoginWebappActivity::class.java))
-                finish()
+//                startActivity(Intent(this@MainActivity, LoginWebappActivity::class.java))
+//                finish()
+                NotificationHelper(applicationContext).displayNotification(
+                    "testing",
+                    "Surat masuk SUDAH DIBACA, nomer Agenda E-OFFICE/B/B.07/23-0012, militer Kodam V/Brw, Dari: Aster Kasdam V/Brw, Perihal: ST, Ditujukan kepada: Kolonel M. I. Gogor A. A.Danrem Korem 083/Bdj, tertanggal surat: 13/July/2023"
+                )
             }
         }
     }
@@ -193,5 +194,10 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity, permissionsToRequest.toTypedArray(), 100
             )
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
     }
 }
