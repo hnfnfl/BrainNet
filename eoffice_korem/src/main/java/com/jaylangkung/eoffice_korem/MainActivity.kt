@@ -14,11 +14,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.jaylangkung.eoffice_korem.auth.LoginWebappActivity
 import com.jaylangkung.eoffice_korem.dataClass.DataSpinnerResponse
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.dataClass.UserSuratSpinnerData
 import com.jaylangkung.eoffice_korem.databinding.ActivityMainBinding
-import com.jaylangkung.eoffice_korem.notifikasi.NotificationHelper
 import com.jaylangkung.eoffice_korem.notifikasi.NotifikasiActivity
 import com.jaylangkung.eoffice_korem.profile.ProfileActivity
 import com.jaylangkung.eoffice_korem.retrofit.AuthService
@@ -32,7 +32,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Calendar
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -108,12 +107,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             fabLoginWebapp.setOnClickListener {
-//                startActivity(Intent(this@MainActivity, LoginWebappActivity::class.java))
-//                finish()
-                NotificationHelper(applicationContext).displayNotification(
-                    "testing",
-                    "Surat masuk SUDAH DIBACA, nomer Agenda E-OFFICE/B/B.07/23-0012, militer Kodam V/Brw, Dari: Aster Kasdam V/Brw, Perihal: ST, Ditujukan kepada: Kolonel M. I. Gogor A. A.Danrem Korem 083/Bdj, tertanggal surat: 13/July/2023"
-                )
+                startActivity(Intent(this@MainActivity, LoginWebappActivity::class.java))
+                finish()
             }
         }
     }
@@ -126,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     listUserSurat.clear()
-                    listUserSurat = response.body()!!.user_surat
+                    listUserSurat = response.body()!!.userSurat
                 } else {
                     ErrorHandler().responseHandler(
                         this@MainActivity, "getSuratSpinnerData | onResponse", response.message()
@@ -142,9 +137,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun addToken(iduser_aktivasi: String, deviceID: String) {
+    private fun addToken(iduserAktivasi: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.addToken(iduser_aktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
+        service.addToken(iduserAktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

@@ -16,30 +16,22 @@ interface AuthService {
     fun login(
         @Field("username") email: String,
         @Field("password") password: String,
-        @Field("device_id") device_id: String,
+        @Field("device_id") deviceId: String,
     ): Call<UserResponse>
 
     @FormUrlEncoded
     @POST("auth/addToken")
     fun addToken(
-        @Field("iduser_aktivasi") iduser_aktivasi: String,
-        @Field("device_token") device_token: String,
+        @Field("iduser_aktivasi") iduserAktivasi: String,
+        @Field("device_token") deviceToken: String,
     ): Call<DefaultResponse>
 
     //refresh auth token
     @FormUrlEncoded
     @POST("auth/refreshToken")
     fun refreshAuthToken(
-        @Field("iduser_aktivasi") iduser_aktivasi: String,
+        @Field("iduser_aktivasi") iduserAktivasi: String,
     ): Call<UserResponse>
-
-    //logout
-    @FormUrlEncoded
-    @POST("auth/logout")
-    fun logout(
-        @Field("iduser_aktivasi") iduser_aktivasi: String,
-    ): Call<DefaultResponse>
-
 
     @GET("auth/getSpinnerSurat")
     fun getSuratSpinnerData(): Call<DataSpinnerResponse>

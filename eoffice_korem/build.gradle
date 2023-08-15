@@ -14,8 +14,8 @@ android {
         applicationId "com.jaylangkung.eoffice_korem"
         minSdk 24
         targetSdk 33
-        versionCode 4
-        versionName "Beta 1.2"
+        versionCode 5
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,13 +25,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        applicationVariants.all {
-            variant ->
-                variant.outputs.each {
-                    output ->
-                        def name = "eoffice-Korem-083-BDJ.apk"
-                        output.outputFileName = name
-                }
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def name = "eoffice-Korem-083-BDJ.apk"
+                output.outputFileName = name
+            }
         }
     }
     compileOptions {
@@ -102,7 +100,7 @@ dependencies {
 
     //image getter from internet
     implementation 'com.github.bumptech.glide:glide:4.14.1'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.14.1'
 
     // dependency for slider view
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'

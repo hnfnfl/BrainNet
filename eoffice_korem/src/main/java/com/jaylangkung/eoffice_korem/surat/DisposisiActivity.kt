@@ -85,7 +85,7 @@ class DisposisiActivity : AppCompatActivity() {
             val idPenerimaIDList = ArrayList<String>()
             for (i in 0 until MainActivity.listUserSurat.size) {
                 val name = MainActivity.listUserSurat[i].nama
-                val id = MainActivity.listUserSurat[i].idsurat_user_aktivasi
+                val id = MainActivity.listUserSurat[i].idsuratUserAktivasi
                 val checkBox = CheckBox(this@DisposisiActivity)
                 checkBox.text = name
                 checkBox.tag = id
@@ -148,10 +148,10 @@ class DisposisiActivity : AppCompatActivity() {
     }
 
     private fun insertSuratDisposisi(
-        iduser: String, idsurat: String, tipe_surat: String, jenis: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String
+        iduser: String, idsurat: String, tipeSurat: String, jenis: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.insertSuratDisposisi(iduser, idsurat, tipe_surat, jenis, catatan, catatanTambahan, penerima, tokenAuth)
+        service.insertSuratDisposisi(iduser, idsurat, tipeSurat, jenis, catatan, catatanTambahan, penerima, tokenAuth)
             .enqueue(object : Callback<DefaultResponse> {
                 override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                     if (response.isSuccessful) {

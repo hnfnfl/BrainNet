@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.jaylangkung.eoffice_korem.MainActivity
 import com.jaylangkung.eoffice_korem.databinding.ActivityLoggerBinding
-import com.jaylangkung.korem.utils.room.Logger
-import com.jaylangkung.korem.utils.room.LoggerDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

@@ -37,9 +37,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d("TAG", "Refreshed token: $token")
     }
 
-    private fun addToken(iduser_aktivasi: String, deviceID: String) {
+    private fun addToken(iduserAktivasi: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.addToken(iduser_aktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
+        service.addToken(iduserAktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

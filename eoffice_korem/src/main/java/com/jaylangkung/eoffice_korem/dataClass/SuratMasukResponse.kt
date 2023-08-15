@@ -7,15 +7,15 @@ data class SuratMasukResponse(
 
 data class SuratMasukData(
     val bentuk: String,
-    val idsurat_masuk: String,
+    val idsuratMasuk: String,
     val img: ArrayList<SuratImg>?,
-    val nomer_agenda: String,
+    val nomerAgenda: String,
     val penerima: String,
     val riwayat: String,
-    val riwayat_disposisi: ArrayList<SuratRiwayatDisposisi>,
-    val status_surat: String,
+    val riwayatDisposisi: ArrayList<SuratRiwayatDisposisi>,
+    val statusSurat: String,
     val sumber: String,
-    val tanggal_surat: String
+    val tanggalSurat: String
 )
 
 data class SuratImg(

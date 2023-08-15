@@ -144,5 +144,6 @@
     <string name="balasan">Balasan</string>
     <string name="login_webapp">Login Web App</string>
     <string name="tambah_files">Tambahkan File Gambar/PDF</string>
+    <string name="close">tombol close</string>
 
 </resources>

@@ -7,6 +7,6 @@ data class NotifikasiResponse(
 
 data class NotifikasiData(
     val judul: String,
-    val notifikasi_user: String,
+    val notifikasiUser: String,
     val waktu: String
 )
