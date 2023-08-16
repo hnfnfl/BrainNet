@@ -5,7 +5,7 @@ data class DataSpinnerResponse(
 )
 
 data class UserSuratSpinnerData(
-    val idsuratUserAktivasi: String,
+    val idsurat_user_aktivasi: String,
     val nama: String,
     val nrp: String,
     val satuan: String

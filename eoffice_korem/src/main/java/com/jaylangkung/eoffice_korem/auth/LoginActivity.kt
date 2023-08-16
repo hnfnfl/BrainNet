@@ -63,21 +63,21 @@ class LoginActivity : AppCompatActivity() {
                 when (response.body()!!.status) {
                     "success" -> {
                         val dataUser = response.body()!!.data[0]
-                        if (dataUser.aksesSurat) {
+                        if (dataUser.akses_surat) {
                             myPreferences.setValue(Constants.USER, Constants.LOGIN)
-                            myPreferences.setValue(Constants.USER_IDAKTIVASI, dataUser.iduserAktivasi)
+                            myPreferences.setValue(Constants.USER_IDAKTIVASI, dataUser.iduser_aktivasi)
                             myPreferences.setValue(Constants.USER_NAMA, dataUser.nama)
                             myPreferences.setValue(Constants.USERNAME, dataUser.username)
                             myPreferences.setValue(Constants.USER_TELP, dataUser.notelp)
                             myPreferences.setValue(Constants.FOTO_PATH, dataUser.img)
                             myPreferences.setValue(Constants.USER_PANGKAT, dataUser.pangkat)
-                            myPreferences.setValue(Constants.USER_PANGKATJABATAN, dataUser.pangkatJabatan)
+                            myPreferences.setValue(Constants.USER_PANGKATJABATAN, dataUser.pangkat_jabatan)
                             myPreferences.setValue(Constants.USER_JABATAN, dataUser.jabatan)
                             myPreferences.setValue(Constants.USER_CORPS, dataUser.corps)
-                            myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggalLahir)
+                            myPreferences.setValue(Constants.USER_TGLLAHIR, dataUser.tanggal_lahir)
                             myPreferences.setValue(Constants.TokenAuth, response.body()!!.tokenAuth)
                             myPreferences.setValueBool(Constants.USER_AKSES_SURAT, true)
-                            myPreferences.setValue(Constants.USER_IDAKSES_SURAT, dataUser.iduserSurat)
+                            myPreferences.setValue(Constants.USER_IDAKSES_SURAT, dataUser.iduser_surat)
                             startActivity(Intent(this@LoginActivity, com.jaylangkung.eoffice_korem.MainActivity::class.java))
                             finish()
                         } else {

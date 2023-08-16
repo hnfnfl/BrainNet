@@ -8,17 +8,17 @@ data class UserResponse(
 )
 
 data class UserData(
-    val aksesSurat: Boolean,
+    val akses_surat: Boolean,
     val corps: String,
-    val iduserAktivasi: String,
-    val iduserSurat: String,
+    val iduser_aktivasi: String,
+    val iduser_surat: String,
     val img: String,
     val jabatan: String,
     val nama: String,
     val notelp: String,
     val pangkat: String,
-    val pangkatJabatan: String,
-    val tanggalLahir: String,
-    val tmtJabatan: String,
+    val pangkat_jabatan: String,
+    val tanggal_lahir: String,
+    val tmt_jabatan: String,
     val username: String
 )

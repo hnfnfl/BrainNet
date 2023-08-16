@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     listUserSurat.clear()
-                    listUserSurat = response.body()!!.userSurat
+                    listUserSurat = response.body()?.userSurat ?: ArrayList()
                 } else {
                     ErrorHandler().responseHandler(
                         this@MainActivity, "getSuratSpinnerData | onResponse", response.message()

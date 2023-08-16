@@ -126,7 +126,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             penerimaSpinner.item = listUser as List<Any>?
             penerimaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    idPenerima = listUserSurat[p2].idsuratUserAktivasi
+                    idPenerima = listUserSurat[p2].idsurat_user_aktivasi
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}

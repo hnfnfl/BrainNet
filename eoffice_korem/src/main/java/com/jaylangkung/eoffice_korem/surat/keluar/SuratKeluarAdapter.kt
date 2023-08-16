@@ -50,34 +50,34 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
             val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
 
             binding.apply {
-                tvSkNomorAgenda.text = item.nomerAgenda
+                tvSkNomorAgenda.text = item.nomer_agenda
                 tvSkPenerima.text = itemView.context.getString(R.string.dispo_penerima, item.penerima)
                 tvSkPerihal.text = itemView.context.getString(R.string.sk_perihal, item.perihal)
-                tvSkDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggalSurat)
-                tvSkStatus.text = itemView.context.getString(R.string.cuti_status_view, item.statusSuratKeluar)
+                tvSkDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggal_surat)
+                tvSkStatus.text = itemView.context.getString(R.string.cuti_status_view, item.status_surat_keluar)
 
                 btnSkTeruskan.setOnClickListener {
                     itemView.context.startActivity(
                         Intent(itemView.context, DisposisiActivity::class.java).putExtra("caller", "surat_keluar").putExtra("jenis", "terusan")
-                            .putExtra("idsurat", item.idsuratKeluar)
+                            .putExtra("idsurat", item.idsurat_keluar)
                     )
                 }
 
-                when (item.statusSuratKeluar) {
+                when (item.status_surat_keluar) {
                     "DRAFT" -> {
                         btnSkAjukan.visibility = View.VISIBLE
                         btnSkAcc.visibility = View.GONE
                         btnSkAjukan.setOnClickListener {
-                            editSuratKeluar(item.idsuratKeluar, "pengajuan", tokenAuth)
+                            editSuratKeluar(item.idsurat_keluar, "pengajuan", tokenAuth)
                         }
                     }
 
                     "PENGAJUAN" -> {
                         btnSkAjukan.visibility = View.GONE
-                        if (iduser == item.tandaTangan) {
+                        if (iduser == item.tanda_tangan) {
                             btnSkAcc.visibility = View.VISIBLE
                             btnSkAcc.setOnClickListener {
-                                editSuratKeluar(item.idsuratKeluar, "diacc", tokenAuth)
+                                editSuratKeluar(item.idsurat_keluar, "diacc", tokenAuth)
                             }
                         } else {
                             btnSkAcc.visibility = View.GONE
@@ -97,7 +97,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 if (item.riwayat.toInt() != 0) {
                     btnSkRiwayat.visibility = View.VISIBLE
                     btnSkRiwayat.setOnClickListener {
-                        showDisposisiRiwayat(itemView.context, item.riwayatDisposisi)
+                        showDisposisiRiwayat(itemView.context, item.riwayat_disposisi)
                     }
                 } else {
                     btnSkRiwayat.visibility = View.GONE

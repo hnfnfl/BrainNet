@@ -85,7 +85,7 @@ class DisposisiActivity : AppCompatActivity() {
             val idPenerimaIDList = ArrayList<String>()
             for (i in 0 until MainActivity.listUserSurat.size) {
                 val name = MainActivity.listUserSurat[i].nama
-                val id = MainActivity.listUserSurat[i].idsuratUserAktivasi
+                val id = MainActivity.listUserSurat[i].idsurat_user_aktivasi
                 val checkBox = CheckBox(this@DisposisiActivity)
                 checkBox.text = name
                 checkBox.tag = id

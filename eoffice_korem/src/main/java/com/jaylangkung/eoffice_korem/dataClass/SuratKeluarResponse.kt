@@ -6,15 +6,15 @@ data class SuratKeluarResponse(
 )
 
 data class SuratKeluarData(
-    val idsuratKeluar: String,
+    val idsurat_keluar: String,
     val img: ArrayList<SuratImg>?,
-    val nomerAgenda: String,
+    val nomer_agenda: String,
     val penerima: String,
     val perihal: String,
     val pdf: ArrayList<SuratPdf>?,
     val riwayat: String,
-    val riwayatDisposisi: ArrayList<SuratRiwayatDisposisi>,
-    val statusSuratKeluar: String,
-    val tandaTangan: String,
-    val tanggalSurat: String
+    val riwayat_disposisi: ArrayList<SuratRiwayatDisposisi>,
+    val status_surat_keluar: String,
+    val tanda_tangan: String,
+    val tanggal_surat: String
 )

@@ -4,9 +4,9 @@ data class SuratRiwayatDisposisi(
     val aksi: String,
     val balasan: String?,
     val catatan: String,
-    val catatanTambahan: String,
+    val catatan_tambahan: String,
     val nomerAgenda: String,
     val penerima: String,
     val pengirim: String,
-    val tanggalDisposisi: String
+    val tanggal_disposisi: String
 )

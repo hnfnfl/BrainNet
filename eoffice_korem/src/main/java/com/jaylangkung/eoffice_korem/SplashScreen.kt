@@ -41,13 +41,17 @@ class SplashScreen : AppCompatActivity() {
         val suratTipe = intent.getStringExtra("suratType").toString()
 
         binding.apply {
-            if (myPreferences.getValue(Constants.firstTime) == "firstTime") {
+            val firstTimeVideo = myPreferences.getValue(Constants.firstTime)
+            var delay = 500L
+            if (firstTimeVideo == "firstTime") {
                 val videoUri = Uri.parse("android.resource://$packageName/${R.raw.splashscreen}")
                 videoView.setVideoURI(videoUri)
                 videoView.start()
+                delay = 5000L
             } else {
                 videoView.visibility = View.GONE
                 splashLayout.visibility = View.VISIBLE
+                myPreferences.setValue(Constants.firstTime, "notFirstTime")
             }
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -88,7 +92,7 @@ class SplashScreen : AppCompatActivity() {
                     startActivity(Intent(this@SplashScreen, LoginActivity::class.java))
                     finish()
                 }
-            }, 5000)
+            }, delay)
         }
     }
 

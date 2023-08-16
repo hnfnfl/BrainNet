@@ -48,30 +48,30 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
             val tokenAuth = itemView.context.getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
             binding.apply {
-                tvSmNomorAgenda.text = item.nomerAgenda
+                tvSmNomorAgenda.text = item.nomer_agenda
                 tvSmPenerima.text = itemView.context.getString(R.string.dispo_penerima, item.penerima)
                 tvSmBentuk.text = itemView.context.getString(R.string.sm_bentuk, item.bentuk)
                 tvSmSumber.text = itemView.context.getString(R.string.sm_sumber, item.sumber)
-                tvSmDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggalSurat)
-                tvSmStatus.text = itemView.context.getString(R.string.cuti_status_view, item.statusSurat)
+                tvSmDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggal_surat)
+                tvSmStatus.text = itemView.context.getString(R.string.cuti_status_view, item.status_surat)
 
                 btnSmTeruskan.setOnClickListener {
                     itemView.context.startActivity(
                         Intent(itemView.context, DisposisiActivity::class.java)
                             .putExtra("caller", "surat_masuk")
                             .putExtra("jenis", "terusan")
-                            .putExtra("idsurat", item.idsuratMasuk)
+                            .putExtra("idsurat", item.idsurat_masuk)
                     )
                 }
 
-                if (item.statusSurat == "MASUK") {
+                if (item.status_surat == "MASUK") {
                     btnSmDisposisi.visibility = View.VISIBLE
                     btnSmDisposisi.setOnClickListener {
                         itemView.context.startActivity(
                             Intent(itemView.context, DisposisiActivity::class.java)
                                 .putExtra("caller", "surat_masuk")
                                 .putExtra("jenis", "disposisi")
-                                .putExtra("idsurat", item.idsuratMasuk)
+                                .putExtra("idsurat", item.idsurat_masuk)
                         )
                     }
                 } else {
@@ -80,8 +80,8 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
 
                 btnSmImg.setOnClickListener {
                     showFilesSurat(itemView.context, item.img, null)
-                    if (item.statusSurat == "MASUK") {
-                        editSuratMasuk(item.idsuratMasuk, tokenAuth)
+                    if (item.status_surat == "MASUK") {
+                        editSuratMasuk(item.idsurat_masuk, tokenAuth)
                         tvSmStatus.text = itemView.context.getString(R.string.cuti_status_view, "DIBACA")
                     }
                 }
@@ -89,7 +89,7 @@ class SuratMasukAdapter : RecyclerView.Adapter<SuratMasukAdapter.ItemHolder>() {
                 if (item.riwayat.toInt() != 0) {
                     btnSmRiwayat.visibility = View.VISIBLE
                     btnSmRiwayat.setOnClickListener {
-                        showDisposisiRiwayat(itemView.context, item.riwayatDisposisi)
+                        showDisposisiRiwayat(itemView.context, item.riwayat_disposisi)
                     }
                 } else {
                     btnSmRiwayat.visibility = View.GONE
