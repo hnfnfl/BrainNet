@@ -9,7 +9,8 @@ import com.jaylangkung.eoffice_korem.utils.room.LoggerDatabase
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class ErrorHandler {
 

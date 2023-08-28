@@ -199,7 +199,7 @@ class SuratMasukActivity : AppCompatActivity() {
                         // if nomerAgenda is not empty, then go to position of recyclerview item
                         if (nomerAgenda != "") {
                             for (i in listData.indices) {
-                                if (listData[i].nomer_agenda == nomerAgenda) {
+                                if (listData[i].nomerAgenda == nomerAgenda) {
                                     binding.rvSuratMasukList.smoothScrollToPosition(i)
                                     break
                                 }

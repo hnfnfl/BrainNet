@@ -3,6 +3,7 @@ package com.jaylangkung.eoffice_korem.surat
 import android.content.Intent
 import android.os.Bundle
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,7 @@ import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.Locale
 
 class DisposisiActivity : AppCompatActivity() {
 
@@ -85,8 +86,18 @@ class DisposisiActivity : AppCompatActivity() {
             val idPenerimaIDList = ArrayList<String>()
             for (i in 0 until MainActivity.listUserSurat.size) {
                 val name = MainActivity.listUserSurat[i].nama
-                val id = MainActivity.listUserSurat[i].idsurat_user_aktivasi
+                val id = MainActivity.listUserSurat[i].idsuratUserAktivasi
                 val checkBox = CheckBox(this@DisposisiActivity)
+                checkBox.apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    setPadding(0, 10, 0, 10)
+                    textSize = 16f
+                    setTextColor(resources.getColor(R.color.black))
+                    buttonTintList = resources.getColorStateList(R.color.primaryColor)
+                }
                 checkBox.text = name
                 checkBox.tag = id
                 checkBox.setOnCheckedChangeListener { _, isChecked ->
