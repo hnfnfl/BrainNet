@@ -28,7 +28,8 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:id="@+id/tv_profile"
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/profile"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -75,7 +76,6 @@
                 android:id="@+id/tv_nrp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
                 android:hint="@string/NRP"
                 android:inputType="textEmailAddress" />
 
@@ -95,7 +95,6 @@
                 android:id="@+id/tv_nama"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
                 android:hint="@string/nama"
                 android:inputType="textEmailAddress" />
 
@@ -123,7 +122,6 @@
                     android:id="@+id/tv_pangkat"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/white"
                     android:hint="@string/pangkat"
                     android:inputType="textEmailAddress" />
 
@@ -143,7 +141,6 @@
                     android:id="@+id/tv_jabatan"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/white"
                     android:hint="@string/jabatan"
                     android:inputType="textEmailAddress" />
 
@@ -165,7 +162,6 @@
                 android:id="@+id/tv_notelp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/white"
                 android:hint="@string/notelp"
                 android:inputType="textEmailAddress" />
 
@@ -183,19 +179,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:p_arrowVisible="false"
-        app:p_backgroundTint="@color/md_red_700"
-        app:p_bgColor="@color/white"
+        app:p_backgroundTint="?attr/colorErrorContainer"
         app:p_cornerRadius="5dp"
         app:p_icon="@drawable/ic_logout"
         app:p_iconGravity="textStart"
         app:p_iconPadding="8dp"
+        app:p_iconTint="?attr/colorOnErrorContainer"
         app:p_layoutDirection="ltr"
-        app:p_progressBGColor="@color/md_red_700"
-        app:p_progressColor="@color/white"
-        app:p_rippleColor="@color/white"
+        app:p_progressBGColor="?attr/colorErrorContainer"
+        app:p_progressColor="?attr/colorOnErrorContainer"
+        app:p_rippleColor="?attr/colorErrorContainer"
         app:p_style="circleBar"
         app:p_text="@string/btn_logout"
-        app:p_textColor="@color/white"
+        app:p_textColor="?attr/colorOnErrorContainer"
         app:p_textSize="18sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

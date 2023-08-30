@@ -29,14 +29,15 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/surat_masuk"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -57,37 +58,22 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/primaryColor"
+            android:backgroundTint="?attr/colorPrimary"
             android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/rounded_corner"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="6dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/icon_militer"
-                    android:src="@drawable/ic_militer"
-                    app:tint="@color/primaryDarkColor" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:drawablePadding="6dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="@string/militer"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_militer"
+                app:drawableTint="?attr/colorOnPrimary" />
 
         </LinearLayout>
 
@@ -97,37 +83,22 @@
             android:layout_height="60dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/primaryColor"
+            android:backgroundTint="?attr/colorPrimary"
             android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/rounded_corner"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="6dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/icon_nonmiliter"
-                    android:src="@drawable/ic_non_militer"
-                    app:tint="@color/primaryDarkColor" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:drawablePadding="6dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="@string/non_militer"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_non_militer"
+                app:drawableTint="?attr/colorOnPrimary" />
 
         </LinearLayout>
 

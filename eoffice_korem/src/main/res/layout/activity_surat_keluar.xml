@@ -29,14 +29,15 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/surat_keluar"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -84,11 +85,11 @@
         android:id="@+id/fab_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="10dp"
         android:src="@drawable/ic_filter"
-        app:fab_colorNormal="@color/primaryColor"
-        app:fab_colorPressed="@color/primaryDarkColor"
-        app:fab_colorRipple="@color/primaryColor"
+        app:fab_colorNormal="?attr/colorPrimary"
+        app:fab_colorPressed="?attr/colorPrimaryContainer"
+        app:fab_colorRipple="?attr/colorPrimary"
         app:fab_label="Tambah Pengaduan"
         app:fab_size="normal"
         app:layout_constraintBottom_toTopOf="@+id/fab_add_surat_keluar"
@@ -98,11 +99,11 @@
         android:id="@+id/fab_add_surat_keluar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="10dp"
         android:src="@drawable/ic_add"
-        app:fab_colorNormal="@color/secondaryColor"
-        app:fab_colorPressed="@color/secondaryDarkColor"
-        app:fab_colorRipple="@color/secondaryColor"
+        app:fab_colorNormal="?attr/colorPrimary"
+        app:fab_colorPressed="?attr/colorPrimaryContainer"
+        app:fab_colorRipple="?attr/colorPrimary"
         app:fab_size="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
