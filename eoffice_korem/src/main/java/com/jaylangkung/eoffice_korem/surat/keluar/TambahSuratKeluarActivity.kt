@@ -19,15 +19,15 @@ import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
 import com.jaylangkung.eoffice_korem.databinding.ActivityTambahSuratKeluarBinding
 import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
-import com.jaylangkung.eoffice_korem.utils.convertFilesToMultipart
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
+import com.jaylangkung.eoffice_korem.utils.convertFilesToMultipart
 import es.dmoral.toasty.Toasty
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.util.*
+import java.util.Calendar
 
 class TambahSuratKeluarActivity : AppCompatActivity() {
 
@@ -126,7 +126,7 @@ class TambahSuratKeluarActivity : AppCompatActivity() {
             penerimaSpinner.item = listUser as List<Any>?
             penerimaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    idPenerima = listUserSurat[p2].idsurat_user_aktivasi
+                    idPenerima = listUserSurat[p2].idsuratUserAktivasi
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}

@@ -81,10 +81,10 @@ interface SuratService {
     fun insertSuratDisposisi(
         @Field("iduser") iduser: String,
         @Field("idsurat") idsurat: String,
-        @Field("tipe_surat") tipe_surat: String,
+        @Field("tipe_surat") tipeSurat: String,
         @Field("jenis") jenis: String,
         @Field("catatan") catatan: String,
-        @Field("catatan_tambahan") catatan_tambahan: String,
+        @Field("catatan_tambahan") catatanTambahan: String,
         @Field("penerima") penerima: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
@@ -92,7 +92,7 @@ interface SuratService {
     @FormUrlEncoded
     @POST("surat/editSuratDisposisi")
     fun editSuratDisposisi(
-        @Field("nomer_agenda") nomer_agenda: String,
+        @Field("nomer_agenda") nomerAgenda: String,
         @Field("balasan") balasan: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
@@ -107,7 +107,7 @@ interface SuratService {
     @POST("surat/insertWebApp")
     fun insertWebApp(
         @Field("iduser") iduser: String,
-        @Field("device_id") device_id: String,
+        @Field("device_id") deviceId: String,
         @Header("Authorization") tokenAuth: String
     ): Call<DefaultResponse>
 }

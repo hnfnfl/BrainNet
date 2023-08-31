@@ -100,9 +100,9 @@ class LoginWebappActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertWebApp(idadmin: String, device_id: String, tokenAuth: String) {
+    private fun insertWebApp(idadmin: String, deviceId: String, tokenAuth: String) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.insertWebApp(idadmin, device_id, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+        service.insertWebApp(idadmin, deviceId, tokenAuth).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 binding.loadingAnim.visibility = View.GONE
                 if (response.isSuccessful) {

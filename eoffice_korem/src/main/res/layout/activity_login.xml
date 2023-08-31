@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:text="@string/login_title"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,6 @@
             android:id="@+id/tv_value_nrp_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
             android:hint="@string/NRP"
             android:inputType="textEmailAddress" />
 
@@ -70,19 +69,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:p_arrowVisible="false"
-        app:p_backgroundTint="@color/primaryColor"
-        app:p_bgColor="@color/colorSecondary"
+        app:p_backgroundTint="?attr/colorTertiary"
+        app:p_bgColor="?attr/colorTertiary"
         app:p_cornerRadius="5dp"
         app:p_icon="@drawable/ic_login"
         app:p_iconGravity="textStart"
         app:p_iconPadding="8dp"
+        app:p_iconTint="?attr/colorOnTertiary"
         app:p_layoutDirection="ltr"
-        app:p_progressBGColor="@color/primaryColor"
-        app:p_progressColor="@color/primaryLightColor"
-        app:p_rippleColor="@color/primaryLightColor"
+        app:p_progressBGColor="?attr/colorTertiary"
+        app:p_progressColor="?attr/colorTertiaryContainer"
+        app:p_rippleColor="?attr/colorTertiary"
         app:p_style="circleBar"
         app:p_text="@string/btn_login"
-        app:p_textColor="@color/white"
+        app:p_textColor="?attr/colorOnTertiary"
         app:p_textSize="18sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,14 +32,24 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         myPreferences = MySharedPreferences(this@MyFirebaseMessagingService)
         val iduser = myPreferences.getValue(Constants.USER_IDAKTIVASI).toString()
-        val newToken = Firebase.messaging.token.result.toString()
-        addToken(iduser, newToken)
+        Firebase.messaging.token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val newToken = task.result
+                addToken(iduser, newToken!!)
+            } else {
+                // Handle the error
+                val exception = task.exception
+                ErrorHandler().responseHandler(
+                    this@MyFirebaseMessagingService, "onNewToken", exception.toString()
+                )
+            }
+        }
         Log.d("TAG", "Refreshed token: $token")
     }
 
-    private fun addToken(iduser_aktivasi: String, deviceID: String) {
+    private fun addToken(iduserAktivasi: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.addToken(iduser_aktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
+        service.addToken(iduserAktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {

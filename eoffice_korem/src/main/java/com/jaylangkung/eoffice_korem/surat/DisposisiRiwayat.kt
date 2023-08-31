@@ -66,15 +66,15 @@ fun showDisposisiRiwayat(ctx: Context, data: ArrayList<SuratRiwayatDisposisi>) {
                 }
             }
 
-            llChild.addView(createTextView("${d.nomer_agenda} (${d.aksi})", 16.0F))
-            llChild.addView(createTextView(d.tanggal_disposisi, 16.0F))
+            llChild.addView(createTextView("${d.nomerAgenda} (${d.aksi})", 16.0F))
+            llChild.addView(createTextView(d.tanggalDisposisi, 16.0F))
             llChild.addView(createTextView(ctx.getString(R.string.dispo_pengirim, d.pengirim), 16.0F))
             llChild.addView(createTextView(ctx.getString(R.string.dispo_penerima, d.penerima), 16.0F))
             if (d.catatan.isNotEmpty()) {
                 llChild.addView(createTextView(ctx.getString(R.string.dispo_catatan, d.catatan), 16.0F))
             }
-            if (d.catatan_tambahan.isNotEmpty()) {
-                llChild.addView(createTextView(ctx.getString(R.string.dispo_catatan_tambahan, d.catatan_tambahan), 16.0F))
+            if (d.catatanTambahan.isNotEmpty()) {
+                llChild.addView(createTextView(ctx.getString(R.string.dispo_catatan_tambahan, d.catatanTambahan), 16.0F))
             }
             llChild.addView(createTextView(ctx.getString(R.string.dispo_balasan, d.balasan), 16.0F))
             if (d.balasan.isNullOrBlank()) {
@@ -91,7 +91,7 @@ fun showDisposisiRiwayat(ctx: Context, data: ArrayList<SuratRiwayatDisposisi>) {
                     }
                     setOnClickListener {
                         dialog.dismiss()
-                        showDisposisiBalas(ctx, d.nomer_agenda)
+                        showDisposisiBalas(ctx, d.nomerAgenda)
                     }
                 }
                 llChild.addView(btnBalas)

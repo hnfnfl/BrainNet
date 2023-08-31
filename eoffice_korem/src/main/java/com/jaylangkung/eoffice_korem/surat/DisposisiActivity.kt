@@ -1,11 +1,14 @@
 package com.jaylangkung.eoffice_korem.surat
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.jaylangkung.eoffice_korem.MainActivity
 import com.jaylangkung.eoffice_korem.R
 import com.jaylangkung.eoffice_korem.dataClass.DefaultResponse
@@ -21,7 +24,8 @@ import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.Locale
+
 
 class DisposisiActivity : AppCompatActivity() {
 
@@ -56,9 +60,11 @@ class DisposisiActivity : AppCompatActivity() {
                     "surat_masuk" -> {
                         startActivity(activityIntent)
                     }
+
                     "surat_keluar" -> {
                         startActivity(activityIntent)
                     }
+
                     else -> {
                         Toasty.error(this@DisposisiActivity, "Caller Not Found", Toast.LENGTH_LONG).show()
                     }
@@ -85,8 +91,18 @@ class DisposisiActivity : AppCompatActivity() {
             val idPenerimaIDList = ArrayList<String>()
             for (i in 0 until MainActivity.listUserSurat.size) {
                 val name = MainActivity.listUserSurat[i].nama
-                val id = MainActivity.listUserSurat[i].idsurat_user_aktivasi
+                val id = MainActivity.listUserSurat[i].idsuratUserAktivasi
                 val checkBox = CheckBox(this@DisposisiActivity)
+                checkBox.apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    setPadding(0, 10, 0, 10)
+                    textSize = 16f
+
+                    setTextColor(ContextCompat.getColor(this@DisposisiActivity, getColorFromAttr(R.attr.colorOnBackground)))
+                    buttonTintList = ContextCompat.getColorStateList(this@DisposisiActivity, getColorFromAttr(R.attr.colorPrimary))
+                }
                 checkBox.text = name
                 checkBox.tag = id
                 checkBox.setOnCheckedChangeListener { _, isChecked ->
@@ -147,32 +163,38 @@ class DisposisiActivity : AppCompatActivity() {
         }
     }
 
+    private fun Context.getColorFromAttr(attrColor: Int): Int {
+        val typedArray = theme.obtainStyledAttributes(intArrayOf(attrColor))
+        val textColor = typedArray.getResourceId(0, R.color.black)
+        typedArray.recycle()
+        return textColor
+    }
+
     private fun insertSuratDisposisi(
-        iduser: String, idsurat: String, tipe_surat: String, jenis: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String
+        iduser: String, idsurat: String, tipeSurat: String, jenis: String, catatan: String, catatanTambahan: String, penerima: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(SuratService::class.java)
-        service.insertSuratDisposisi(iduser, idsurat, tipe_surat, jenis, catatan, catatanTambahan, penerima, tokenAuth)
-            .enqueue(object : Callback<DefaultResponse> {
-                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                    if (response.isSuccessful) {
-                        if (response.body()!!.status == "success") {
-                            Toasty.success(this@DisposisiActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                            startActivity(activityIntent)
-                            finish()
-                        }
-                    } else {
-                        ErrorHandler().responseHandler(
-                            this@DisposisiActivity, "insertSuratDisposisi | onResponse", response.message()
-                        )
+        service.insertSuratDisposisi(iduser, idsurat, tipeSurat, jenis, catatan, catatanTambahan, penerima, tokenAuth).enqueue(object : Callback<DefaultResponse> {
+            override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.status == "success") {
+                        Toasty.success(this@DisposisiActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                        startActivity(activityIntent)
+                        finish()
                     }
-                }
-
-                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                } else {
                     ErrorHandler().responseHandler(
-                        this@DisposisiActivity, "insertSuratDisposisi | onFailure", t.message.toString()
+                        this@DisposisiActivity, "insertSuratDisposisi | onResponse", response.message()
                     )
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                ErrorHandler().responseHandler(
+                    this@DisposisiActivity, "insertSuratDisposisi | onFailure", t.message.toString()
+                )
+            }
+        })
     }
 
 }

@@ -1,4 +1,4 @@
-package com.jaylangkung.korem.utils.room
+package com.jaylangkung.eoffice_korem.utils.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
