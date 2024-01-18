@@ -7,10 +7,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -30,12 +28,10 @@ import com.jaylangkung.eoffice_korem.surat.masuk.SuratMasukActivity
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
-import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
-
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,14 +48,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@MainActivity)
         askPermission()
-
-        val test = NotificationManagerCompat.from(this@MainActivity).areNotificationsEnabled()
-        if (!test) {
-            val intent = Intent()
-            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
-            intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
-            startActivity(intent)
-        }
 
         Firebase.messaging.subscribeToTopic("eoffice_korem")
         Firebase.messaging.token.addOnCompleteListener { task ->
@@ -133,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     listUserSurat.clear()
-                    listUserSurat = response.body()!!.user_surat
+                    listUserSurat = response.body()?.userSurat ?: ArrayList()
                 } else {
                     ErrorHandler().responseHandler(
                         this@MainActivity, "getSuratSpinnerData | onResponse", response.message()
@@ -149,9 +137,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun addToken(iduser_aktivasi: String, deviceID: String) {
+    private fun addToken(iduserAktivasi: String, deviceID: String) {
         val service = RetrofitClient().apiRequest().create(AuthService::class.java)
-        service.addToken(iduser_aktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
+        service.addToken(iduserAktivasi, deviceID).enqueue(object : Callback<DefaultResponse> {
             override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
@@ -172,49 +160,39 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    // Declare the launcher at the top of your Activity/Fragment:
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
-        } else {
-            // Inform user that that your app will not show notifications.
-            Toasty.warning(this@MainActivity, "Anda tidak dapat menerima notifikasi", Toasty.LENGTH_LONG).show()
+    private fun askPermission() {
+        val cameraPermission = Manifest.permission.CAMERA
+        val readStoragePermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val writeStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val permissionsToRequest = mutableListOf<String>()
+
+        // Check for notification permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
+        // Check for camera, storage, and location permissions
+        if (ContextCompat.checkSelfPermission(this@MainActivity, cameraPermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(cameraPermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, readStoragePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(readStoragePermission)
+        }
+        if (ContextCompat.checkSelfPermission(this@MainActivity, writeStoragePermission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(writeStoragePermission)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity, permissionsToRequest.toTypedArray(), 100
+            )
         }
     }
 
-    private fun askPermission() {
-        if (
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@MainActivity, arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                ), 100
-            )
-        }
-
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-//                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                ActivityCompat.requestPermissions(
-                    this@MainActivity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100
-                )
-            }
-        }
+    override fun onStop() {
+        super.onStop()
+        finish()
     }
 }

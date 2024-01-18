@@ -30,7 +30,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.Calendar
 
 class TambahSuratMasukActivity : AppCompatActivity() {
 
@@ -133,7 +133,7 @@ class TambahSuratMasukActivity : AppCompatActivity() {
             penerimaSpinner.item = listUser as List<*>?
             penerimaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    idPenerima = listUserSurat[p2].idsurat_user_aktivasi
+                    idPenerima = listUserSurat[p2].idsuratUserAktivasi
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}

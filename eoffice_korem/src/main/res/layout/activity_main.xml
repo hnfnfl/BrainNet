@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/home_bg"
-        android:backgroundTint="@color/primaryColor"
+        android:backgroundTint="?attr/colorPrimaryContainer"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:maxLines="2"
-            android:text=""
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_notification"
@@ -52,7 +51,8 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_notification"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnPrimaryContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/primaryColor"
+            android:backgroundTint="?attr/colorPrimary"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="horizontal"
@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/rounded_corner"
+                android:backgroundTint="?attr/colorPrimaryContainer"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="6dp">
@@ -92,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/icon_absensi"
                     android:src="@drawable/ic_mail_in"
-                    app:tint="@color/primaryDarkColor" />
+                    app:tint="?attr/colorOnPrimaryContainer" />
 
             </LinearLayout>
 
@@ -102,7 +103,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:text="@string/surat_masuk"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -113,7 +114,7 @@
             android:layout_height="80dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/primaryColor"
+            android:backgroundTint="?attr/colorPrimary"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="horizontal"
@@ -126,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/rounded_corner"
+                android:backgroundTint="?attr/colorPrimaryContainer"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="6dp">
@@ -135,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/icon_absensi"
                     android:src="@drawable/ic_mail_out"
-                    app:tint="@color/primaryDarkColor" />
+                    app:tint="?attr/colorOnPrimaryContainer" />
 
             </LinearLayout>
 
@@ -145,7 +147,7 @@
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:text="@string/surat_keluar"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -158,9 +160,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:src="@drawable/ic_scan_qr"
-        app:fab_colorNormal="@color/secondaryColor"
-        app:fab_colorPressed="@color/secondaryDarkColor"
-        app:fab_colorRipple="@color/secondaryColor"
+        app:fab_colorNormal="?attr/colorTertiary"
+        app:fab_colorPressed="?attr/colorOnTertiary"
+        app:fab_colorRipple="?attr/colorTertiary"
         app:fab_size="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

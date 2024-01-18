@@ -25,14 +25,15 @@
             android:contentDescription="@string/btn_back"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/error_logger"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>

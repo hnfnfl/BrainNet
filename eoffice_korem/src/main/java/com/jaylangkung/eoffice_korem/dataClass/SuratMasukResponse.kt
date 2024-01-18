@@ -1,29 +1,28 @@
 package com.jaylangkung.eoffice_korem.dataClass
 
+import com.google.gson.annotations.SerializedName
+
 data class SuratMasukResponse(
-    val data: ArrayList<SuratMasukData>,
-    val status: String
+    val data: ArrayList<SuratMasukData>, val status: String
 )
 
 data class SuratMasukData(
     val bentuk: String,
-    val idsurat_masuk: String,
+    @SerializedName("idsurat_masuk") val idsuratMasuk: String,
     val img: ArrayList<SuratImg>?,
-    val nomer_agenda: String,
+    @SerializedName("nomer_agenda") val nomerAgenda: String,
     val penerima: String,
     val riwayat: String,
-    val riwayat_disposisi: ArrayList<SuratRiwayatDisposisi>,
-    val status_surat: String,
+    @SerializedName("riwayat_disposisi") val riwayatDisposisi: ArrayList<SuratRiwayatDisposisi>,
+    @SerializedName("status_surat") val statusSurat: String,
     val sumber: String,
-    val tanggal_surat: String
+    @SerializedName("tanggal_surat") val tanggalSurat: String
 )
 
 data class SuratImg(
-    val id: Int,
-    val img: String
+    val id: Int, val img: String
 )
 
 data class SuratPdf(
-    val id: Int,
-    val pdf: String
+    val id: Int, val pdf: String
 )

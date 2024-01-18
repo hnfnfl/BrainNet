@@ -27,14 +27,15 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/tambah_surat_keluar"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -60,18 +61,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
-                app:smsp_arrowColor="@color/primaryColor"
+                app:smsp_arrowColor="?attr/colorPrimary"
                 app:smsp_hint="Pilih Persetujuan Surat"
-                app:smsp_hintColor="@color/primaryColor"
+                app:smsp_hintColor="?attr/colorPrimary"
                 app:smsp_isOutlined="true"
-                app:smsp_itemColor="@color/black"
-                app:smsp_itemListColor="@color/black"
-                app:smsp_itemListHintBackgroundColor="#808080"
-                app:smsp_itemListHintColor="#FFFFFF"
+                app:smsp_itemColor="?attr/colorOnBackground"
+                app:smsp_itemListColor="?attr/colorOnBackground"
+                app:smsp_itemListHintBackgroundColor="?attr/colorPrimary"
+                app:smsp_itemListHintColor="?attr/colorPrimary"
                 app:smsp_multilineError="false"
-                app:smsp_outlinedBoxColor="@color/primaryColor"
+                app:smsp_outlinedBoxColor="?attr/colorPrimary"
                 app:smsp_outlinedBoxRadius="4dp"
-                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+                app:smsp_selectedItemListColor="?attr/colorPrimary" />
 
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                 android:id="@+id/perihal_spinner"
@@ -79,18 +80,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:spinnerMode="dropdown"
-                app:smsp_arrowColor="@color/primaryColor"
+                app:smsp_arrowColor="?attr/colorPrimary"
                 app:smsp_hint="Pilih Perihal Surat"
-                app:smsp_hintColor="@color/primaryColor"
+                app:smsp_hintColor="?attr/colorPrimary"
                 app:smsp_isOutlined="true"
-                app:smsp_itemColor="@color/black"
-                app:smsp_itemListColor="@color/black"
-                app:smsp_itemListHintBackgroundColor="#808080"
-                app:smsp_itemListHintColor="#FFFFFF"
+                app:smsp_itemColor="?attr/colorOnBackground"
+                app:smsp_itemListColor="?attr/colorOnBackground"
+                app:smsp_itemListHintBackgroundColor="?attr/colorPrimary"
+                app:smsp_itemListHintColor="?attr/colorPrimary"
                 app:smsp_multilineError="false"
-                app:smsp_outlinedBoxColor="@color/primaryColor"
+                app:smsp_outlinedBoxColor="?attr/colorPrimary"
                 app:smsp_outlinedBoxRadius="4dp"
-                app:smsp_selectedItemListColor="@color/primaryDarkColor" />
+                app:smsp_selectedItemListColor="?attr/colorPrimary" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -106,7 +107,6 @@
                     android:id="@+id/sk_kepada_input"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/white"
                     android:hint="@string/kepada"
                     android:inputType="textEmailAddress" />
 
@@ -114,13 +114,13 @@
 
             <Button
                 android:id="@+id/btn_surat_keluar_files"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:backgroundTint="@color/secondaryColor"
+                android:backgroundTint="?attr/colorPrimary"
                 android:text="@string/tambah_files"
-                android:textColor="@color/white" />
+                android:textAppearance="?attr/textAppearanceButton"
+                android:textColor="?attr/colorOnPrimary" />
 
             <LinearLayout
                 android:id="@+id/ll_selected_files"
@@ -134,18 +134,17 @@
             <Button
                 android:id="@+id/btn_tanggal_surat"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/sm_tgl_view"
-                android:textAllCaps="false"
-                android:textSize="16sp" />
+                android:textAppearance="?attr/textAppearanceButton"
+                android:textColor="?attr/colorOnPrimary" />
 
             <TextView
                 android:id="@+id/tv_tgl_surat_keluar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/tgl_sm"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -155,16 +154,15 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="32dp"
                 app:p_arrowVisible="false"
-                app:p_backgroundTint="@color/primaryColor"
-                app:p_bgColor="@color/colorSecondary"
+                app:p_backgroundTint="?attr/colorTertiary"
                 app:p_cornerRadius="5dp"
                 app:p_layoutDirection="ltr"
-                app:p_progressBGColor="@color/primaryColor"
-                app:p_progressColor="@color/primaryLightColor"
-                app:p_rippleColor="@color/primaryLightColor"
+                app:p_progressBGColor="?attr/colorTertiary"
+                app:p_progressColor="?attr/colorOnTertiaryContainer"
+                app:p_rippleColor="?attr/colorTertiary"
                 app:p_style="circleBar"
                 app:p_text="Tambahkan Surat Keluar"
-                app:p_textColor="@color/white"
+                app:p_textColor="?attr/colorOnTertiary"
                 app:p_textSize="18sp" />
 
         </LinearLayout>

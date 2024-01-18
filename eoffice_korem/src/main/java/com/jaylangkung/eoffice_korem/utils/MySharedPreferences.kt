@@ -13,25 +13,21 @@ class MySharedPreferences(mContext: Context) {
 
     fun clear() {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
-        editor.clear()
-        editor.apply()
+        editor.clear().apply()
     }
     fun setValue(key: String, value: String) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
-        editor.putString(key, value)
-        editor.apply()
+        editor.putString(key, value).apply()
     }
 
     fun setValueBool(key: String, value: Boolean) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
-        editor.putBoolean(key, value)
-        editor.apply()
+        editor.putBoolean(key, value).apply()
     }
 
     fun setValueInteger(key: String, value: Int) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
-        editor.putInt(key, value)
-        editor.apply()
+        editor.putInt(key, value).apply()
     }
 
 //    fun getAll() {

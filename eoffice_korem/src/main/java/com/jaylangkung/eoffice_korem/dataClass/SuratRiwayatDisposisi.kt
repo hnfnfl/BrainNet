@@ -1,12 +1,14 @@
 package com.jaylangkung.eoffice_korem.dataClass
 
+import com.google.gson.annotations.SerializedName
+
 data class SuratRiwayatDisposisi(
     val aksi: String,
     val balasan: String?,
     val catatan: String,
-    val catatan_tambahan: String,
-    val nomer_agenda: String,
+    @SerializedName("catatan_tambahan") val catatanTambahan: String,
+    @SerializedName("nomer_agenda") val nomerAgenda: String,
     val penerima: String,
     val pengirim: String,
-    val tanggal_disposisi: String
+    @SerializedName("tanggal_disposisi") val tanggalDisposisi: String
 )

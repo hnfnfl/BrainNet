@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="6dp"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/md_grey_200"
+    app:cardBackgroundColor="?attr/colorSecondaryContainer"
     app:cardCornerRadius="8dp"
     app:elevation="8dp">
 
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text=""
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondaryContainer"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +35,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif"
             android:text="@string/dispo_penerima"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondaryContainer"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_sk_nomor_agenda" />
@@ -47,7 +47,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif"
             android:text="@string/sk_perihal"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondaryContainer"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_sk_penerima" />
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
-            android:background="#c0c0c0"
+            android:background="?attr/colorOnSurface"
             app:layout_constraintTop_toBottomOf="@+id/tv_sk_perihal"
             tools:layout_editor_absoluteX="12dp" />
 
@@ -68,7 +68,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif"
             android:text="@string/pengaduan_createddate_view"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondaryContainer"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator1" />
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
-            android:background="#c0c0c0"
+            android:background="?attr/colorOnSurface"
             app:layout_constraintTop_toBottomOf="@+id/tv_sk_dibuat"
             tools:layout_editor_absoluteX="12dp" />
 
@@ -89,7 +89,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-black"
             android:text="@string/cuti_status_view"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondaryContainer"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator2" />
@@ -133,7 +133,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="@string/acc_surat"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnTertiary"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -157,7 +157,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/secondaryColor"
+                android:backgroundTint="?attr/colorTertiary"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -169,6 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/rounded_corner"
+                    android:backgroundTint="?attr/colorOnTertiary"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="6dp">
@@ -178,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/icon_teruskan_surat"
                         android:src="@drawable/ic_mail_forward"
-                        app:tint="@color/secondaryDarkColor" />
+                        app:tint="?attr/colorTertiary" />
 
                 </LinearLayout>
 
@@ -188,7 +189,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/teruskan_surat"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnTertiary"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -199,7 +200,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/md_grey_500"
+                android:backgroundTint="?attr/colorTertiary"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center">
 
@@ -208,6 +209,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/rounded_corner"
+                    android:backgroundTint="?attr/colorOnTertiary"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="6dp">
@@ -217,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/icon_riwayat_disposisi"
                         android:src="@drawable/ic_clipboard"
-                        app:tint="@color/md_grey_500" />
+                        app:tint="?attr/colorTertiary" />
 
                 </LinearLayout>
 
@@ -227,7 +229,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/riwayat_disposisi"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnTertiary"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -253,7 +255,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/primaryColor"
+                android:backgroundTint="?attr/colorTertiary"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -263,6 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/rounded_corner"
+                    android:backgroundTint="?attr/colorOnTertiary"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="6dp">
@@ -272,7 +275,7 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/icon_disposisi_surat"
                         android:src="@drawable/ic_approve"
-                        app:tint="@color/primaryDarkColor" />
+                        app:tint="?attr/colorTertiary" />
 
                 </LinearLayout>
 
@@ -282,7 +285,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/ajukan_surat"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnTertiary"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -293,7 +296,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/md_blue_700"
+                android:backgroundTint="?attr/colorTertiary"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center">
 
@@ -302,6 +305,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/rounded_corner"
+                    android:backgroundTint="?attr/colorOnTertiary"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="6dp">
@@ -311,7 +315,7 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/icon_surat_image"
                         android:src="@drawable/ic_image"
-                        app:tint="@color/md_blue_900" />
+                        app:tint="?attr/colorTertiary" />
 
                 </LinearLayout>
 
@@ -321,7 +325,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/gambar_surat"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnTertiary"
                     android:textSize="16sp" />
 
             </LinearLayout>

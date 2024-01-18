@@ -16,7 +16,7 @@ import android.webkit.MimeTypeMap
 import java.io.File
 import java.io.FileFilter
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Locale
 
 /*
 * Copyright (C) 2007-2008 OpenIntents.org
@@ -113,8 +113,7 @@ object FileUtils {
 
                 // Construct path without file name.
                 var pathwithoutname = filepath.substring(
-                    0,
-                    filepath.length - filename.length
+                    0, filepath.length - filename.length
                 )
                 if (pathwithoutname.endsWith("/")) {
                     pathwithoutname = pathwithoutname.substring(0, pathwithoutname.length - 1)
@@ -130,8 +129,7 @@ object FileUtils {
      */
     private fun getMimeType(file: File): String? {
         val extension = getExtension(file.name)
-        return if (extension!!.isNotEmpty()) MimeTypeMap.getSingleton()
-            .getMimeTypeFromExtension(extension.substring(1)) else "application/octet-stream"
+        return if (extension!!.isNotEmpty()) MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1)) else "application/octet-stream"
     }
 
     /**
@@ -189,8 +187,7 @@ object FileUtils {
      * @author paulburke
      */
     fun getDataColumn(
-        context: Context, uri: Uri?, selection: String?,
-        selectionArgs: Array<String>?
+        context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?
     ): String? {
         var cursor: Cursor? = null
         val column = "_data"
@@ -199,8 +196,7 @@ object FileUtils {
         )
         try {
             cursor = context.contentResolver.query(
-                uri!!, projection, selection, selectionArgs,
-                null
+                uri!!, projection, selection, selectionArgs, null
             )
             if (cursor != null && cursor.moveToFirst()) {
                 if (DEBUG) DatabaseUtils.dumpCursor(cursor)
@@ -230,13 +226,7 @@ object FileUtils {
     private fun getPath(context: Context, uri: Uri): String? {
         if (DEBUG) Log.d(
             "$TAG File -",
-            "Authority: " + uri.authority +
-                    ", Fragment: " + uri.fragment +
-                    ", Port: " + uri.port +
-                    ", Query: " + uri.query +
-                    ", Scheme: " + uri.scheme +
-                    ", Host: " + uri.host +
-                    ", Segments: " + uri.pathSegments.toString()
+            "Authority: " + uri.authority + ", Fragment: " + uri.fragment + ", Port: " + uri.port + ", Query: " + uri.query + ", Scheme: " + uri.scheme + ", Host: " + uri.host + ", Segments: " + uri.pathSegments.toString()
         )
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
@@ -384,17 +374,11 @@ object FileUtils {
                     if (DEBUG) Log.d(TAG, "Got thumb ID: $id")
                     if (mimeType!!.contains("video")) {
                         bm = MediaStore.Video.Thumbnails.getThumbnail(
-                            resolver,
-                            id.toLong(),
-                            MediaStore.Video.Thumbnails.MINI_KIND,
-                            null
+                            resolver, id.toLong(), MediaStore.Video.Thumbnails.MINI_KIND, null
                         )
                     } else if (mimeType.contains(MIME_TYPE_IMAGE)) {
                         bm = MediaStore.Images.Thumbnails.getThumbnail(
-                            resolver,
-                            id.toLong(),
-                            MediaStore.Images.Thumbnails.MINI_KIND,
-                            null
+                            resolver, id.toLong(), MediaStore.Images.Thumbnails.MINI_KIND, null
                         )
                     }
                 }
@@ -413,9 +397,7 @@ object FileUtils {
      * @author paulburke
      */
     var sComparator: Comparator<File?> = Comparator<File?> { p0, p1 -> // Sort alphabetically by lower case, which is much cleaner
-        p0.name.lowercase(Locale.getDefault()).compareTo(
-            p1.name.lowercase(Locale.getDefault())
-        )
+        p1?.name?.let { p0?.name?.lowercase(Locale.getDefault())?.compareTo(it.lowercase(Locale.getDefault())) } ?: 0
     }
 
     /**

@@ -15,10 +15,10 @@ import com.jaylangkung.eoffice_korem.retrofit.RetrofitClient
 import com.jaylangkung.eoffice_korem.retrofit.SuratService
 import com.jaylangkung.eoffice_korem.surat.DisposisiActivity
 import com.jaylangkung.eoffice_korem.surat.showDisposisiRiwayat
-import com.jaylangkung.eoffice_korem.utils.showFilesSurat
 import com.jaylangkung.eoffice_korem.utils.Constants
 import com.jaylangkung.eoffice_korem.utils.ErrorHandler
 import com.jaylangkung.eoffice_korem.utils.MySharedPreferences
+import com.jaylangkung.eoffice_korem.utils.showFilesSurat
 import es.dmoral.toasty.Toasty
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,38 +50,40 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
             val iduser = myPreferences.getValue(Constants.USER_IDAKSES_SURAT).toString()
 
             binding.apply {
-                tvSkNomorAgenda.text = item.nomer_agenda
+                tvSkNomorAgenda.text = item.nomerAgenda
                 tvSkPenerima.text = itemView.context.getString(R.string.dispo_penerima, item.penerima)
                 tvSkPerihal.text = itemView.context.getString(R.string.sk_perihal, item.perihal)
-                tvSkDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggal_surat)
-                tvSkStatus.text = itemView.context.getString(R.string.cuti_status_view, item.status_surat_keluar)
+                tvSkDibuat.text = itemView.context.getString(R.string.pengaduan_createddate_view, item.tanggalSurat)
+                tvSkStatus.text = itemView.context.getString(R.string.cuti_status_view, item.statusSuratKeluar)
 
                 btnSkTeruskan.setOnClickListener {
                     itemView.context.startActivity(
                         Intent(itemView.context, DisposisiActivity::class.java).putExtra("caller", "surat_keluar").putExtra("jenis", "terusan")
-                            .putExtra("idsurat", item.idsurat_keluar)
+                            .putExtra("idsurat", item.idsuratKeluar)
                     )
                 }
 
-                when (item.status_surat_keluar) {
+                when (item.statusSuratKeluar) {
                     "DRAFT" -> {
                         btnSkAjukan.visibility = View.VISIBLE
                         btnSkAcc.visibility = View.GONE
                         btnSkAjukan.setOnClickListener {
-                            editSuratKeluar(item.idsurat_keluar, "pengajuan", tokenAuth)
+                            editSuratKeluar(item.idsuratKeluar, "pengajuan", tokenAuth)
                         }
                     }
+
                     "PENGAJUAN" -> {
                         btnSkAjukan.visibility = View.GONE
-                        if (iduser == item.tanda_tangan) {
+                        if (iduser == item.tandaTangan) {
                             btnSkAcc.visibility = View.VISIBLE
                             btnSkAcc.setOnClickListener {
-                                editSuratKeluar(item.idsurat_keluar, "diacc", tokenAuth)
+                                editSuratKeluar(item.idsuratKeluar, "diacc", tokenAuth)
                             }
                         } else {
                             btnSkAcc.visibility = View.GONE
                         }
                     }
+
                     else -> {
                         btnSkAjukan.visibility = View.GONE
                         btnSkAcc.visibility = View.GONE
@@ -95,7 +97,7 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
                 if (item.riwayat.toInt() != 0) {
                     btnSkRiwayat.visibility = View.VISIBLE
                     btnSkRiwayat.setOnClickListener {
-                        showDisposisiRiwayat(itemView.context, item.riwayat_disposisi)
+                        showDisposisiRiwayat(itemView.context, item.riwayatDisposisi)
                     }
                 } else {
                     btnSkRiwayat.visibility = View.GONE
@@ -106,26 +108,26 @@ class SuratKeluarAdapter : RecyclerView.Adapter<SuratKeluarAdapter.ItemHolder>()
         private fun editSuratKeluar(idsurat: String, status: String, tokenAuth: String) {
             val service = RetrofitClient().apiRequest().create(SuratService::class.java)
             service.editSuratKeluar(idsurat, "", "", "", "", status, tokenAuth).enqueue(object : Callback<DefaultResponse> {
-                    override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
-                        if (response.isSuccessful) {
-                            if (response.body()!!.status == "success") {
-                                Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                                itemView.context.startActivity(Intent(itemView.context, SuratKeluarActivity::class.java))
-                                (itemView.context as Activity).finish()
-                            }
-                        } else {
-                            ErrorHandler().responseHandler(
-                                itemView.context, "insertSuratDisposisi | onResponse", response.message()
-                            )
+                override fun onResponse(call: Call<DefaultResponse>, response: Response<DefaultResponse>) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status == "success") {
+                            Toasty.success(itemView.context, response.body()!!.message, Toasty.LENGTH_LONG).show()
+                            itemView.context.startActivity(Intent(itemView.context, SuratKeluarActivity::class.java))
+                            (itemView.context as Activity).finish()
                         }
-                    }
-
-                    override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    } else {
                         ErrorHandler().responseHandler(
-                            itemView.context, "insertSuratDisposisi | onFailure", t.message.toString()
+                            itemView.context, "insertSuratDisposisi | onResponse", response.message()
                         )
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
+                    ErrorHandler().responseHandler(
+                        itemView.context, "insertSuratDisposisi | onFailure", t.message.toString()
+                    )
+                }
+            })
         }
     }
 

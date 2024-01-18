@@ -4,12 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.jaylangkung.eoffice_korem.R
-import com.jaylangkung.korem.utils.room.Logger
-import com.jaylangkung.korem.utils.room.LoggerDatabase
+import com.jaylangkung.eoffice_korem.utils.room.Logger
+import com.jaylangkung.eoffice_korem.utils.room.LoggerDatabase
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class ErrorHandler {
 

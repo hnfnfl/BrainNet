@@ -27,14 +27,15 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/login_webapp"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -44,13 +45,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
-        app:autoFocusButtonColor="@android:color/white"
+        app:autoFocusButtonColor="?attr/colorOnBackground"
         app:autoFocusButtonVisible="true"
-        app:flashButtonColor="@android:color/white"
+        app:flashButtonColor="?attr/colorOnBackground"
         app:flashButtonVisible="true"
         app:frameAspectRatioHeight="1"
         app:frameAspectRatioWidth="1"
-        app:frameColor="@android:color/white"
+        app:frameColor="?attr/colorOnTertiaryContainer"
         app:frameCornersRadius="8dp"
         app:frameCornersSize="50dp"
         app:frameSize="0.75"
@@ -59,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:maskColor="#80025B2B" />
+        app:maskColor="?attr/colorTertiaryContainer" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loading_anim"
@@ -68,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:SpinKit_Color="@color/secondaryLightColor"
+        app:SpinKit_Color="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

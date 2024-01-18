@@ -1,6 +1,7 @@
 package com.jaylangkung.eoffice_korem.utils
 
 object Constants {
+    const val firstTime = "firstTime"
     const val LOGIN = "login"
     const val TokenAuth = "token_auth"
     const val USER = "user"
@@ -9,7 +10,6 @@ object Constants {
     const val USER_NAMA = "name"
     const val USER_TELP = "telp"
     const val FOTO_PATH = "img"
-    const val DEVICE_TOKEN = "device_token"
     const val USER_PANGKAT = "pangkat"
     const val USER_PANGKATJABATAN = "pangkatJabatan"
     const val USER_JABATAN = "jabatan"

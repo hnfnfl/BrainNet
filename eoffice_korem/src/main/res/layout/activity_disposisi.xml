@@ -28,14 +28,15 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:id="@+id/tv_disposisi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -59,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Penerima"
-                android:textColor="@color/primaryColor"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/disposisi"
-                android:textColor="@color/primaryColor"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -145,78 +146,91 @@
                     android:id="@+id/checkbox_acc_catat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="ACC/CATAT" />
 
                 <CheckBox
                     android:id="@+id/checkbox_ingatkan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="INGATKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_koordinasikan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="KOORDINASIKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_lapor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="LAPORKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_monitor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="MONITOR" />
 
                 <CheckBox
                     android:id="@+id/checkbox_pedomani"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="PEDOMANI" />
 
                 <CheckBox
                     android:id="@+id/checkbox_pelajari"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="PELAJARI" />
 
                 <CheckBox
                     android:id="@+id/checkbox_sarankan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="SARANKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_st_sprinkan_edarkan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="ST/SPRINKAN/EDARKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_tindak_lanjuti"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="TINDAK LANJUTI" />
 
                 <CheckBox
                     android:id="@+id/checkbox_udk_arsipkan_monitor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="UDK/ARSIPKAN" />
 
                 <CheckBox
                     android:id="@+id/checkbox_udl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="UDL" />
 
                 <CheckBox
                     android:id="@+id/checkbox_wakili"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="?attr/colorPrimary"
                     android:text="WAKILI" />
 
             </GridLayout>
@@ -237,7 +251,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/white"
-                    android:hint=""
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -249,13 +262,13 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/input_catatan"
                 app:p_arrowVisible="false"
-                app:p_backgroundTint="@color/primaryColor"
+                app:p_backgroundTint="?attr/colorPrimary"
                 app:p_bgColor="@color/colorSecondary"
                 app:p_cornerRadius="5dp"
                 app:p_layoutDirection="ltr"
-                app:p_progressBGColor="@color/primaryColor"
-                app:p_progressColor="@color/primaryLightColor"
-                app:p_rippleColor="@color/primaryLightColor"
+                app:p_progressBGColor="?attr/colorPrimary"
+                app:p_progressColor="?attr/colorPrimary"
+                app:p_rippleColor="?attr/colorPrimary"
                 app:p_style="circleBar"
                 app:p_textColor="@color/white"
                 app:p_textSize="18sp"

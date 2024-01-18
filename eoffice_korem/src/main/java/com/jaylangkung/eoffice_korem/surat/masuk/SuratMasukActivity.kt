@@ -30,6 +30,7 @@ class SuratMasukActivity : AppCompatActivity() {
     private lateinit var myPreferences: MySharedPreferences
     private lateinit var adapter: SuratMasukAdapter
 
+    private var nomerAgenda = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySuratMasukBinding.inflate(layoutInflater)
@@ -46,6 +47,7 @@ class SuratMasukActivity : AppCompatActivity() {
 
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val jabatan = myPreferences.getValue(Constants.USER_JABATAN).toString()
+        nomerAgenda = intent.getStringExtra("nomerAgenda").toString()
         var disposisi: String
         var sumber = ""
 
@@ -66,6 +68,11 @@ class SuratMasukActivity : AppCompatActivity() {
                 "kasrem"
             } else {
                 ""
+            }
+
+            if (nomerAgenda != "") {
+                binding.llMiliterNonmiliter.visibility = View.GONE
+                getSuratMasuk(sumber, "", "", disposisi, tokenAuth)
             }
 
             btnMiliter.setOnClickListener {
@@ -187,6 +194,16 @@ class SuratMasukActivity : AppCompatActivity() {
                             itemAnimator = DefaultItemAnimator()
                             setHasFixedSize(true)
                             adapter = this@SuratMasukActivity.adapter
+                        }
+
+                        // if nomerAgenda is not empty, then go to position of recyclerview item
+                        if (nomerAgenda != "") {
+                            for (i in listData.indices) {
+                                if (listData[i].nomerAgenda == nomerAgenda) {
+                                    binding.rvSuratMasukList.smoothScrollToPosition(i)
+                                    break
+                                }
+                            }
                         }
                     } else if (response.body()!!.status == "empty") {
                         binding.apply {
