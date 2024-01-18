@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -18,10 +19,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityEditTiangBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -52,30 +53,33 @@ class EditTiangActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@EditTiangActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@EditTiangActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
         val idtiang = intent.getStringExtra(idtiang).toString()
-
-
 
         client = LocationServices.getFusedLocationProviderClient(this@EditTiangActivity)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this@EditTiangActivity)
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnSave.setOnClickListener {
-            binding.btnSave.startAnimation()
-            val keterangan = binding.tvValueDesc.text.toString()
-            editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
+            btnSave.setOnClickListener {
+                btnSave.startAnimation()
+                val keterangan = tvValueDesc.text.toString()
+                editTiang(idtiang, latitude.toString(), longitude.toString(), keterangan, tokenAuth)
+            }
         }
     }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@EditTiangActivity, ScannerTiangActivity::class.java))
-        finish()
-    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap

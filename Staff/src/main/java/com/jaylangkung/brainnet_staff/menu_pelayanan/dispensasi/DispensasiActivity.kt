@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityDispensasiBinding
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -23,7 +24,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 class DispensasiActivity : AppCompatActivity() {
 
@@ -41,42 +43,46 @@ class DispensasiActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@DispensasiActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@DispensasiActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSpinnerData()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnTglJanji.setOnClickListener {
-            val newCalendar: Calendar = Calendar.getInstance()
-            val datePickerDialog = DatePickerDialog(
-                this@DispensasiActivity,
-                { _, year, monthOfYear, dayOfMonth ->
-                    val newDate: Calendar = Calendar.getInstance()
-                    newDate.set(year, monthOfYear, dayOfMonth)
-                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                    tgl = dateFormatter.format(newDate.time)
-                    binding.tvTglJanji.text = tgl
-                },
-                newCalendar.get(Calendar.YEAR),
-                newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH)
-            )
-            datePickerDialog.show()
-        }
+            btnTglJanji.setOnClickListener {
+                val newCalendar: Calendar = Calendar.getInstance()
+                val datePickerDialog = DatePickerDialog(
+                    this@DispensasiActivity,
+                    { _, year, monthOfYear, dayOfMonth ->
+                        val newDate: Calendar = Calendar.getInstance()
+                        newDate.set(year, monthOfYear, dayOfMonth)
+                        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        tgl = dateFormatter.format(newDate.time)
+                        tvTglJanji.text = tgl
+                    },
+                    newCalendar.get(Calendar.YEAR),
+                    newCalendar.get(Calendar.MONTH),
+                    newCalendar.get(Calendar.DAY_OF_MONTH)
+                )
+                datePickerDialog.show()
+            }
 
-        binding.btnConfirmPayment.setOnClickListener {
-            if (validate()) {
-                insertDispensasi(idpelanggan, tgl, tokenAuth)
+            btnConfirmPayment.setOnClickListener {
+                if (validate()) {
+                    insertDispensasi(idpelanggan, tgl, tokenAuth)
+                }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@DispensasiActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getSpinnerData() {
@@ -127,10 +133,12 @@ class DispensasiActivity : AppCompatActivity() {
                 Toasty.warning(this@DispensasiActivity, "Pelanggan tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                 false
             }
+
             tgl == "" -> {
                 Toasty.warning(this@DispensasiActivity, "Tanggal Janji tidak boleh kosong", Toasty.LENGTH_SHORT).show()
                 false
             }
+
             else -> true
         }
     }

@@ -1,4 +1,9 @@
-package com.jaylangkung.brainnet_staff.gangguan
+package com.jaylangkung.brainnet_staff.data_class
+
+class GangguanResponse(
+    var status: String = "",
+    var data: ArrayList<GangguanEntity>
+)
 
 class GangguanEntity(
     var idgangguan: String = "",

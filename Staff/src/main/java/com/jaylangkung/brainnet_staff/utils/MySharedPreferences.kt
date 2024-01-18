@@ -11,6 +11,12 @@ class MySharedPreferences(mContext: Context) {
 
     private val mSharedPreferences = mContext.getSharedPreferences(USER_PREF, Context.MODE_PRIVATE)
 
+    fun clear() {
+        val editor: SharedPreferences.Editor = mSharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
     fun setValue(key: String, value: String) {
         val editor: SharedPreferences.Editor = mSharedPreferences.edit()
         editor.putString(key, value)

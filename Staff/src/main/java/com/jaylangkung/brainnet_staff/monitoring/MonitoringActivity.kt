@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.EthernetEntity
+import com.jaylangkung.brainnet_staff.data_class.EthernetResponse
+import com.jaylangkung.brainnet_staff.data_class.UserDCEntity
+import com.jaylangkung.brainnet_staff.data_class.UserDCResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityMonitoringBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.EthernetResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.UserDCResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -40,49 +43,53 @@ class MonitoringActivity : AppCompatActivity() {
         ethernetAdapter = EthernetAdapter()
         userDCAdapter = UserDCAdapter()
 
-        val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@MonitoringActivity, MainActivity::class.java))
+                finish()
+            }
+        })
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getEthernet(tokenAuth)
         getUserDisconnected(tokenAuth)
 
-        binding.fabDisconnected.setOnClickListener {
-            binding.loadingAnim.visibility = View.VISIBLE
-            filterUserDC.clear()
-            Handler(Looper.getMainLooper()).postDelayed({
-                listUserDC.forEach { ListData ->
-                    if (ListData.paket != "isolir") {
-                        filterUserDC.add(ListData)
-                    }
-                }
-                userDCAdapter.setUserDCItem(filterUserDC)
-                userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
-                binding.loadingAnim.visibility = View.GONE
-            }, 500)
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.fabIsolation.setOnClickListener {
-            binding.loadingAnim.visibility = View.VISIBLE
-            filterUserDC.clear()
-            Handler(Looper.getMainLooper()).postDelayed({
-                listUserDC.forEach { ListData ->
-                    if (ListData.paket == "isolir") {
-                        filterUserDC.add(ListData)
+            fabDisconnected.setOnClickListener {
+                loadingAnim.visibility = View.VISIBLE
+                filterUserDC.clear()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    listUserDC.forEach { ListData ->
+                        if (ListData.paket != "isolir") {
+                            filterUserDC.add(ListData)
+                        }
                     }
-                }
-                userDCAdapter.setUserDCItem(filterUserDC)
-                userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
-                binding.loadingAnim.visibility = View.GONE
-            }, 500)
-        }
-    }
+                    userDCAdapter.setItem(filterUserDC)
+                    userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
+                    loadingAnim.visibility = View.GONE
+                }, 500)
+            }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@MonitoringActivity, MainActivity::class.java))
-        finish()
+            fabIsolation.setOnClickListener {
+                loadingAnim.visibility = View.VISIBLE
+                filterUserDC.clear()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    listUserDC.forEach { ListData ->
+                        if (ListData.paket == "isolir") {
+                            filterUserDC.add(ListData)
+                        }
+                    }
+                    userDCAdapter.setItem(filterUserDC)
+                    userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
+                    loadingAnim.visibility = View.GONE
+                }, 500)
+            }
+        }
     }
 
     private fun getEthernet(tokenAuth: String) {
@@ -93,7 +100,7 @@ class MonitoringActivity : AppCompatActivity() {
                     if (response.body()!!.status == "success") {
                         val listData = response.body()!!.data
                         listEthernet = listData
-                        ethernetAdapter.setEthernetItem(listEthernet)
+                        ethernetAdapter.setItem(listEthernet)
                         ethernetAdapter.notifyItemRangeChanged(0, filterUserDC.size)
 
                         with(binding.rvEthernet) {
@@ -135,7 +142,7 @@ class MonitoringActivity : AppCompatActivity() {
                                 filterUserDC.add(ListData)
                             }
                         }
-                        userDCAdapter.setUserDCItem(filterUserDC)
+                        userDCAdapter.setItem(filterUserDC)
                         userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
 
                         with(binding.rvUserDc) {
@@ -148,7 +155,7 @@ class MonitoringActivity : AppCompatActivity() {
                         binding.empty.visibility = View.VISIBLE
                         binding.loadingAnim.visibility = View.GONE
                         listUserDC.clear()
-                        userDCAdapter.setUserDCItem(listUserDC)
+                        userDCAdapter.setItem(listUserDC)
                         userDCAdapter.notifyItemRangeChanged(0, filterUserDC.size)
                     }
                 } else {

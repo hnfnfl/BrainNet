@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -43,15 +43,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".auth.LoginWebAppActivity" />
         <activity android:name=".settings.EditProfileActivity" />
         <activity android:name=".settings.SettingActivity" />
         <activity android:name=".hal_baik.HalBaikActivity" />
         <activity android:name=".tiang.EditTiangActivity" />
-        <activity android:name=".tiang.ScannerTiangActivity" />
         <activity android:name=".menu_pelanggan.restart.RestartActivity" />
         <activity android:name=".gangguan.GangguanDetailActivity" />
-        <activity android:name=".presensi.ScannerActivity" />
+        <activity android:name=".scanner.ScannerActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".MainActivity" />
 

@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
 import com.jaylangkung.brainnet_staff.databinding.ActivityCustomerActivationBinding
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -47,6 +48,13 @@ class CustomerActivationActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@CustomerActivationActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@CustomerActivationActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
@@ -55,45 +63,47 @@ class CustomerActivationActivity : AppCompatActivity() {
         val listTerminal = ArrayList<String>()
         listTerminal.add("Tidak")
         listTerminal.add("Ya")
-        binding.spinnerIsterminal.item = listTerminal as List<Any>?
-        binding.spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                isterminal = listTerminal[p2]
+
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            spinnerIsterminal.item = listTerminal as List<Any>?
+            spinnerIsterminal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    isterminal = listTerminal[p2]
+                }
 
-        }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+            }
 
-        binding.btnActivateCustomer.setOnClickListener {
-            if (validate()) {
-                val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
-                    .setTitle("Aktivasi Pelanggan Baru")
-                    .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
-                    { dialogInterface, _ ->
-                        insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+
+            btnActivateCustomer.setOnClickListener {
+                if (validate()) {
+                    val mDialog = MaterialDialog.Builder(this@CustomerActivationActivity as Activity)
+                        .setTitle("Aktivasi Pelanggan Baru")
+                        .setMessage("Pastikan semua data sudah terisi dengan benar. Jika terjadi kesalahan silahkan hubungi Administrator")
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.yes), R.drawable.ic_check_user)
+                        { dialogInterface, _ ->
+                            insertAktivasi(idpelanggan, paket, idadmin, isterminal, idswitch, idrekanan, idpaketinstalasi, tokenAuth)
+                            dialogInterface.dismiss()
+                        }
+                        .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
+                        { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@CustomerActivationActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getSpinnerData() {
@@ -206,7 +216,7 @@ class CustomerActivationActivity : AppCompatActivity() {
             }
             idpaketinstalasi == "" -> {
                 Toasty.warning(this@CustomerActivationActivity, "Paket Instalasi tidak boleh kosong", Toasty.LENGTH_SHORT).show()
-                return false
+                false
             }
             else -> true
         }

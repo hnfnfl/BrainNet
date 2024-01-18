@@ -1,4 +1,9 @@
-package com.jaylangkung.brainnet_staff.monitoring
+package com.jaylangkung.brainnet_staff.data_class
+
+class UserDCResponse(
+    var status: String = "",
+    var data: ArrayList<UserDCEntity>,
+)
 
 class UserDCEntity(
     var nama: String = "",

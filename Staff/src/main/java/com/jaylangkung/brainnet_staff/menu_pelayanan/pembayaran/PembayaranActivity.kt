@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerResponse
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityPembayaranBinding
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DataSpinnerResponse
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -42,40 +43,37 @@ class PembayaranActivity : AppCompatActivity() {
         setContentView(binding.root)
         myPreferences = MySharedPreferences(this@PembayaranActivity)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@PembayaranActivity, MainActivity::class.java))
+                finish()
+            }
+        })
+
         val idadmin = myPreferences.getValue(Constants.USER_IDADMIN).toString()
         val tokenAuth = getString(R.string.token_auth, myPreferences.getValue(Constants.TokenAuth).toString())
 
         getSpinnerData()
 
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.btnConfirmPayment.setOnClickListener {
-            if (validate()) {
-                val mDialog = MaterialDialog.Builder(this@PembayaranActivity as Activity)
-                    .setTitle("Konfirmasi Pembayaran")
-                    .setMessage("Konfirmasikan pembayaran pelanggan atas nama $nama?")
-                    .setCancelable(true)
-                    .setPositiveButton(getString(R.string.yes), R.drawable.ic_pay)
-                    { dialogInterface, _ ->
-                        insertPembayaran(idtagihan, total, idadmin, tokenAuth)
-                        dialogInterface.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.no), R.drawable.ic_close)
-                    { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                    }
-                    .build()
-                // Show Dialog
-                mDialog.show()
+            btnConfirmPayment.setOnClickListener {
+                if (validate()) {
+                    val mDialog = MaterialDialog.Builder(this@PembayaranActivity as Activity).setTitle("Konfirmasi Pembayaran").setMessage("Konfirmasikan pembayaran pelanggan atas nama $nama?")
+                        .setCancelable(true).setPositiveButton(getString(R.string.yes), R.drawable.ic_pay) { dialogInterface, _ ->
+                            insertPembayaran(idtagihan, total, idadmin, tokenAuth)
+                            dialogInterface.dismiss()
+                        }.setNegativeButton(getString(R.string.no), R.drawable.ic_close) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }.build()
+                    // Show Dialog
+                    mDialog.show()
+                }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@PembayaranActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun getSpinnerData() {
@@ -105,8 +103,7 @@ class PembayaranActivity : AppCompatActivity() {
                             binding.paymentInvoice.text = getString(R.string.pembayaran_invoice, listTagihan[p2].no_invoice)
                             val formatter = DecimalFormat("#,###.#")
                             binding.paymentTotal.text = getString(
-                                R.string.pembayaran_tagihan,
-                                formatter.format(listTagihan[p2].total.toFloat())
+                                R.string.pembayaran_tagihan, formatter.format(listTagihan[p2].total.toFloat())
                             )
                         }
 
@@ -115,16 +112,14 @@ class PembayaranActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@PembayaranActivity,
-                        "getSpinnerData | onResponse", response.message()
+                        this@PembayaranActivity, "getSpinnerData | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DataSpinnerResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@PembayaranActivity,
-                    "getSpinnerData | onFailure", t.message.toString()
+                    this@PembayaranActivity, "getSpinnerData | onFailure", t.message.toString()
                 )
             }
         })
@@ -138,10 +133,7 @@ class PembayaranActivity : AppCompatActivity() {
     }
 
     private fun insertPembayaran(
-        idtagihan: String,
-        jumlah_tagihan: String,
-        idadmin: String,
-        tokenAuth: String
+        idtagihan: String, jumlah_tagihan: String, idadmin: String, tokenAuth: String
     ) {
         val service = RetrofitClient().apiRequest().create(DataService::class.java)
         service.insertPembayaran(idtagihan, jumlah_tagihan, idadmin, tokenAuth).enqueue(object : Callback<DefaultResponse> {
@@ -149,20 +141,20 @@ class PembayaranActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body()!!.status == "success") {
                         Toasty.success(this@PembayaranActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
-                        onBackPressed()
+                        onBackPressedDispatcher.onBackPressed()
+                    } else {
+                        Toasty.error(this@PembayaranActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@PembayaranActivity,
-                        "insertPembayaran | onResponse", response.message()
+                        this@PembayaranActivity, "insertPembayaran | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<DefaultResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@PembayaranActivity,
-                    "insertPembayaran | onResponse", t.message.toString()
+                    this@PembayaranActivity, "insertPembayaran | onResponse", t.message.toString()
                 )
             }
         })

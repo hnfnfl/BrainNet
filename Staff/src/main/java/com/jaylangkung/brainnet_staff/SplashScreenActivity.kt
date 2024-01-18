@@ -8,10 +8,10 @@ import android.os.Looper
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.auth.LoginActivity
+import com.jaylangkung.brainnet_staff.data_class.LoginResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivitySplashScreenBinding
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -58,16 +58,14 @@ class SplashScreenActivity : AppCompatActivity() {
                     }
                 } else {
                     ErrorHandler().responseHandler(
-                        this@SplashScreenActivity,
-                        "refreshAuthToken | onResponse", response.message()
+                        this@SplashScreenActivity, "refreshAuthToken | onResponse", response.message()
                     )
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 ErrorHandler().responseHandler(
-                    this@SplashScreenActivity,
-                    "refreshAuthToken | onFailure", t.message.toString()
+                    this@SplashScreenActivity, "refreshAuthToken | onFailure", t.message.toString()
                 )
             }
         })

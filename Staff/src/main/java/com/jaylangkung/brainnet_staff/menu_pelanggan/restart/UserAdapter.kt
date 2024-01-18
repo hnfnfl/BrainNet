@@ -12,10 +12,11 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.DefaultResponse
+import com.jaylangkung.brainnet_staff.data_class.UserEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemUserBinding
 import com.jaylangkung.brainnet_staff.retrofit.DataService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.DefaultResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
 import dev.shreyaspatil.MaterialDialog.MaterialDialog
@@ -25,20 +26,20 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterable {
+class UserAdapter : RecyclerView.Adapter<UserAdapter.ItemHolder>(), Filterable {
 
     private var listUser = ArrayList<UserEntity>()
     private var listUserFilter = ArrayList<UserEntity>()
 
-    fun setUserItem(userItem: List<UserEntity>?) {
-        if (userItem == null) return
+    fun setItem(item: List<UserEntity>?) {
+        if (item == null) return
         this.listUser.clear()
-        this.listUser.addAll(userItem)
-        this.listUserFilter = userItem as ArrayList<UserEntity>
+        this.listUser.addAll(item)
+        this.listUserFilter = item as ArrayList<UserEntity>
         notifyItemRangeChanged(0, listUser.size)
     }
 
-    class UserItemHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var myPreferences: MySharedPreferences
 
@@ -114,14 +115,14 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserItemHolder>(), Filterab
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemHolder {
-        val itemUserBinding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserItemHolder(itemUserBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: UserItemHolder, position: Int) {
-        val vendorItem = listUser[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = listUser[position]
+        holder.bind(item)
     }
 
     override fun getItemCount(): Int = listUser.size

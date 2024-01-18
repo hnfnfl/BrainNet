@@ -4,18 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.databinding.ItemPemasanganSelesaiBinding
-import com.jaylangkung.brainnet_staff.menu_pelanggan.spinnerData.DataSpinnerEntity
+import com.jaylangkung.brainnet_staff.data_class.DataSpinnerEntity
 
-class PemasanganSelesaiAdapter : RecyclerView.Adapter<PemasanganSelesaiAdapter.PemasanganItemHolder>() {
+class PemasanganSelesaiAdapter : RecyclerView.Adapter<PemasanganSelesaiAdapter.ItemHolder>() {
 
-    private var listPemasanganSelesai = ArrayList<DataSpinnerEntity>()
+    private var list = ArrayList<DataSpinnerEntity>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    fun setPemasanganItem(pemasanganItem: List<DataSpinnerEntity>?) {
-        if (pemasanganItem == null) return
-        listPemasanganSelesai.clear()
-        listPemasanganSelesai.addAll(pemasanganItem)
-        notifyItemRangeChanged(0, listPemasanganSelesai.size)
+    fun setItem(item: List<DataSpinnerEntity>?) {
+        if (item == null) return
+        list.clear()
+        list.addAll(item)
+        notifyItemRangeChanged(0, list.size)
     }
 
     interface OnItemClickCallback {
@@ -26,7 +26,7 @@ class PemasanganSelesaiAdapter : RecyclerView.Adapter<PemasanganSelesaiAdapter.P
         this.onItemClickCallback = onItemClickCallback
     }
 
-    class PemasanganItemHolder(private val binding: ItemPemasanganSelesaiBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemPemasanganSelesaiBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(pemasanganItem: DataSpinnerEntity) {
             with(binding) {
                 tvName.text = pemasanganItem.nama
@@ -34,20 +34,20 @@ class PemasanganSelesaiAdapter : RecyclerView.Adapter<PemasanganSelesaiAdapter.P
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PemasanganItemHolder {
-        val itemPemasanganSelesaiBinding = ItemPemasanganSelesaiBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PemasanganItemHolder(itemPemasanganSelesaiBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val binding = ItemPemasanganSelesaiBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PemasanganItemHolder, position: Int) {
-        val vendorItem = listPemasanganSelesai[position]
-        holder.bind(vendorItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
         holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(listPemasanganSelesai, position)
+            onItemClickCallback.onItemClicked(list, position)
         }
     }
 
-    override fun getItemCount(): Int = listPemasanganSelesai.size
+    override fun getItemCount(): Int = list.size
 }
 
 

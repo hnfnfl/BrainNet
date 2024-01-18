@@ -7,10 +7,10 @@ import android.provider.Settings.Secure
 import androidx.appcompat.app.AppCompatActivity
 import com.jaylangkung.brainnet_staff.MainActivity
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.LoginResponse
 import com.jaylangkung.brainnet_staff.databinding.ActivityLoginBinding
 import com.jaylangkung.brainnet_staff.retrofit.AuthService
 import com.jaylangkung.brainnet_staff.retrofit.RetrofitClient
-import com.jaylangkung.brainnet_staff.retrofit.response.LoginResponse
 import com.jaylangkung.brainnet_staff.utils.Constants
 import com.jaylangkung.brainnet_staff.utils.ErrorHandler
 import com.jaylangkung.brainnet_staff.utils.MySharedPreferences
@@ -32,35 +32,42 @@ class LoginActivity : AppCompatActivity() {
         myPreferences = MySharedPreferences(this@LoginActivity)
 
         val deviceID = Secure.getString(applicationContext.contentResolver, Secure.ANDROID_ID)
-        binding.btnLogin.setOnClickListener {
-            val email = binding.tvValueEmailLogin.text.toString()
-            val pass = binding.tvValuePasswordLogin.text.toString()
-            if (validate()) {
-                loginProcess(email, pass, "hp.$deviceID")
-                binding.btnLogin.startAnimation()
+        binding.apply {
+            btnLogin.setOnClickListener {
+                val email = tvValueEmailLogin.text.toString()
+                val pass = tvValuePasswordLogin.text.toString()
+                if (validate()) {
+                    loginProcess(email, pass, "hp.$deviceID")
+                    btnLogin.startAnimation()
+                }
             }
         }
     }
 
     private fun validate(): Boolean {
         fun String.isValidEmail() = isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-        when {
-            binding.tvValueEmailLogin.text.toString() == "" -> {
-                binding.tvValueEmailLogin.error = getString(R.string.email_cant_empty)
-                binding.tvValueEmailLogin.requestFocus()
-                return false
+        binding.apply {
+            return when {
+                tvValueEmailLogin.text.toString() == "" -> {
+                    tvValueEmailLogin.error = getString(R.string.email_cant_empty)
+                    tvValueEmailLogin.requestFocus()
+                    false
+                }
+
+                !tvValueEmailLogin.text.toString().isValidEmail() -> {
+                    tvValueEmailLogin.error = getString(R.string.email_format_error)
+                    tvValueEmailLogin.requestFocus()
+                    false
+                }
+
+                tvValuePasswordLogin.text.toString() == "" -> {
+                    tvValuePasswordLogin.error = getString(R.string.password_cant_empty)
+                    tvValuePasswordLogin.requestFocus()
+                    false
+                }
+
+                else -> true
             }
-            !binding.tvValueEmailLogin.text.toString().isValidEmail() -> {
-                binding.tvValueEmailLogin.error = getString(R.string.email_format_error)
-                binding.tvValueEmailLogin.requestFocus()
-                return false
-            }
-            binding.tvValuePasswordLogin.text.toString() == "" -> {
-                binding.tvValuePasswordLogin.error = getString(R.string.password_cant_empty)
-                binding.tvValuePasswordLogin.requestFocus()
-                return false
-            }
-            else -> return true
         }
     }
 
@@ -69,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
         service.login(email, password, deviceID).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
+                    binding.btnLogin.endAnimation()
                     when (response.body()!!.status) {
                         "success" -> {
                             myPreferences.setValue(Constants.USER, Constants.LOGIN)
@@ -83,23 +91,23 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         }
+
                         "not_exist" -> {
-                            binding.btnLogin.endAnimation()
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
+
                         "unauthorized" -> {
-                            binding.btnLogin.endAnimation()
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
+
                         "too_many_attempt" -> {
-                            binding.btnLogin.endAnimation()
                             Toasty.error(this@LoginActivity, response.body()!!.message, Toasty.LENGTH_LONG).show()
                         }
                     }
                 } else {
+                    binding.btnLogin.endAnimation()
                     ErrorHandler().responseHandler(
-                        this@LoginActivity,
-                        "loginProcess | onResponse", response.message()
+                        this@LoginActivity, "loginProcess | onResponse", response.message()
                     )
                 }
             }
@@ -107,8 +115,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 binding.btnLogin.endAnimation()
                 ErrorHandler().responseHandler(
-                    this@LoginActivity,
-                    "loginProcess | onResponse", t.message.toString()
+                    this@LoginActivity, "loginProcess | onResponse", t.message.toString()
                 )
             }
         })

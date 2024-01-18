@@ -7,20 +7,21 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jaylangkung.brainnet_staff.R
+import com.jaylangkung.brainnet_staff.data_class.GangguanEntity
 import com.jaylangkung.brainnet_staff.databinding.ItemGangguanBinding
 
-class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.GangguanItemHolder>() {
+class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.ItemHolder>() {
 
-    private var orderList = ArrayList<GangguanEntity>()
+    private var list = ArrayList<GangguanEntity>()
 
-    fun setListGangguanItem(listGangguanItem: List<GangguanEntity>?) {
-        if (listGangguanItem == null) return
-        this.orderList.clear()
-        this.orderList.addAll(listGangguanItem)
-        notifyItemRangeChanged(0, listGangguanItem.size)
+    fun setItem(item: List<GangguanEntity>?) {
+        if (item == null) return
+        this.list.clear()
+        this.list.addAll(item)
+        notifyItemRangeChanged(0, item.size)
     }
 
-    class GangguanItemHolder(private val binding: ItemGangguanBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(private val binding: ItemGangguanBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(gangguanList: GangguanEntity) {
             with(binding) {
                 tvTime.text = gangguanList.tanggal
@@ -71,17 +72,17 @@ class GangguanAdapter : RecyclerView.Adapter<GangguanAdapter.GangguanItemHolder>
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GangguanItemHolder {
-        val itemGangguanBinding = ItemGangguanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GangguanItemHolder(itemGangguanBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val binding = ItemGangguanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GangguanItemHolder, position: Int) {
-        val gangguanItem = orderList[position]
-        holder.bind(gangguanItem)
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = orderList.size
+    override fun getItemCount(): Int = list.size
 
 }
 
